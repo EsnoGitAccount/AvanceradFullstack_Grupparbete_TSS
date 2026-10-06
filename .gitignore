@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /backend/AvanceradFullstack_GruppArbete_TSS_Backend/AvanceradFullstack_GruppArbete_TSS_Backend/appsettings.json
+/backend/appsettings.json
