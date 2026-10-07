@@ -1,5 +1,6 @@
 
 using Backend.Data;
+using Backend.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -34,6 +35,7 @@ namespace Backend
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.MapControllers();
 
