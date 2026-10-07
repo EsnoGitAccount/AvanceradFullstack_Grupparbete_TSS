@@ -18,8 +18,8 @@ function CitiesTest() {
     } 
 
     catch (requestError) {
-        if (axios.isAxiosError(error)){
-            setError(error.message)
+        if (axios.isAxiosError(requestError)){
+            setError(requestError.message)
         }
 
         else {
