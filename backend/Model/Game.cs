@@ -8,6 +8,6 @@
         public int DailyChallangeId { get; set; }
         public DailyChallange DailyChallange { get; set; } = null!;
         public int TotalScore { get; set; }
-        public DateTime CompletedAt { get; set; }
+        public DateOnly CompletedAt { get; set; }
     }
 }
