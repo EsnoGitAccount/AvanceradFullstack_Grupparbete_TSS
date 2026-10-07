@@ -1,9 +1,11 @@
 ﻿using Backend.Model;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data
 {
-    public class WhereAreWeDbContext : DbContext
+    public class WhereAreWeDbContext : IdentityDbContext<User , IdentityRole<int>, int>
     {
         public WhereAreWeDbContext(DbContextOptions<WhereAreWeDbContext> options) : base(options)
         {
