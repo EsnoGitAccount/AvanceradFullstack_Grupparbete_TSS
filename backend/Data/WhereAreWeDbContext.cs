@@ -55,7 +55,7 @@ namespace Backend.Data
                 .Property(c => c.Point)
                 .HasPrecision(5, 2);
 
-
+            DatabaseSeed.Seed(modelBuilder);
 
         }
     }
