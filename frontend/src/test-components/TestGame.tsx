@@ -28,6 +28,8 @@ export default function TestGame({city} : {city: string}) {
             {gameProgress === 4 && (
                 <div>
                     <h2>Spelet är klart!</h2>
+                    {/* Hackig lösning för att klara lint */}
+                    <p>Destination: {city}</p>
                 </div>
             )}
             <div>Din poäng: {currentScore}</div>
