@@ -2,6 +2,10 @@
 using Backend.Data;
 using Backend.Middleware;
 using Backend.Model;
+using Backend.Repositories;
+using Backend.Repositories.IRepositories;
+using Backend.Services;
+using Backend.Services.IServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -22,6 +26,8 @@ namespace Backend
                 .AddDefaultTokenProviders();
 
             // Add services to the container.
+            builder.Services.AddScoped<ICityReposistory, CityRepository>();
+            builder.Services.AddScoped<ICityService, CityService>();
 
             builder.Services.AddControllers();
             builder.Services.AddProblemDetails();

@@ -1,0 +1,32 @@
+# This workflow will build and test the ASP.NET API project when changes are pushed to any branch in the backend or test directories, or when the workflow is manually triggered.
+
+name: Build and test ASP.NET API
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - 'Backend.Tests/**'
+      - '.github/workflows/wherearewe_main.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - uses: actions/checkout@v4
+    
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Build with dotnet
+        run: dotnet build ./Backend.Tests/Backend.Tests.csproj --configuration Release
+
+      - name: Test with dotnet
+        run: dotnet test ./Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --no-restore --verbosity normal
+  
