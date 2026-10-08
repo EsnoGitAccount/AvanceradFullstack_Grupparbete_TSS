@@ -21,7 +21,7 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCities()
         {
-            var cities = _cityService.GetAllCitiesAsync();
+            var cities = await _cityService.GetAllCitiesAsync();
 
             return Ok(cities);
         }
