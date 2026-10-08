@@ -9,7 +9,7 @@ import './SiteFooter.css'
 
 const footerItems = [
   { label: 'Bara svenska städer', Icon: RouteIcon },
-  { label: 'Gissa snabbast för högts poäng', Icon: PenLineIcon },
+  { label: 'Gissa snabbast för högst poäng', Icon: PenLineIcon },
   { label: 'Lär dig nya saker', Icon: TrophyIcon },
   { label: 'En ny resa varje dag', Icon: SunIcon },
 ]
