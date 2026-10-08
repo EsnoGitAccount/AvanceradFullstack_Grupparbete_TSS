@@ -1,0 +1,37 @@
+.cities-test {
+  width: 100%;
+  border: 1px solid var(--card-border);
+}
+
+.cities-test__header {
+  align-items: center;
+}
+
+.cities-test__title {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.cities-test__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.cities-test__error {
+  margin: 0;
+  color: var(--destructive);
+}
+
+.cities-test__list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--foreground);
+}
+
+.cities-test__list li {
+  padding-block: 0.15rem;
+}
