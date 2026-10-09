@@ -36,10 +36,25 @@ function TestGame({ city }: { city: string }) {
   const [gameProgress, setGameProgress] = useState(0)
   const [currentScore, setCurrentScore] = useState(0)
 
+  //Update this to check if user is authenticated and if so, 
+  // get the username from the token and set it to name. 
+  // If not, set name to empty string.
+  const [playerName, setPlayerName] = useState(""); 
+  const [playerResult, setPlayerResult] = useState({name: "", score: 0});
+
   const handleGameComplete = (score: number) => {
     setCurrentScore((previousScore) => previousScore + score)
     setGameProgress((previousProgress) => previousProgress + 1)
   }
+
+  const handleSubmitName = async (e: React.ChangeEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setPlayerName(e.currentTarget.playerName.value);
+  }
+
+  const handleSubmitResult = async (name: string, score: number) => {
+      setPlayerResult({name, score});
+  };
 
   return (
     <Card className="test-game">
@@ -54,7 +69,19 @@ function TestGame({ city }: { city: string }) {
 
       <CardContent className="test-game__content">
         {gameProgress === 0 && (
-          <Button onClick={() => setGameProgress(1)}>Starta spelet</Button>
+          //<Button onClick={() => setGameProgress(1)}>Starta spelet</Button>
+          <>
+            {playerName === "" && (
+                <form onSubmit={handleSubmitName}>
+                    <label htmlFor="playerName">Namn:</label>
+                    <input type="text" id="playerName" name="playerName" required />
+                    <button type="submit">Spara namn</button>
+                </form>
+            )}
+            <Button onClick={() => setGameProgress(1)} disabled={playerName === ""}>
+                Starta spelet
+            </Button>
+          </>
         )}
         {gameProgress === 1 && (
           <WhereAreWe onComplete={handleGameComplete} />
@@ -69,6 +96,8 @@ function TestGame({ city }: { city: string }) {
           <div className="test-game__complete">
             <h3>Spelet är klart!</h3>
             <p>Destination: {city}</p>
+            <Button onClick={() => handleSubmitResult(playerName, currentScore)}>Spara resultat</Button>
+            <Button onClick={() => setGameProgress(0)}> Starta om spelet </Button>
           </div>
         )}
       </CardContent>
