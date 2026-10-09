@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/Card'
+import { Input } from '@/components/ui/input'
 
 import './TestGame.css'
 
@@ -69,13 +70,12 @@ function TestGame({ city }: { city: string }) {
 
       <CardContent className="test-game__content">
         {gameProgress === 0 && (
-          //<Button onClick={() => setGameProgress(1)}>Starta spelet</Button>
           <>
             {playerName === "" && (
                 <form onSubmit={handleSubmitName}>
                     <label htmlFor="playerName">Namn:</label>
-                    <input type="text" id="playerName" name="playerName" required />
-                    <button type="submit">Spara namn</button>
+                    <Input type="text" id="playerName" name="playerName" required />
+                    <Button className="test-game__submit-name-button" variant="outline" type="submit">Spara namn</Button>
                 </form>
             )}
             <Button onClick={() => setGameProgress(1)} disabled={playerName === ""}>
@@ -94,7 +94,7 @@ function TestGame({ city }: { city: string }) {
         )}
         {gameProgress === 4 && (
           <div className="test-game__complete">
-            <h3>Spelet är klart!</h3>
+            <h3>Spelet är klart, {playerName}!</h3>
             <p>Destination: {city}</p>
             <Button onClick={() => handleSubmitResult(playerName, currentScore)}>Spara resultat</Button>
             <Button onClick={() => setGameProgress(0)}> Starta om spelet </Button>
