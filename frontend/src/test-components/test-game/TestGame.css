@@ -1,0 +1,30 @@
+.test-game {
+  width: 100%;
+  border: 1px solid var(--card-border);
+}
+
+.test-game__header {
+  align-items: center;
+}
+
+.test-game__title {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.test-game__content {
+  display: flex;
+  align-items: flex-start;
+}
+
+.test-game__complete h3,
+.test-game__complete p {
+  margin: 0;
+}
+
+.test-game__complete p {
+  margin-top: 0.25rem;
+  color: var(--muted-foreground);
+}
