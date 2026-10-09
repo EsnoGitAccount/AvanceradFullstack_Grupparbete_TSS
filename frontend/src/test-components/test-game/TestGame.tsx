@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import axios from 'axios'
 
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -40,8 +41,10 @@ function TestGame({ city }: { city: string }) {
   //Update this to check if user is authenticated and if so, 
   // get the username from the token and set it to name. 
   // If not, set name to empty string.
+  // This is a placeholder for now, as authentication is not implemented yet.
+  const [isAuthenticated] = useState(false);
   const [playerName, setPlayerName] = useState(""); 
-  const [playerResult, setPlayerResult] = useState({name: "", score: 0});
+  const [playerResult, setPlayerResult] = useState({UserName: "", IsGuest: !isAuthenticated, FinalScore: 0, CompletedAt: ""});
 
   const handleGameComplete = (score: number) => {
     setCurrentScore((previousScore) => previousScore + score)
@@ -54,8 +57,18 @@ function TestGame({ city }: { city: string }) {
   }
 
   const handleSubmitResult = async (name: string, score: number) => {
-      setPlayerResult({name, score});
-  };
+      setPlayerResult({UserName: name, IsGuest: !isAuthenticated, FinalScore: score, CompletedAt: new Date().toISOString().split('T')[0]});
+      try {
+          const response = await axios.post('/api/games', JSON.stringify(playerResult), {
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          });
+          console.log(response.data.message, response.data.data);
+      } catch (error) {
+          console.error('Error submitting result:', error);
+      }
+    };
 
   return (
     <Card className="test-game">
