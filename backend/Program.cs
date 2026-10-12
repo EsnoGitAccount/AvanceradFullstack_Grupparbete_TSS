@@ -1,13 +1,5 @@
 
-using Backend.Data;
 using Backend.Middleware;
-using Backend.Model;
-using Backend.Repositories;
-using Backend.Repositories.IRepositories;
-using Backend.Services;
-using Backend.Services.IServices;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 namespace Backend
@@ -18,16 +10,8 @@ namespace Backend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<WhereAreWeDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-            builder.Services.AddIdentity<User, IdentityRole<int>>()
-                .AddEntityFrameworkStores<WhereAreWeDbContext>()
-                .AddDefaultTokenProviders();
-
             // Add services to the container.
-            builder.Services.AddScoped<ICityReposistory, CityRepository>();
-            builder.Services.AddScoped<ICityService, CityService>();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
 
             builder.Services.AddControllers();
             builder.Services.AddProblemDetails();
@@ -46,6 +30,7 @@ namespace Backend
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseMiddleware<ExceptionMiddleware>();
