@@ -9,7 +9,7 @@ using Backend.Services;
 
 namespace Backend.Tests.Services
 {
-    public class CitiyServiceTests
+    public class CityServiceTests
     {
         [Fact]
         public async Task GivenGetAllCities_ReturnsListOfCities()
