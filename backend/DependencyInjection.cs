@@ -26,6 +26,20 @@ namespace Backend
               .AddEntityFrameworkStores<WhereAreWeDbContext>()
               .AddDefaultTokenProviders();
 
+            //Cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "LocalConnection",
+                        policy =>
+                        {
+                            policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                        }
+                );
+            });
+
             // Repositories
             services.AddScoped<ICityReposistory, CityRepository>();
             services.AddScoped<IGameRepository, GameRepository>();

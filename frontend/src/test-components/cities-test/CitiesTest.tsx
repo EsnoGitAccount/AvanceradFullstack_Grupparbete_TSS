@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
-import { getAllCities } from '../../services/GameService'
+import { getAllCities } from '../../services/CityService'
 import type { City } from "../../models/City";
 
 import { Badge } from '@/components/ui/Badge'
