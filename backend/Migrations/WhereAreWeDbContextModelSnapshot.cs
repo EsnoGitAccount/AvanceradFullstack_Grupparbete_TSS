@@ -488,6 +488,68 @@ namespace Backend.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("DailyChallanges");
+
+                    b.HasData(
+                        new
+                        {
+                            DailyChallangeId = 1,
+                            ChallangeDate = new DateOnly(2024, 6, 1),
+                            CityId = 1
+                        },
+                        new
+                        {
+                            DailyChallangeId = 2,
+                            ChallangeDate = new DateOnly(2024, 6, 2),
+                            CityId = 2
+                        },
+                        new
+                        {
+                            DailyChallangeId = 3,
+                            ChallangeDate = new DateOnly(2024, 6, 3),
+                            CityId = 3
+                        },
+                        new
+                        {
+                            DailyChallangeId = 4,
+                            ChallangeDate = new DateOnly(2024, 6, 4),
+                            CityId = 4
+                        },
+                        new
+                        {
+                            DailyChallangeId = 5,
+                            ChallangeDate = new DateOnly(2024, 6, 5),
+                            CityId = 5
+                        },
+                        new
+                        {
+                            DailyChallangeId = 6,
+                            ChallangeDate = new DateOnly(2024, 6, 6),
+                            CityId = 6
+                        },
+                        new
+                        {
+                            DailyChallangeId = 7,
+                            ChallangeDate = new DateOnly(2024, 6, 7),
+                            CityId = 7
+                        },
+                        new
+                        {
+                            DailyChallangeId = 8,
+                            ChallangeDate = new DateOnly(2024, 6, 8),
+                            CityId = 8
+                        },
+                        new
+                        {
+                            DailyChallangeId = 9,
+                            ChallangeDate = new DateOnly(2024, 6, 9),
+                            CityId = 9
+                        },
+                        new
+                        {
+                            DailyChallangeId = 10,
+                            ChallangeDate = new DateOnly(2024, 6, 10),
+                            CityId = 10
+                        });
                 });
 
             modelBuilder.Entity("Backend.Model.Game", b =>
@@ -507,8 +569,11 @@ namespace Backend.Migrations
                     b.Property<int>("TotalScore")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GameId");
 
@@ -1483,9 +1548,7 @@ namespace Backend.Migrations
 
                     b.HasOne("Backend.Model.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("DailyChallange");
 

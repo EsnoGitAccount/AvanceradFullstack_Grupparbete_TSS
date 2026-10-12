@@ -28,9 +28,11 @@ namespace Backend
 
             // Repositories
             services.AddScoped<ICityReposistory, CityRepository>();
+            services.AddScoped<IGameRepository, GameRepository>();
 
             // Services
             services.AddScoped<ICityService, CityService>();
+            services.AddScoped<IGameService, GameService>();
 
             // JWT
 

@@ -16,7 +16,13 @@
 
 .test-game__content {
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
   align-items: flex-start;
+}
+
+.test-game__submit-name-button {
+  margin-top: 0.5rem;
 }
 
 .test-game__complete h3,

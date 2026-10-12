@@ -9,12 +9,10 @@ namespace Backend.Controllers
     [ApiController]
     public class CitiesController : ControllerBase
     {
-        private readonly WhereAreWeDbContext _context;
         private readonly ICityService _cityService;
 
-        public CitiesController(WhereAreWeDbContext context, ICityService cityService)
+        public CitiesController(ICityService cityService)
         {
-            _context = context;
             _cityService = cityService;
         }
 

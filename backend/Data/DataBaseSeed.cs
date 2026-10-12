@@ -22,6 +22,21 @@ namespace Backend.Data
                 new City { CityId = 10, Name = "Lund" }
             );
 
+            // DAGENS UTMANING, skräpdata, deletea när challenge kan randomiseras
+
+            modelBuilder.Entity<DailyChallange>().HasData(
+                new DailyChallange { DailyChallangeId = 1, CityId = 1, ChallangeDate = new DateOnly(2024, 6, 1) },
+                new DailyChallange { DailyChallangeId = 2, CityId = 2, ChallangeDate = new DateOnly(2024, 6, 2) },
+                new DailyChallange { DailyChallangeId = 3, CityId = 3, ChallangeDate = new DateOnly(2024, 6, 3) },
+                new DailyChallange { DailyChallangeId = 4, CityId = 4, ChallangeDate = new DateOnly(2024, 6, 4) },
+                new DailyChallange { DailyChallangeId = 5, CityId = 5, ChallangeDate = new DateOnly(2024, 6, 5) },
+                new DailyChallange { DailyChallangeId = 6, CityId = 6, ChallangeDate = new DateOnly(2024, 6, 6) },
+                new DailyChallange { DailyChallangeId = 7, CityId = 7, ChallangeDate = new DateOnly(2024, 6, 7) },
+                new DailyChallange { DailyChallangeId = 8, CityId = 8, ChallangeDate = new DateOnly(2024, 6, 8) },
+                new DailyChallange { DailyChallangeId = 9, CityId = 9, ChallangeDate = new DateOnly(2024, 6, 9) },
+                new DailyChallange { DailyChallangeId = 10, CityId = 10, ChallangeDate = new DateOnly(2024, 6, 10) }
+            );
+
             // FRÅGOR: TVÅ PER STAD
 
             modelBuilder.Entity<Question>().HasData(
