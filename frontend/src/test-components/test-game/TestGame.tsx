@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/Card'
-import { Input } from '@/components/ui/input'
+import { Input } from '@/components/ui/Input'
 
 import './TestGame.css'
 
