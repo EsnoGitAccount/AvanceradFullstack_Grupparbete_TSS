@@ -1,10 +1,11 @@
-﻿using Backend.Model;
+﻿using Backend.Dto;
+using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Backend.Services.IServices;
 
 namespace Backend.Services
 {
-    public class CityService :ICityService
+    public class CityService : ICityService
     {
         private readonly ICityReposistory _cityRepository;
 
