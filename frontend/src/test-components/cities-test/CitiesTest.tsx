@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
+import { getAllCities } from '../../services/CityService'
+import type { City } from "../../models/City";
 
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -13,11 +15,6 @@ import {
 
 import './CitiesTest.css'
 
-type City = {
-  cityId: number
-  name: string
-}
-
 function CitiesTest() {
   const [cities, setCities] = useState<City[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -28,8 +25,8 @@ function CitiesTest() {
     setError(null)
 
     try {
-      const response = await axios.get<City[]>('/api/cities')
-      setCities(response.data)
+      const response = await getAllCities()
+      setCities(response)
     } catch (requestError) {
       if (axios.isAxiosError(requestError)) {
         setError(requestError.message)

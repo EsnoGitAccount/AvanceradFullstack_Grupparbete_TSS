@@ -30,6 +30,8 @@ namespace Backend
 
             app.UseHttpsRedirection();
 
+            app.UseCors("LocalConnection");
+
             app.UseAuthentication();
             app.UseAuthorization();
 
