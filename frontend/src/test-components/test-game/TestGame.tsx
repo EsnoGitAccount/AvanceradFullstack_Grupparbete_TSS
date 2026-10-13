@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import axios from 'axios'
+import type { GameResult } from '@/models/GameResult'
+import { submitGameResult } from '@/services/GameService'
 
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -44,7 +45,7 @@ function TestGame({ city }: { city: string }) {
   // This is a placeholder for now, as authentication is not implemented yet.
   const [isAuthenticated] = useState(false);
   const [playerName, setPlayerName] = useState(""); 
-  const [playerResult, setPlayerResult] = useState({UserName: "", IsGuest: !isAuthenticated, FinalScore: 0, CompletedAt: ""});
+  const [resultSubmitted, setResultSubmitted] = useState(false);
 
   const handleGameComplete = (score: number) => {
     setCurrentScore((previousScore) => previousScore + score)
@@ -56,19 +57,25 @@ function TestGame({ city }: { city: string }) {
       setPlayerName(e.currentTarget.playerName.value);
   }
 
-  const handleSubmitResult = async (name: string, score: number) => {
-      setPlayerResult({UserName: name, IsGuest: !isAuthenticated, FinalScore: score, CompletedAt: new Date().toISOString().split('T')[0]});
-      try {
-          const response = await axios.post('/api/games', JSON.stringify(playerResult), {
-              headers: {
-                  'Content-Type': 'application/json'
-              }
-          });
-          console.log(response.data.message, response.data.data);
-      } catch (error) {
-          console.error('Error submitting result:', error);
-      }
+  const handleSubmitResult = async (name: string, score: number, id: number | null) => {
+      
+    console.log("Submitting result for:", name, "with score:", score, "and id:", id);
+    const currentResult: GameResult = {
+      UserName: name,
+      UserID: id, // This should be set to the actual user ID if authenticated
+      IsGuest: !isAuthenticated,
+      FinalScore: score,
+      CompletedAt: new Date().toISOString().split('T')[0], // Format the date as YYYY-MM-DD
     };
+
+    await submitGameResult(currentResult);
+    setResultSubmitted(true);
+      // if (!isAuthenticated) {
+      //     console.log("User is not authenticated. Result will be saved as a guest.");
+      //     setPlayerResult({UserName: name, IsGuest: !isAuthenticated, FinalScore: score, CompletedAt: new Date().toISOString().split('T')[0]});
+      // }
+      // logic for submitting with an id if the user is logged in
+  };
 
   return (
     <Card className="test-game">
@@ -109,7 +116,7 @@ function TestGame({ city }: { city: string }) {
           <div className="test-game__complete">
             <h3>Spelet är klart, {playerName}!</h3>
             <p>Destination: {city}</p>
-            <Button onClick={() => handleSubmitResult(playerName, currentScore)}>Spara resultat</Button>
+            <Button onClick={() => handleSubmitResult(playerName, currentScore, null)} disabled={resultSubmitted}>{resultSubmitted ? "Resultat sparat" : "Spara resultat"}</Button>
             <Button onClick={() => setGameProgress(0)}> Starta om spelet </Button>
           </div>
         )}
