@@ -212,7 +212,7 @@ namespace Backend.Migrations
                         {
                             ClueId = 14,
                             CityId = 3,
-                            ClueName = "Här finns Turning Torso och Västra Hamnen.",
+                            ClueName = "År 2024 stod staden värd för Eurovision Song Contest",
                             Point = 4m
                         },
                         new
@@ -254,14 +254,14 @@ namespace Backend.Migrations
                         {
                             ClueId = 20,
                             CityId = 4,
-                            ClueName = "Vi söker universitetsstaden norr om Stockholm med Gamla Uppsala i närheten.",
+                            ClueName = "Vi söker universitetsstaden norr om Stockholm.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 21,
                             CityId = 5,
-                            ClueName = "Vi reser till en stad där industrihistoria möter en stor insjö.",
+                            ClueName = "Här finns både gravhögen Anundshög och det obskyra lilla Utter Inn",
                             Point = 10m
                         },
                         new
@@ -275,28 +275,28 @@ namespace Backend.Migrations
                         {
                             ClueId = 23,
                             CityId = 5,
-                            ClueName = "Här finns gravhögen Anundshög.",
+                            ClueName = "I staden ligger Erik XIV begravd, i en för kort sarkofag, varför hans fötter fick huggas av",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 24,
                             CityId = 5,
-                            ClueName = "Staden ligger vid Mälaren och har gett namn åt Västeråsgurkan.",
+                            ClueName = "Staden har en vänskaplig rivalitet med Örebro",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 25,
                             CityId = 5,
-                            ClueName = "Vi söker staden som ofta kallas Gurkstaden.",
+                            ClueName = "Vi söker staden som ofta kallas Gurkstaden, eller pulverstaden.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 26,
                             CityId = 6,
-                            ClueName = "Vår resa går till en stad i landskapet Närke.",
+                            ClueName = "Vår resa går till en stad mitt i det så kallade gnällbätet.",
                             Point = 10m
                         },
                         new
@@ -317,56 +317,56 @@ namespace Backend.Migrations
                         {
                             ClueId = 29,
                             CityId = 6,
-                            ClueName = "Mitt i staden ligger ett slott på en ö, och vattentornet kallas Svampen.",
+                            ClueName = "Mitt i staden ligger ett slott på en ö.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 30,
                             CityId = 6,
-                            ClueName = "Vi söker staden med Örebro slott.",
+                            ClueName = "Staden hyser besöksmålet Wadköping",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 31,
                             CityId = 7,
-                            ClueName = "Vi reser till en stad där flyghistoria och universitetsliv möts.",
+                            ClueName = "Vi reser till en universitetsstad i sydöstra Sverige.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 32,
                             CityId = 7,
-                            ClueName = "Staden ligger i Östergötland.",
+                            ClueName = "Staden är känd för ett stort konvent tillägnat Japansk kultur.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 33,
                             CityId = 7,
-                            ClueName = "I närliggande Malmslätt finns Flygvapenmuseum.",
+                            ClueName = "I luften över staden flyger tidvis Gripar, men Drakarna är sedan länge borta.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 34,
                             CityId = 7,
-                            ClueName = "Här finns friluftsmuseet Gamla Linköping och Stångån.",
+                            ClueName = "Staden huserar den näst största kyrkan i Sverige.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 35,
                             CityId = 7,
-                            ClueName = "Vi söker staden som förknippas med Saab och flygplanet Gripen.",
+                            ClueName = "Staden slogan är den klämchecka ''Där ideér blir verklighet''.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 36,
                             CityId = 8,
-                            ClueName = "Vi reser till en stad där avståndet till Danmark är kort.",
+                            ClueName = "Vi reser till en stad vid vattnet i Södra Sverige.",
                             Point = 10m
                         },
                         new
@@ -380,28 +380,28 @@ namespace Backend.Migrations
                         {
                             ClueId = 38,
                             CityId = 8,
-                            ClueName = "Från staden går färjor till Helsingör.",
+                            ClueName = "Från staden går färjor till Danmark.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 39,
                             CityId = 8,
-                            ClueName = "Det medeltida tornet Kärnan blickar ut över Öresund.",
+                            ClueName = "Det medeltida tornet Kärnan ligger i staden.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 40,
                             CityId = 8,
-                            ClueName = "Vi söker den skånska staden mitt emot Helsingör.",
+                            ClueName = "Staden kallas ibland för ''Sundets Pärla''",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 41,
                             CityId = 9,
-                            ClueName = "Vi reser till en stad i norra Sverige med ett rikt kulturliv.",
+                            ClueName = "Vi reser till en stad i norra Sverige, iblan kallad ''Norra Sveriges Huvudstad''.",
                             Point = 10m
                         },
                         new
@@ -422,14 +422,14 @@ namespace Backend.Migrations
                         {
                             ClueId = 44,
                             CityId = 9,
-                            ClueName = "Umeälven rinner genom staden, som kallas Björkarnas stad.",
+                            ClueName = "I staden finns ett univeristet.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 45,
                             CityId = 9,
-                            ClueName = "Vi söker universitetsstaden Umeå.",
+                            ClueName = "Staden kallas ibland för ''Nordens Kulturhuvudstad''",
                             Point = 2m
                         },
                         new
@@ -457,14 +457,14 @@ namespace Backend.Migrations
                         {
                             ClueId = 49,
                             CityId = 10,
-                            ClueName = "Här finns friluftsmuseet Kulturen och studenternas nationsliv.",
+                            ClueName = "Friluftsmuseet Kulturen finns i denna stad.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 50,
                             CityId = 10,
-                            ClueName = "Vi söker universitetsstaden Lund, nära Malmö.",
+                            ClueName = "Staden är en av Sveriges äldsta, och grundades år 990.",
                             Point = 2m
                         });
                 });
@@ -604,84 +604,84 @@ namespace Backend.Migrations
                         {
                             OptionId = 9,
                             IsCorrect = false,
-                            OptionText = "Gröna Lund",
+                            OptionText = "Göran",
                             QuestionId = 3
                         },
                         new
                         {
                             OptionId = 10,
                             IsCorrect = false,
-                            OptionText = "Furuvik",
+                            OptionText = "Sven",
                             QuestionId = 3
                         },
                         new
                         {
                             OptionId = 11,
                             IsCorrect = true,
-                            OptionText = "Liseberg",
+                            OptionText = "Glenn",
                             QuestionId = 3
                         },
                         new
                         {
                             OptionId = 12,
                             IsCorrect = false,
-                            OptionText = "Skara Sommarland",
+                            OptionText = "Gösta",
                             QuestionId = 3
                         },
                         new
                         {
                             OptionId = 13,
                             IsCorrect = false,
-                            OptionText = "Dalälven",
+                            OptionText = "Turning Torso",
                             QuestionId = 4
                         },
                         new
                         {
                             OptionId = 14,
                             IsCorrect = false,
-                            OptionText = "Umeälven",
+                            OptionText = "Mässan",
                             QuestionId = 4
                         },
                         new
                         {
                             OptionId = 15,
                             IsCorrect = false,
-                            OptionText = "Torne älv",
+                            OptionText = "Göta Älvsskrapan",
                             QuestionId = 4
                         },
                         new
                         {
                             OptionId = 16,
                             IsCorrect = true,
-                            OptionText = "Göta älv",
+                            OptionText = "Läppstiftet",
                             QuestionId = 4
                         },
                         new
                         {
                             OptionId = 17,
                             IsCorrect = true,
-                            OptionText = "Turning Torso",
+                            OptionText = "2005",
                             QuestionId = 5
                         },
                         new
                         {
                             OptionId = 18,
                             IsCorrect = false,
-                            OptionText = "Kaknästornet",
+                            OptionText = "1999",
                             QuestionId = 5
                         },
                         new
                         {
                             OptionId = 19,
                             IsCorrect = false,
-                            OptionText = "Karlatornet",
+                            OptionText = "2003",
                             QuestionId = 5
                         },
                         new
                         {
                             OptionId = 20,
                             IsCorrect = false,
-                            OptionText = "Kista Science Tower",
+                            OptionText = "2006",
                             QuestionId = 5
                         },
                         new
@@ -716,112 +716,112 @@ namespace Backend.Migrations
                         {
                             OptionId = 25,
                             IsCorrect = false,
-                            OptionText = "Svartån",
+                            OptionText = "Uppsala",
                             QuestionId = 7
                         },
                         new
                         {
                             OptionId = 26,
                             IsCorrect = false,
-                            OptionText = "Stångån",
+                            OptionText = "Skellefteå",
                             QuestionId = 7
                         },
                         new
                         {
                             OptionId = 27,
                             IsCorrect = true,
-                            OptionText = "Fyrisån",
+                            OptionText = "Visby",
                             QuestionId = 7
                         },
                         new
                         {
                             OptionId = 28,
                             IsCorrect = false,
-                            OptionText = "Motala ström",
+                            OptionText = "Skövde",
                             QuestionId = 7
                         },
                         new
                         {
                             OptionId = 29,
                             IsCorrect = false,
-                            OptionText = "Alfred Nobel",
+                            OptionText = "Luffar-Lasse",
                             QuestionId = 8
                         },
                         new
                         {
                             OptionId = 30,
                             IsCorrect = false,
-                            OptionText = "Anders Celsius",
+                            OptionText = "Katten Gustaf",
                             QuestionId = 8
                         },
                         new
                         {
                             OptionId = 31,
                             IsCorrect = false,
-                            OptionText = "Gustaf Dalén",
+                            OptionText = "Tom från Tom och Jerry",
                             QuestionId = 8
                         },
                         new
                         {
                             OptionId = 32,
                             IsCorrect = true,
-                            OptionText = "Carl von Linné",
+                            OptionText = "Pelle Svanslös",
                             QuestionId = 8
                         },
                         new
                         {
                             OptionId = 33,
                             IsCorrect = true,
-                            OptionText = "Mälaren",
+                            OptionText = "ICA",
                             QuestionId = 9
                         },
                         new
                         {
                             OptionId = 34,
                             IsCorrect = false,
-                            OptionText = "Vänern",
+                            OptionText = "COOP",
                             QuestionId = 9
                         },
                         new
                         {
                             OptionId = 35,
                             IsCorrect = false,
-                            OptionText = "Vättern",
+                            OptionText = "WILLYs",
                             QuestionId = 9
                         },
                         new
                         {
                             OptionId = 36,
                             IsCorrect = false,
-                            OptionText = "Hjälmaren",
+                            OptionText = "Hemköp",
                             QuestionId = 9
                         },
                         new
                         {
                             OptionId = 37,
                             IsCorrect = false,
-                            OptionText = "Hågahögen",
+                            OptionText = "1637",
                             QuestionId = 10
                         },
                         new
                         {
                             OptionId = 38,
                             IsCorrect = true,
-                            OptionText = "Anundshög",
+                            OptionText = "1623",
                             QuestionId = 10
                         },
                         new
                         {
                             OptionId = 39,
                             IsCorrect = false,
-                            OptionText = "Inglingehög",
+                            OptionText = "1723",
                             QuestionId = 10
                         },
                         new
                         {
                             OptionId = 40,
                             IsCorrect = false,
-                            OptionText = "Kung Björns hög",
+                            OptionText = "1758",
                             QuestionId = 10
                         },
                         new
@@ -912,56 +912,56 @@ namespace Backend.Migrations
                         {
                             OptionId = 53,
                             IsCorrect = false,
-                            OptionText = "Vasamuseet",
+                            OptionText = "Europe",
                             QuestionId = 14
                         },
                         new
                         {
                             OptionId = 54,
                             IsCorrect = true,
-                            OptionText = "Flygvapenmuseum",
+                            OptionText = "Ghost",
                             QuestionId = 14
                         },
                         new
                         {
                             OptionId = 55,
                             IsCorrect = false,
-                            OptionText = "Järnvägsmuseet",
+                            OptionText = "The Cardigans",
                             QuestionId = 14
                         },
                         new
                         {
                             OptionId = 56,
                             IsCorrect = false,
-                            OptionText = "Marinmuseum",
+                            OptionText = "Sabaton",
                             QuestionId = 14
                         },
                         new
                         {
                             OptionId = 57,
                             IsCorrect = false,
-                            OptionText = "Kaknästornet",
+                            OptionText = "Gevalia",
                             QuestionId = 15
                         },
                         new
                         {
                             OptionId = 58,
                             IsCorrect = false,
-                            OptionText = "Svampen",
+                            OptionText = "Nescafe",
                             QuestionId = 15
                         },
                         new
                         {
                             OptionId = 59,
                             IsCorrect = true,
-                            OptionText = "Kärnan",
+                            OptionText = "Zoégas",
                             QuestionId = 15
                         },
                         new
                         {
                             OptionId = 60,
                             IsCorrect = false,
-                            OptionText = "Jungfrutornet",
+                            OptionText = "Löfbergs",
                             QuestionId = 15
                         },
                         new
@@ -1052,56 +1052,56 @@ namespace Backend.Migrations
                         {
                             OptionId = 73,
                             IsCorrect = false,
-                            OptionText = "1477",
+                            OptionText = "Akademisk timme",
                             QuestionId = 19
                         },
                         new
                         {
                             OptionId = 74,
                             IsCorrect = false,
-                            OptionText = "1621",
+                            OptionText = "Akademisk halvtimme",
                             QuestionId = 19
                         },
                         new
                         {
                             OptionId = 75,
                             IsCorrect = true,
-                            OptionText = "1666",
+                            OptionText = "Akademisk kvart",
                             QuestionId = 19
                         },
                         new
                         {
                             OptionId = 76,
                             IsCorrect = false,
-                            OptionText = "1810",
+                            OptionText = "Akademisk minut",
                             QuestionId = 19
                         },
                         new
                         {
                             OptionId = 77,
                             IsCorrect = false,
-                            OptionText = "Skansen",
+                            OptionText = "Lundin",
                             QuestionId = 20
                         },
                         new
                         {
                             OptionId = 78,
                             IsCorrect = false,
-                            OptionText = "Gamla Linköping",
+                            OptionText = "Lundapåg",
                             QuestionId = 20
                         },
                         new
                         {
                             OptionId = 79,
                             IsCorrect = false,
-                            OptionText = "Wadköping",
+                            OptionText = "Lundare",
                             QuestionId = 20
                         },
                         new
                         {
                             OptionId = 80,
                             IsCorrect = true,
-                            OptionText = "Kulturen",
+                            OptionText = "Lundensare",
                             QuestionId = 20
                         });
                 });
@@ -1132,7 +1132,7 @@ namespace Backend.Migrations
                         {
                             QuestionId = 1,
                             CityId = 1,
-                            QuestionText = "Vad heter museet som visar krigsskeppet Vasa?"
+                            QuestionText = "Vad heter museet som visar upp ett gammalt krigsskepp, namgett efter en känd Svensk kung"
                         },
                         new
                         {
@@ -1144,19 +1144,19 @@ namespace Backend.Migrations
                         {
                             QuestionId = 3,
                             CityId = 2,
-                            QuestionText = "Vilken nöjespark ligger i Göteborg?"
+                            QuestionText = "Vad heter alla i Göteborg, enligt den humoristiska sången?"
                         },
                         new
                         {
                             QuestionId = 4,
                             CityId = 2,
-                            QuestionText = "Vilken älv rinner genom Göteborg?"
+                            QuestionText = "Vad kallas det ikoniska rödvita höghuset i Göteborg?"
                         },
                         new
                         {
                             QuestionId = 5,
                             CityId = 3,
-                            QuestionText = "Vad heter den vridna skyskrapan i Malmö?"
+                            QuestionText = "När invigdes den vridna skyskrapan Turning Torso?"
                         },
                         new
                         {
@@ -1168,25 +1168,25 @@ namespace Backend.Migrations
                         {
                             QuestionId = 7,
                             CityId = 4,
-                            QuestionText = "Vilken å rinner genom Uppsala?"
+                            QuestionText = "Vart pluggar spelutvecklarstudenter och antikvariestudenter vid Uppsala Universitet?"
                         },
                         new
                         {
                             QuestionId = 8,
                             CityId = 4,
-                            QuestionText = "Vilken botaniker förknippas med Uppsala?"
+                            QuestionText = "Vilken känd, fiktiv, katt förknippas med Uppsala?"
                         },
                         new
                         {
                             QuestionId = 9,
                             CityId = 5,
-                            QuestionText = "Vid vilken sjö ligger Västerås?"
+                            QuestionText = "Vilken matvarujätte grundades i Västerås?"
                         },
                         new
                         {
                             QuestionId = 10,
                             CityId = 5,
-                            QuestionText = "Vad heter den stora gravhögen i Västerås?"
+                            QuestionText = "Sveriges första gymnasie grundades i Västerås, när?"
                         },
                         new
                         {
@@ -1210,13 +1210,13 @@ namespace Backend.Migrations
                         {
                             QuestionId = 14,
                             CityId = 7,
-                            QuestionText = "Vilket museum ligger i Malmslätt nära Linköping?"
+                            QuestionText = "Vilket känt rockband kommer från Linköping?"
                         },
                         new
                         {
                             QuestionId = 15,
                             CityId = 8,
-                            QuestionText = "Vad heter det medeltida tornet i Helsingborg?"
+                            QuestionText = "Vilket kaffemärke kommer från Helsingborg?"
                         },
                         new
                         {
@@ -1234,19 +1234,19 @@ namespace Backend.Migrations
                         {
                             QuestionId = 18,
                             CityId = 9,
-                            QuestionText = "Vilken älv rinner genom Umeå?"
+                            QuestionText = "Vad heter den älv som rinner genom Umeå?"
                         },
                         new
                         {
                             QuestionId = 19,
                             CityId = 10,
-                            QuestionText = "Vilket år grundades Lunds universitet?"
+                            QuestionText = "Vilken tradition uppstod på Lunds universitet som lösning på studenternas oförmåga att hålla tiden"
                         },
                         new
                         {
                             QuestionId = 20,
                             CityId = 10,
-                            QuestionText = "Vad heter friluftsmuseet i Lund?"
+                            QuestionText = "Vad kallas en person kommer från Lund?"
                         });
                 });
 
