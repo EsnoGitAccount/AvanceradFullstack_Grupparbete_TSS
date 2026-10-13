@@ -18,6 +18,7 @@ namespace Backend.Data
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Game> Games { get; set; } = null!;
         public DbSet<Option> Options { get; set; } = null!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +57,26 @@ namespace Backend.Data
             modelBuilder.Entity<Clue>()
                 .Property(c => c.Point)
                 .HasPrecision(5, 2);
+
+            // Configure RefreshToken entity
+            var refreshToken = modelBuilder.Entity<RefreshToken>();
+
+            refreshToken
+                .HasOne(rt => rt.User)
+                .WithMany()
+                .HasForeignKey(rt => rt.UserId);
+
+            refreshToken
+                .Property(rt => rt.TokenHash)
+                .HasMaxLength(64)
+                .IsRequired();
+
+            refreshToken
+                .HasIndex(rt => rt.TokenHash)
+                .IsUnique();
+
+            refreshToken
+                .HasIndex(rt => rt.SessionId);
 
             DatabaseSeed.Seed(modelBuilder);
 
