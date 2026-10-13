@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import { get400Error } from "../../services/ErrorService"
+import { useState } from "react"
+import { get400Error, get404Error, get500Error } from "../../services/ErrorService"
 import axios from "axios";
 import { Button } from "../../components/ui/Button.tsx";
 
@@ -13,8 +13,6 @@ export default function ErrorTestPage(){
                 ...previousErrors,
                 response,
             ]);
-
-            console.log("Vi har hämtat utan fel")
         }
         catch(error: unknown){
             const message = axios.isAxiosError(error)
@@ -25,20 +23,50 @@ export default function ErrorTestPage(){
                 ...previousErrors,
                 message
             ])
+        }
 
-            console.log("Vi är i catch")
+        try{
+            const response = await get404Error();
+            setErrors((previousErrors) => [
+                ...previousErrors,
+                response,
+            ]);
+        }
+        catch(error: unknown){
+            const message = axios.isAxiosError(error)
+            ? error.message
+            : "Det var ett fel men meddelandet kunde inte läsas"
+
+            setErrors((previousErrors) => [
+                ...previousErrors,
+                message
+            ])
+        }
+
+        try{
+            const response = await get500Error();
+            setErrors((previousErrors) => [
+                ...previousErrors,
+                response,
+            ]);
+        }
+        catch(error: unknown){
+            const message = axios.isAxiosError(error)
+            ? error.message
+            : "Det var ett fel men meddelandet kunde inte läsas"
+
+            setErrors((previousErrors) => [
+                ...previousErrors,
+                message
+            ])
         }
     }
-
-    // useEffect (() => {
-    //     tryErrors();
-    // }, [])
 
     return(
         <>
             {errors.length == 0 && <div>Det finns inga fel</div> }
             {errors.map((error) =>(
-                <p>Test result: {error}</p>
+                <p key={error}>Test result: {error}</p>
             ))}
 
             <Button onClick={() => {setErrors([]); console.log("Tryck på knapp"); tryErrors();}}>Test again</Button>

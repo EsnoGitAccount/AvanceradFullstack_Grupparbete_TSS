@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers
 {
     [ApiController]
-    [Route("api/errortest/[controller]")]
+    [Route("api/[controller]")]
     public class ErrorTestControllers : ControllerBase
     {
         [HttpGet("400")]

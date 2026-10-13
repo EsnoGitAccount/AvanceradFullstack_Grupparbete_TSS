@@ -9,10 +9,10 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         const status = error.response?.status;
-        const detail = error.respose?.status;
+        const detail = error.response?.data.detail;
 
         if(status === 400){
-            error.message
+            error.message =
                 detail || "Kunde inte hantera förfrågan."
         }
 
