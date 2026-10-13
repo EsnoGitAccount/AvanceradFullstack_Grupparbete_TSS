@@ -1,10 +1,5 @@
-import axios from "axios";
+import api from './api';
 import type { GameResult } from '@/models/GameResult'
-
-const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL,
-    withCredentials: true,
-});
 
 export const submitGameResult  = async (playerResult: GameResult) => {
     try {
