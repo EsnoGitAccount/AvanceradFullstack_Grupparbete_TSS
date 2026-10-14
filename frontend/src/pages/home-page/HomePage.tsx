@@ -3,7 +3,6 @@ import SiteFooter from '@/components/site-footer/SiteFooter'
 import SiteHeader from '@/components/site-header/SiteHeader'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
-
 import './HomePage.css'
 
 function HomePage() {
@@ -21,7 +20,7 @@ function HomePage() {
                 Vi lovar att det inte är en "på spåret" kopia
               </h1>
               <p className="home-page__description">
-                Tänk er GeoGuesser + vem vill bli miljonär + På spåret. 
+                Tänk er GeoGuesser + vem vill bli miljonär + På spåret.
                 Kan inte bli annat än toppen!
               </p>
               <div className="home-page__hero-actions">
