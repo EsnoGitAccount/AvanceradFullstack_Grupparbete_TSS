@@ -16,7 +16,7 @@ namespace Backend.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Upload(IFormFile file)
+		public async Task<IActionResult> UploadImage(IFormFile file)
 		{
 			var blobName = await _blobStorageService.UploadFileAsync(file);
 
@@ -24,7 +24,7 @@ namespace Backend.Controllers
 		}
 
 		[HttpGet("{blobName}")]
-		public async Task<IActionResult> Get(
+		public async Task<IActionResult> GetImage(
 		string blobName)
 		{
 			var image = await _blobStorageService.DownloadAsync(blobName);
@@ -34,7 +34,7 @@ namespace Backend.Controllers
 		}
 
 		[HttpDelete("{blobName}")]
-		public async Task<IActionResult> Delete(string blobName)
+		public async Task<IActionResult> DeleteImage(string blobName)
 		{
 			await _blobStorageService.DeleteBlobAsync(blobName);
 			return NoContent();
