@@ -15,7 +15,6 @@ namespace Backend.Data
         public DbSet<Clue> Clues { get; set; } = null!;
         public DbSet<Question> Questions { get; set; } = null!;
         public DbSet<DailyChallange> DailyChallanges { get; set; } = null!;
-        public DbSet<User> Users { get; set; } = null!;
         public DbSet<Game> Games { get; set; } = null!;
         public DbSet<Option> Options { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;

@@ -28,20 +28,25 @@ namespace Backend
              options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
-      //Blob
-			services.AddOptions<BlobStorageOptions>()
-				.BindConfiguration("AzureBlobStorage");
+            // Blob storage
+            services.AddOptions<BlobStorageOptions>()
+                .BindConfiguration("AzureBlobStorage");
 
-			// Identity
-			services.AddIdentity<User, IdentityRole<int>>()
+            // Identity
+            services.AddIdentity<User, IdentityRole<int>>()
               .AddEntityFrameworkStores<WhereAreWeDbContext>()
               .AddDefaultTokenProviders();
 
             // Repositories
-            services.AddScoped<ICityReposistory, CityRepository>();
+            services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-            //Cors
+            services.AddScoped<IDailyChallengeRepository, DailyChallengeRepository>();
+
+            // Blob storage service
+            services.AddSingleton<IBlobStorageService, BlobStorageService>();
+
+            // CORS
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "LocalConnection",
@@ -55,14 +60,10 @@ namespace Backend
                 );
             });
 
-			      // Repositories
-			      services.AddScoped<ICityRepository, CityRepository>();
-			      services.AddSingleton<IBlobStorageService, BlobStorageService>();
-			      services.AddScoped<IGameRepository, GameRepository>();
-
             // Services
-			      services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ICityService, CityService>();
             services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IDailyChallengeService, DailyChallengeService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
 
