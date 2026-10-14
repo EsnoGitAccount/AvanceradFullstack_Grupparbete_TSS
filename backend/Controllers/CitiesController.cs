@@ -24,6 +24,6 @@ namespace Backend.Controllers
             return Ok(cities);
         }
 
-        
+
     }
 }
