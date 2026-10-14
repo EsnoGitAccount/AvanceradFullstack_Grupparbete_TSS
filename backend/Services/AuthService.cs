@@ -171,7 +171,6 @@ namespace Backend.Services
 
             return new UserDto
             {
-                Id = user.Id,
                 Username = user.UserName ?? string.Empty,
                 Email = user.Email ?? string.Empty,
                 Roles = [.. roles]
