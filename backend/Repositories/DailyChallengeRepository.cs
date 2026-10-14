@@ -17,6 +17,11 @@ namespace Backend.Repositories
         public async Task<DailyChallange?> GetChallengeForDate(DateOnly date)
         {
             var challenge = await _context.DailyChallanges
+                .Include(dc => dc.City)
+                    .ThenInclude(city => city.Clues)
+                .Include(dc => dc.City)
+                    .ThenInclude(city => city.Questions)
+                        .ThenInclude(question => question.Options)
                 .FirstOrDefaultAsync(c => c.ChallangeDate == date);
 
             return challenge;

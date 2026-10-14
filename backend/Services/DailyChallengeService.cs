@@ -27,11 +27,17 @@ namespace Backend.Services
                         CityName = challenge.City.Name,
                         Clues = challenge.City.Clues.Select(c => new ClueDto
                         {
-                            ClueText = c.ClueText
+                            ClueText = c.ClueText,
+                            PointValue = c.Point
                         }).ToList(),
                         Questions = challenge.City.Questions.Select(q => new QuestionDto
                         {
-                            QuestionText = q.QuestionText
+                            QuestionText = q.QuestionText,
+                            Options = q.Options.Select(o => new OptionDto
+                            {
+                                OptionText = o.OptionText,
+                                IsCorrect = o.IsCorrect
+                            }).ToList()
                         }).ToList()
                     },
                     ChallangeDate = challenge.ChallangeDate
@@ -44,7 +50,16 @@ namespace Backend.Services
                 var amountCities = await _cityService.GetCityCountAsync();
                 var newChallenge = await _dailyChallengeRepository.CreateDailyChallenge(date, 1); // Replace 1 with the actual city ID
 
-                throw new NotImplementedException();
+                return new DailyChallangeDto
+                {
+                    CityDetails = new CityDetailsDto
+                    {
+                        CityName = "Teststad",
+                        Clues = new List<ClueDto>(),
+                        Questions = new List<QuestionDto>(),
+                    },
+                    ChallangeDate = date
+                };
             }
         }
     }

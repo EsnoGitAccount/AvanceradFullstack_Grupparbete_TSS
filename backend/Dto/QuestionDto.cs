@@ -3,6 +3,6 @@
     public class QuestionDto
     {
         public string QuestionText { get; set; } = string.Empty;
-        public List<OptionDto> Options { get; set; } = [];
+        public List<OptionDto> Options { get; set; } = new List<OptionDto>();
     }
 }
