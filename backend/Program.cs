@@ -10,13 +10,7 @@ namespace Backend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddInfrastructureServices(
-                builder.Configuration);
-
-            // WithViews krävs för ValidateAntiForgeryToken.
-            builder.Services.AddControllersWithViews();
-            builder.Services.AddProblemDetails();
-            builder.Services.AddOpenApi();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
 
             var app = builder.Build();
 
@@ -24,15 +18,11 @@ namespace Backend
             {
                 using var scope = app.Services.CreateScope();
 
-                await IdentitySeed.SeedAsync(
-                    scope.ServiceProvider,
-                    app.Configuration);
+                await IdentitySeed.SeedAsync(scope.ServiceProvider, app.Configuration);
 
                 app.MapOpenApi();
                 app.MapScalarApiReference();
-                app.MapGet(
-                    "/",
-                    () => Results.Redirect("/scalar"));
+                app.MapGet("/", () => Results.Redirect("/scalar"));
             }
 
             app.UseHttpsRedirection();

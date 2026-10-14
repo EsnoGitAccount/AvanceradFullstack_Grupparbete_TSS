@@ -60,7 +60,12 @@ namespace Backend
                 );
             });
 
-            // Services
+            // ASP.NET Core services
+            services.AddControllersWithViews();
+            services.AddProblemDetails();
+            services.AddOpenApi();
+
+            // Application services
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IDailyChallengeService, DailyChallengeService>();
