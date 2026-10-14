@@ -15,7 +15,7 @@ namespace Backend.Tests.Services
         public async Task GivenGetAllCities_ReturnsListOfCities()
         {
             // Arrange
-            var mockRepo = new Mock<ICityReposistory>();
+            var mockRepo = new Mock<ICityRepository>();
             var expectedCities = new List<City>
             {
                 new City { CityId = 1, Name = "City1" },

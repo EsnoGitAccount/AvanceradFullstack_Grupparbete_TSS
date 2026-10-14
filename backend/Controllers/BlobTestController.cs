@@ -20,11 +20,7 @@ namespace Backend.Controllers
 		}
 
 
-		[HttpPost]
-		public async Task<IActionResult> CreateCity(PersonDto personToCreate)
-		{
-
-		}
+	
 
 
 
