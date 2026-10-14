@@ -46,6 +46,8 @@ namespace Backend.Services
 
                 var amountCities = await _cityService.GetCityCountAsync();
                 var newChallenge = await _dailyChallengeRepository.CreateDailyChallenge(date, 1); // Replace 1 with the actual city ID
+
+                throw new NotImplementedException();
             }
         }
     }
