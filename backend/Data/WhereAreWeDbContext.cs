@@ -25,23 +25,29 @@ namespace Backend.Data
 
             modelBuilder.Entity<Clue>()
                 .HasOne(c => c.City)
-                .WithMany()
+                .WithMany(c => c.Clues)
                 .HasForeignKey(c => c.CityId);
 
             modelBuilder.Entity<Question>()
                 .HasOne(q => q.City)
-                .WithMany()
+                .WithMany(c => c.Questions)
                 .HasForeignKey(q => q.CityId);
 
             modelBuilder.Entity<Option>()
                 .HasOne(o => o.Question)
-                .WithMany()
+                .WithMany(q => q.Options)
                 .HasForeignKey(o => o.QuestionId);
 
             modelBuilder.Entity<DailyChallange>()
                 .HasOne(dc => dc.City)
                 .WithMany()
                 .HasForeignKey(dc => dc.CityId);
+
+            modelBuilder.Entity<DailyChallange>()
+                .Property(dc => dc.ChallangeDate)
+                .HasConversion(
+                    d => DateTime.SpecifyKind(d.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc),
+                    dt => DateOnly.FromDateTime(DateTime.SpecifyKind(dt, DateTimeKind.Utc).ToUniversalTime()));
 
             modelBuilder.Entity<Game>()
                 .HasOne(g => g.User)

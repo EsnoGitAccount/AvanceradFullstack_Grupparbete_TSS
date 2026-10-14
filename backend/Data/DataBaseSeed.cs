@@ -21,10 +21,7 @@ namespace Backend.Data
                 new City { CityId = 9, Name = "Umeå" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
                 new City { CityId = 10, Name = "Lund" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" }
             );
-
-            // DAGENS UTMANING, skräpdata, deletea när challenge kan randomiseras
-
-          
+ 
 
             // FRÅGOR: TVÅ PER STAD
 
