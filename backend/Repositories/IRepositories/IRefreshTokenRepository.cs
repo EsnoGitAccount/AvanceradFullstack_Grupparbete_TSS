@@ -4,12 +4,12 @@ namespace Backend.Repositories.IRepositories
 {
     public interface IRefreshTokenRepository
     {
-        Task AddAsync(RefreshToken refreshToken);
+        Task AddRefreshTokenAsync(RefreshToken refreshToken);
 
-        Task<RefreshToken?> GetByTokenHashAsync(string tokenHash);
+        Task<RefreshToken?> GetRefreshTokenByHashAsync(string tokenHash);
 
         Task RevokeSessionAsync(Guid sessionId);
 
-        Task<bool> RotateAsync(RefreshToken currentToken, RefreshToken replacementToken);
+        Task<bool> RotateRefreshTokenAsync(RefreshToken currentToken, RefreshToken replacementToken);
     }
 }

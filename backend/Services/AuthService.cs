@@ -58,7 +58,7 @@ namespace Backend.Services
                 user,
                 DateTimeOffset.UtcNow.AddDays(_refreshTokenDays));
 
-            await _refreshTokenRepository.AddAsync(new RefreshToken
+            await _refreshTokenRepository.AddRefreshTokenAsync(new RefreshToken
             {
                 UserId = user.Id,
                 SessionId = Guid.NewGuid(),
@@ -78,7 +78,7 @@ namespace Backend.Services
 
             var tokenHash = _tokenService.HashRefreshToken(refreshToken);
 
-            var currentToken = await _refreshTokenRepository.GetByTokenHashAsync(tokenHash) ?? 
+            var currentToken = await _refreshTokenRepository.GetRefreshTokenByHashAsync(tokenHash) ?? 
                 throw new UnauthorizedException("Invalid refresh token.");
 
             if (currentToken.RevokedAt != null)
@@ -112,7 +112,7 @@ namespace Backend.Services
                 ExpiresAt = session.RefreshTokenExpiresAt
             };
 
-            var rotated = await _refreshTokenRepository.RotateAsync(currentToken, replacementToken);
+            var rotated = await _refreshTokenRepository.RotateRefreshTokenAsync(currentToken, replacementToken);
 
             if (!rotated)
             {
@@ -133,7 +133,7 @@ namespace Backend.Services
 
             var tokenHash = _tokenService.HashRefreshToken(refreshToken);
 
-            var storedToken = await _refreshTokenRepository.GetByTokenHashAsync(tokenHash);
+            var storedToken = await _refreshTokenRepository.GetRefreshTokenByHashAsync(tokenHash);
 
             if (storedToken != null)
             {

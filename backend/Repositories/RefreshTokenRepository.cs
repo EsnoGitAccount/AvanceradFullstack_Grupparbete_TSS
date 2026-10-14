@@ -15,7 +15,7 @@ namespace Backend.Repositories
         }
 
         // Add a new refresh token to the database
-        public async Task AddAsync(RefreshToken refreshToken)
+        public async Task AddRefreshTokenAsync(RefreshToken refreshToken)
         {
             _context.RefreshTokens.Add(refreshToken);
 
@@ -23,7 +23,7 @@ namespace Backend.Repositories
         }
 
         // Get a refresh token by its token hash
-        public async Task<RefreshToken?> GetByTokenHashAsync(string tokenHash)
+        public async Task<RefreshToken?> GetRefreshTokenByHashAsync(string tokenHash)
         {
             return await _context.RefreshTokens
                 .AsNoTracking()
@@ -44,7 +44,7 @@ namespace Backend.Repositories
         }
 
         // Rotate the current refresh token with a replacement token
-        public async Task<bool> RotateAsync(RefreshToken currentToken, RefreshToken replacementToken)
+        public async Task<bool> RotateRefreshTokenAsync(RefreshToken currentToken, RefreshToken replacementToken)
         {
             var strategy = _context.Database.CreateExecutionStrategy();
 
