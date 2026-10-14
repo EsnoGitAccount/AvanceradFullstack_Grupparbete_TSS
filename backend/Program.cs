@@ -40,10 +40,10 @@ namespace Backend
             // Behåll CORS-konfigurationen från master.
             app.UseCors("LocalConnection");
 
+            app.UseMiddleware<ExceptionMiddleware>();
+
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseMiddleware<ExceptionMiddleware>();
 
             app.MapControllers();
 
