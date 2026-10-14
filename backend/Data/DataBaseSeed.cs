@@ -10,32 +10,21 @@ namespace Backend.Data
             // STÄDER
 
             modelBuilder.Entity<City>().HasData(
-                new City { CityId = 1, Name = "Stockholm" },
-                new City { CityId = 2, Name = "Göteborg" },
-                new City { CityId = 3, Name = "Malmö" },
-                new City { CityId = 4, Name = "Uppsala" },
-                new City { CityId = 5, Name = "Västerås" },
-                new City { CityId = 6, Name = "Örebro" },
-                new City { CityId = 7, Name = "Linköping" },
-                new City { CityId = 8, Name = "Helsingborg" },
-                new City { CityId = 9, Name = "Umeå" },
-                new City { CityId = 10, Name = "Lund" }
+                new City { CityId = 1, Name = "Stockholm" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
+                new City { CityId = 2, Name = "Göteborg" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
+                new City { CityId = 3, Name = "Malmö" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
+                new City { CityId = 4, Name = "Uppsala" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
+                new City { CityId = 5, Name = "Västerås" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
+                new City { CityId = 6, Name = "Örebro" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
+                new City { CityId = 7, Name = "Linköping" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
+                new City { CityId = 8, Name = "Helsingborg" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
+                new City { CityId = 9, Name = "Umeå" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
+                new City { CityId = 10, Name = "Lund" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" }
             );
 
             // DAGENS UTMANING, skräpdata, deletea när challenge kan randomiseras
 
-            modelBuilder.Entity<DailyChallange>().HasData(
-                new DailyChallange { DailyChallangeId = 1, CityId = 1, ChallangeDate = new DateOnly(2024, 6, 1) },
-                new DailyChallange { DailyChallangeId = 2, CityId = 2, ChallangeDate = new DateOnly(2024, 6, 2) },
-                new DailyChallange { DailyChallangeId = 3, CityId = 3, ChallangeDate = new DateOnly(2024, 6, 3) },
-                new DailyChallange { DailyChallangeId = 4, CityId = 4, ChallangeDate = new DateOnly(2024, 6, 4) },
-                new DailyChallange { DailyChallangeId = 5, CityId = 5, ChallangeDate = new DateOnly(2024, 6, 5) },
-                new DailyChallange { DailyChallangeId = 6, CityId = 6, ChallangeDate = new DateOnly(2024, 6, 6) },
-                new DailyChallange { DailyChallangeId = 7, CityId = 7, ChallangeDate = new DateOnly(2024, 6, 7) },
-                new DailyChallange { DailyChallangeId = 8, CityId = 8, ChallangeDate = new DateOnly(2024, 6, 8) },
-                new DailyChallange { DailyChallangeId = 9, CityId = 9, ChallangeDate = new DateOnly(2024, 6, 9) },
-                new DailyChallange { DailyChallangeId = 10, CityId = 10, ChallangeDate = new DateOnly(2024, 6, 10) }
-            );
+          
 
             // FRÅGOR: TVÅ PER STAD
 

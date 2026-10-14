@@ -3,6 +3,7 @@ using Azure.Storage.Blobs.Models;
 using Backend.Exceptions;
 using Backend.Options;
 using Backend.Services.IServices;
+using Microsoft.Extensions.Options;
 
 namespace Backend.Services
 {
@@ -10,9 +11,9 @@ namespace Backend.Services
 	{
 		private readonly BlobStorageOptions _blobStorage;
 
-		public BlobStorageService(BlobStorageOptions blobStorage)
+		public BlobStorageService(IOptions<BlobStorageOptions> blobStorage)
 		{
-			_blobStorage = blobStorage;
+			_blobStorage = blobStorage.Value;
 		}
 
 		public async Task DeleteBlobAsync(string blobUrl)
