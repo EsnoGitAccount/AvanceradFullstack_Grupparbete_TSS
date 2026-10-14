@@ -112,6 +112,20 @@ namespace Backend
 
             services.AddAuthorization();
 
+            services.AddAntiforgery(options =>
+            {
+                // Header name can be whatever if we want something else, this is just standard
+                options.HeaderName = "X-XSRF-TOKEN";
+
+                var c = options.Cookie;
+
+                c.Name = "__Host-antiforgery";
+                c.HttpOnly = true;
+                c.SecurePolicy = CookieSecurePolicy.Always;
+                c.SameSite = SameSiteMode.Lax;
+                c.Path = "/";
+            });
+
 
             return services;
         }
