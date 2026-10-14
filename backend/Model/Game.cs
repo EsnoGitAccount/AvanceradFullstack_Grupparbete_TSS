@@ -3,7 +3,7 @@
     public class Game
     {
         public int GameId { get; set; }
-        public string? UserName { get; set; }
+        public string? UserName { get; set; } = "Guest";
         public int? UserId { get; set; }
         public User? User { get; set; } = null!;
         public int DailyChallangeId { get; set; }

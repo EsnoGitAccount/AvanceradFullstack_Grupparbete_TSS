@@ -27,7 +27,7 @@ namespace Backend.Controllers
                 Message = "Game data received successfully.",
                 Data = gameDto
             });
-            
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Backend.Model;
+﻿using Backend.Dto;
+using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Backend.Services.IServices;
 
@@ -16,6 +17,11 @@ namespace Backend.Services
         public async Task<List<City>> GetAllCitiesAsync()
         {
             return await _cityRepository.GetAllCitiesAsync();
+        }
+
+        public async Task<int> GetCityCountAsync()
+        {
+            return (await _cityRepository.GetAllCitiesAsync()).Count;
         }
     }
 }

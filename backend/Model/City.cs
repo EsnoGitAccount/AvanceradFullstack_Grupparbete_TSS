@@ -6,6 +6,10 @@ namespace Backend.Model
     {
         public int CityId { get; set; }
         public string Name { get; set; }
+
+        public List<Question> Questions { get; set; } = new List<Question>();
+        public List<Clue> Clues { get; set; } = new List<Clue>();
+
         //public Blob Picture { get; set; }
     }
 }

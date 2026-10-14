@@ -290,74 +290,74 @@ namespace Backend.Data
 
             modelBuilder.Entity<Clue>().HasData(
                 // Stockholm
-                new Clue { ClueId = 1, CityId = 1, Point = 10m, ClueName = "Vi reser till en stad mellan en stor insjö och Östersjön." },
-                new Clue { ClueId = 2, CityId = 1, Point = 8m, ClueName = "Här finns en kunglig bostad och byggnaden där Nobelbanketten hålls." },
-                new Clue { ClueId = 3, CityId = 1, Point = 6m, ClueName = "Ett välbevarat krigsskepp från 1600-talet finns på ett museum här." },
-                new Clue { ClueId = 4, CityId = 1, Point = 4m, ClueName = "Gamla stan och Djurgården är välkända delar av staden." },
-                new Clue { ClueId = 5, CityId = 1, Point = 2m, ClueName = "Vi söker Sveriges huvudstad." },
+                new Clue { ClueId = 1, CityId = 1, Point = 10m, ClueText = "Vi reser till en stad mellan en stor insjö och Östersjön." },
+                new Clue { ClueId = 2, CityId = 1, Point = 8m, ClueText = "Här finns en kunglig bostad och byggnaden där Nobelbanketten hålls." },
+                new Clue { ClueId = 3, CityId = 1, Point = 6m, ClueText = "Ett välbevarat krigsskepp från 1600-talet finns på ett museum här." },
+                new Clue { ClueId = 4, CityId = 1, Point = 4m, ClueText = "Gamla stan och Djurgården är välkända delar av staden." },
+                new Clue { ClueId = 5, CityId = 1, Point = 2m, ClueText = "Vi söker Sveriges huvudstad." },
 
                 // Göteborg
-                new Clue { ClueId = 6, CityId = 2, Point = 10m, ClueName = "Vi reser till en stad vid västkusten med en lång sjöfartshistoria." },
-                new Clue { ClueId = 7, CityId = 2, Point = 8m, ClueName = "Staden grundades av Gustav II Adolf år 1621." },
-                new Clue { ClueId = 8, CityId = 2, Point = 6m, ClueName = "Här finns Avenyn och Feskekörka." },
-                new Clue { ClueId = 9, CityId = 2, Point = 4m, ClueName = "Nöjesparken Liseberg ligger här." },
-                new Clue { ClueId = 10, CityId = 2, Point = 2m, ClueName = "Vi söker Sveriges näst största stad, vid Göta älvs mynning." },
+                new Clue { ClueId = 6, CityId = 2, Point = 10m, ClueText = "Vi reser till en stad vid västkusten med en lång sjöfartshistoria." },
+                new Clue { ClueId = 7, CityId = 2, Point = 8m, ClueText = "Staden grundades av Gustav II Adolf år 1621." },
+                new Clue { ClueId = 8, CityId = 2, Point = 6m, ClueText = "Här finns Avenyn och Feskekörka." },
+                new Clue { ClueId = 9, CityId = 2, Point = 4m, ClueText = "Nöjesparken Liseberg ligger här." },
+                new Clue { ClueId = 10, CityId = 2, Point = 2m, ClueText = "Vi söker Sveriges näst största stad, vid Göta älvs mynning." },
 
                 // Malmö
-                new Clue { ClueId = 11, CityId = 3, Point = 10m, ClueName = "Vi reser till en stad i ett landskap som länge tillhörde Danmark." },
-                new Clue { ClueId = 12, CityId = 3, Point = 8m, ClueName = "Här finns både ett gammalt slott och en vriden skyskrapa." },
-                new Clue { ClueId = 13, CityId = 3, Point = 6m, ClueName = "Staden har en broförbindelse över Öresund till Danmark." },
-                new Clue { ClueId = 14, CityId = 3, Point = 4m, ClueName = "År 2024 stod staden värd för Eurovision Song Contest" },
-                new Clue { ClueId = 15, CityId = 3, Point = 2m, ClueName = "Vi söker Skånes största stad." },
+                new Clue { ClueId = 11, CityId = 3, Point = 10m, ClueText = "Vi reser till en stad i ett landskap som länge tillhörde Danmark." },
+                new Clue { ClueId = 12, CityId = 3, Point = 8m, ClueText = "Här finns både ett gammalt slott och en vriden skyskrapa." },
+                new Clue { ClueId = 13, CityId = 3, Point = 6m, ClueText = "Staden har en broförbindelse över Öresund till Danmark." },
+                new Clue { ClueId = 14, CityId = 3, Point = 4m, ClueText = "År 2024 stod staden värd för Eurovision Song Contest" },
+                new Clue { ClueId = 15, CityId = 3, Point = 2m, ClueText = "Vi söker Skånes största stad." },
 
                 // Uppsala
-                new Clue { ClueId = 16, CityId = 4, Point = 10m, ClueName = "Vi reser till en stad där vetenskap och kyrkohistoria möts." },
-                new Clue { ClueId = 17, CityId = 4, Point = 8m, ClueName = "Carl von Linné bodde och arbetade här." },
-                new Clue { ClueId = 18, CityId = 4, Point = 6m, ClueName = "Stadens universitet grundades år 1477." },
-                new Clue { ClueId = 19, CityId = 4, Point = 4m, ClueName = "Fyrisån rinner genom staden, som har en stor domkyrka." },
-                new Clue { ClueId = 20, CityId = 4, Point = 2m, ClueName = "Vi söker universitetsstaden norr om Stockholm." },
+                new Clue { ClueId = 16, CityId = 4, Point = 10m, ClueText = "Vi reser till en stad där vetenskap och kyrkohistoria möts." },
+                new Clue { ClueId = 17, CityId = 4, Point = 8m, ClueText = "Carl von Linné bodde och arbetade här." },
+                new Clue { ClueId = 18, CityId = 4, Point = 6m, ClueText = "Stadens universitet grundades år 1477." },
+                new Clue { ClueId = 19, CityId = 4, Point = 4m, ClueText = "Fyrisån rinner genom staden, som har en stor domkyrka." },
+                new Clue { ClueId = 20, CityId = 4, Point = 2m, ClueText = "Vi söker universitetsstaden norr om Stockholm." },
 
                 // Västerås
-                new Clue { ClueId = 21, CityId = 5, Point = 10m, ClueName = "Här finns både gravhögen Anundshög och det obskyra lilla Utter Inn" },
-                new Clue { ClueId = 22, CityId = 5, Point = 8m, ClueName = "Staden har en lång historia inom svensk elektroteknisk industri." },
-                new Clue { ClueId = 23, CityId = 5, Point = 6m, ClueName = "I staden ligger Erik XIV begravd, i en för kort sarkofag, varför hans fötter fick huggas av" },
-                new Clue { ClueId = 24, CityId = 5, Point = 4m, ClueName = "Staden har en vänskaplig rivalitet med Örebro" },
-                new Clue { ClueId = 25, CityId = 5, Point = 2m, ClueName = "Vi söker staden som ofta kallas Gurkstaden, eller pulverstaden." },
+                new Clue { ClueId = 21, CityId = 5, Point = 10m, ClueText = "Här finns både gravhögen Anundshög och det obskyra lilla Utter Inn." },
+                new Clue { ClueId = 22, CityId = 5, Point = 8m, ClueText = "Staden har en lång historia inom svensk elektroteknisk industri." },
+                new Clue { ClueId = 23, CityId = 5, Point = 6m, ClueText = "I staden ligger Erik XIV begravd, i en för kort sarkofag, varför hans fötter fick huggas av." },
+                new Clue { ClueId = 24, CityId = 5, Point = 4m, ClueText = "Staden har en vänskaplig rivalitet med Örebro." },
+                new Clue { ClueId = 25, CityId = 5, Point = 2m, ClueText = "Vi söker staden som ofta kallas Gurkstaden." },
 
                 // Örebro
-                new Clue { ClueId = 26, CityId = 6, Point = 10m, ClueName = "Vår resa går till en stad mitt i det så kallade gnällbätet." },
-                new Clue { ClueId = 27, CityId = 6, Point = 8m, ClueName = "Här finns ett välkänt vattentorn som också är ett besöksmål." },
-                new Clue { ClueId = 28, CityId = 6, Point = 6m, ClueName = "Svartån rinner genom stadens centrum." },
-                new Clue { ClueId = 29, CityId = 6, Point = 4m, ClueName = "Mitt i staden ligger ett slott på en ö." },
-                new Clue { ClueId = 30, CityId = 6, Point = 2m, ClueName = "Staden hyser besöksmålet Wadköping" },
+                new Clue { ClueId = 26, CityId = 6, Point = 10m, ClueText = "Vår resa går till en stad i landskapet Närke." },
+                new Clue { ClueId = 27, CityId = 6, Point = 8m, ClueText = "Här finns ett välkänt vattentorn som också är ett besöksmål." },
+                new Clue { ClueId = 28, CityId = 6, Point = 6m, ClueText = "Svartån rinner genom stadens centrum." },
+                new Clue { ClueId = 29, CityId = 6, Point = 4m, ClueText = "Mitt i staden ligger ett slott på en ö" },
+                new Clue { ClueId = 30, CityId = 6, Point = 2m, ClueText = "Staden hyser besöksmålet Wadköping" },
 
                 // Linköping
-                new Clue { ClueId = 31, CityId = 7, Point = 10m, ClueName = "Vi reser till en universitetsstad i sydöstra Sverige." },
-                new Clue { ClueId = 32, CityId = 7, Point = 8m, ClueName = "Staden är känd för ett stort konvent tillägnat Japansk kultur." },
-                new Clue { ClueId = 33, CityId = 7, Point = 6m, ClueName = "I luften över staden flyger tidvis Gripar, men Drakarna är sedan länge borta." },
-                new Clue { ClueId = 34, CityId = 7, Point = 4m, ClueName = "Staden huserar den näst största kyrkan i Sverige." },
-                new Clue { ClueId = 35, CityId = 7, Point = 2m, ClueName = "Staden slogan är den klämchecka ''Där ideér blir verklighet''." },
+                new Clue { ClueId = 31, CityId = 7, Point = 10m, ClueText = "Vi reser till en universitetsstad i sydöstra Sverige." },
+                new Clue { ClueId = 32, CityId = 7, Point = 8m, ClueText = "Staden är känd för ett stort konvent tillägnat Japansk kultur." },
+                new Clue { ClueId = 33, CityId = 7, Point = 6m, ClueText = "I luften över staden flyger tidvis Gripar, men Drakarna är sedan länge borta." },
+                new Clue { ClueId = 34, CityId = 7, Point = 4m, ClueText = "Staden huserar den näst största kyrkan i Sverige." },
+                new Clue { ClueId = 35, CityId = 7, Point = 2m, ClueText = "Staden slogan är den klämchecka ''Där ideér blir verklighet''." },
 
                 // Helsingborg
-                new Clue { ClueId = 36, CityId = 8, Point = 10m, ClueName = "Vi reser till en stad vid vattnet i Södra Sverige." },
-                new Clue { ClueId = 37, CityId = 8, Point = 8m, ClueName = "Här finns slottet Sofiero med sina trädgårdar." },
-                new Clue { ClueId = 38, CityId = 8, Point = 6m, ClueName = "Från staden går färjor till Danmark." },
-                new Clue { ClueId = 39, CityId = 8, Point = 4m, ClueName = "Det medeltida tornet Kärnan ligger i staden." },
-                new Clue { ClueId = 40, CityId = 8, Point = 2m, ClueName = "Staden kallas ibland för ''Sundets Pärla''" },
+                new Clue { ClueId = 36, CityId = 8, Point = 10m, ClueText = "Vi reser till en stad vid vattnet i Södra Sverige." },
+                new Clue { ClueId = 37, CityId = 8, Point = 8m, ClueText = "Här finns slottet Sofiero med sina trädgårdar." },
+                new Clue { ClueId = 38, CityId = 8, Point = 6m, ClueText = "Från staden går färjor till Danmark." },
+                new Clue { ClueId = 39, CityId = 8, Point = 4m, ClueText = "Det medeltida tornet Kärnan ligger i staden." },
+                new Clue { ClueId = 40, CityId = 8, Point = 2m, ClueText = "Staden kallas ibland för ''Sundets Pärla''." },
 
                 // Umeå
-                new Clue { ClueId = 41, CityId = 9, Point = 10m, ClueName = "Vi reser till en stad i norra Sverige, iblan kallad ''Norra Sveriges Huvudstad''." },
-                new Clue { ClueId = 42, CityId = 9, Point = 8m, ClueName = "Efter en stor brand 1888 planterades många träd här." },
-                new Clue { ClueId = 43, CityId = 9, Point = 6m, ClueName = "Staden var Europas kulturhuvudstad år 2014." },
-                new Clue { ClueId = 44, CityId = 9, Point = 4m, ClueName = "I staden finns ett univeristet." },
-                new Clue { ClueId = 45, CityId = 9, Point = 2m, ClueName = "Staden kallas ibland för ''Nordens Kulturhuvudstad''" },
+                new Clue { ClueId = 41, CityId = 9, Point = 10m, ClueText = "Vi reser till en stad i norra Sverige, ibland kallad ''Norra Sveriges Huvudstad''." },
+                new Clue { ClueId = 42, CityId = 9, Point = 8m, ClueText = "Efter en stor brand 1888 planterades många träd här." },
+                new Clue { ClueId = 43, CityId = 9, Point = 6m, ClueText = "Staden var Europas kulturhuvudstad år 2014." },
+                new Clue { ClueId = 44, CityId = 9, Point = 4m, ClueText = "I staden finns ett univeristet." },
+                new Clue { ClueId = 45, CityId = 9, Point = 2m, ClueText = "Staden kallas ibland för ''Nordens Kulturhuvudstad''." },
 
                 // Lund
-                new Clue { ClueId = 46, CityId = 10, Point = 10m, ClueName = "Vi reser till en skånsk stad med en lång akademisk historia." },
-                new Clue { ClueId = 47, CityId = 10, Point = 8m, ClueName = "Universitetet här grundades år 1666." },
-                new Clue { ClueId = 48, CityId = 10, Point = 6m, ClueName = "Staden har en medeltida domkyrka med ett astronomiskt ur." },
-                new Clue { ClueId = 49, CityId = 10, Point = 4m, ClueName = "Friluftsmuseet Kulturen finns i denna stad." },
-                new Clue { ClueId = 50, CityId = 10, Point = 2m, ClueName = "Staden är en av Sveriges äldsta, och grundades år 990." }
+                new Clue { ClueId = 46, CityId = 10, Point = 10m, ClueText = "Vi reser till en skånsk stad med en lång akademisk historia." },
+                new Clue { ClueId = 47, CityId = 10, Point = 8m, ClueText = "Universitetet här grundades år 1666." },
+                new Clue { ClueId = 48, CityId = 10, Point = 6m, ClueText = "Staden har en medeltida domkyrka med ett astronomiskt ur." },
+                new Clue { ClueId = 49, CityId = 10, Point = 4m, ClueText = "Friluftsmuseet Kulturen finns i denna stad." },
+                new Clue { ClueId = 50, CityId = 10, Point = 2m, ClueText = "Staden är en av Sveriges äldsta, och grundades år 990." }
             );
         }
     }
