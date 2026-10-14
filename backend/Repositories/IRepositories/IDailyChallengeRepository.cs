@@ -6,6 +6,8 @@ namespace Backend.Repositories.IRepositories
     {
         Task<DailyChallange?> GetChallengeForDate(DateOnly date);
 
-        Task<bool> CreateTodaysDailyChallenge(int cityId);
+        Task<bool> CreateDailyChallenge(DateOnly date, int cityId);
+
+        Task<DailyChallange?> GetLastChallenge();
     }
 }

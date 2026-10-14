@@ -18,5 +18,10 @@ namespace Backend.Services
         {
             return await _cityRepository.GetAllCitiesAsync();
         }
+
+        public async Task<int> GetCityCountAsync()
+        {
+            return (await _cityRepository.GetAllCitiesAsync()).Count;
+        }
     }
 }

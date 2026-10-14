@@ -22,10 +22,18 @@ namespace Backend.Repositories
             return challenge;
         }
 
-        public async Task<bool> CreateTodaysDailyChallenge(int cityId)
+        public async Task<bool> CreateDailyChallenge(DateOnly date, int cityId)
         {
             // Implementation for creating today's challenge
             return true;
+        }
+
+        public async Task<DailyChallange?> GetLastChallenge()
+        {
+            var lastChallenge = await _context.DailyChallanges
+                .OrderByDescending(c => c.ChallangeDate)
+                .FirstOrDefaultAsync();
+            return lastChallenge;
         }
     }
 }
