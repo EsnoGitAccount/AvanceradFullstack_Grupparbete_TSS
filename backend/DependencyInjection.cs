@@ -50,10 +50,12 @@ namespace Backend
 			services.AddScoped<ICityRepository, CityRepository>();
 			services.AddSingleton<IBlobStorageService, BlobStorageService>();
 			services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IDailyChallengeRepository, DailyChallengeRepository>();
 
             // Services
 			services.AddScoped<ICityService, CityService>();
             services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IDailyChallengeService, DailyChallengeService>();
 
             // JWT
 
