@@ -16,9 +16,13 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDailyCity()
+        public async Task<IActionResult> GetDailyCity(DateOnly? date)
         {
-            var dailyCity = await _dailyChallengeService.GetChallengeForDateAsync(DateOnly.FromDateTime(DateTime.Today));
+            if (date == null)
+            {
+                date = DateOnly.FromDateTime(DateTime.UtcNow.Date);
+            }
+            var dailyCity = await _dailyChallengeService.GetChallengeForDateAsync(date.Value);
             return Ok(dailyCity);
         }
     }

@@ -2,8 +2,7 @@
 {
     public class QuestionDto
     {
-        public int Id { get; set; }
         public string QuestionText { get; set; } = string.Empty;
-        public List<OptionDto> Options { get; set; } = [];
+        public List<OptionDto> Options { get; set; } = new List<OptionDto>();
     }
 }

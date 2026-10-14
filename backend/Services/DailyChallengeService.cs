@@ -22,19 +22,22 @@ namespace Backend.Services
             {
                 return new DailyChallangeDto
                 {
-                    Id = challenge.DailyChallangeId,
                     CityDetails = new CityDetailsDto
                     {
                         CityName = challenge.City.Name,
                         Clues = challenge.City.Clues.Select(c => new ClueDto
                         {
-                            Id = c.ClueId,
-                            ClueText = c.ClueText
+                            ClueText = c.ClueText,
+                            PointValue = c.Point
                         }).ToList(),
                         Questions = challenge.City.Questions.Select(q => new QuestionDto
                         {
-                            Id = q.QuestionId,
-                            QuestionText = q.QuestionText
+                            QuestionText = q.QuestionText,
+                            Options = q.Options.Select(o => new OptionDto
+                            {
+                                OptionText = o.OptionText,
+                                IsCorrect = o.IsCorrect
+                            }).ToList()
                         }).ToList()
                     },
                     ChallangeDate = challenge.ChallangeDate
@@ -47,7 +50,16 @@ namespace Backend.Services
                 var amountCities = await _cityService.GetCityCountAsync();
                 var newChallenge = await _dailyChallengeRepository.CreateDailyChallenge(date, 1); // Replace 1 with the actual city ID
 
-                throw new NotImplementedException();
+                return new DailyChallangeDto
+                {
+                    CityDetails = new CityDetailsDto
+                    {
+                        CityName = "Teststad",
+                        Clues = new List<ClueDto>(),
+                        Questions = new List<QuestionDto>(),
+                    },
+                    ChallangeDate = date
+                };
             }
         }
     }

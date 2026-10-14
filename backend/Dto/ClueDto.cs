@@ -2,7 +2,7 @@
 {
     public class ClueDto
     {
-        public int Id { get; set; }
         public string ClueText { get; set; } = string.Empty;
+        public decimal PointValue { get; set; }
     }
 }

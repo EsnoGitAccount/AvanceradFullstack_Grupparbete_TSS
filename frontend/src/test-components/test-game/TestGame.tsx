@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import type { GameResult } from '@/models/GameResult'
+import type { DailyChallenge } from '@/models/DailyChallenge'
+
 import { submitGameResult } from '@/services/GameService'
+import { getDailyChallenge } from '@/services/GameService'
 
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -38,14 +41,21 @@ function DestinationQuestion({ onComplete }: QuestionProps) {
 function TestGame({ city }: { city: string }) {
   const [gameProgress, setGameProgress] = useState(0)
   const [currentScore, setCurrentScore] = useState(0)
+  const [dailyChallenge, setDailyChallenge] = useState<DailyChallenge | null>(null)
 
-  //Update this to check if user is authenticated and if so, 
+  // Update this to check if user is authenticated and if so, 
   // get the username from the token and set it to name. 
   // If not, set name to empty string.
   // This is a placeholder for now, as authentication is not implemented yet.
   const [isAuthenticated] = useState(false);
   const [playerName, setPlayerName] = useState(""); 
   const [resultSubmitted, setResultSubmitted] = useState(false);
+
+  const handleGameStart = async () => {
+    const response = await getDailyChallenge(); 
+    setDailyChallenge(response);
+    setGameProgress(1)
+  }
 
   const handleGameComplete = (score: number) => {
     setCurrentScore((previousScore) => previousScore + score)
@@ -98,7 +108,7 @@ function TestGame({ city }: { city: string }) {
                     <Button className="test-game__submit-name-button" variant="outline" type="submit">Spara namn</Button>
                 </form>
             )}
-            <Button onClick={() => setGameProgress(1)} disabled={playerName === ""}>
+            <Button onClick={() => handleGameStart()} disabled={playerName === ""}>
                 Starta spelet
             </Button>
           </>
@@ -107,7 +117,11 @@ function TestGame({ city }: { city: string }) {
           <WhereAreWe onComplete={handleGameComplete} />
         )}
         {gameProgress === 2 && (
-          <DestinationQuestion onComplete={handleGameComplete} />
+          <>
+            <h2>Välkommen till {dailyChallenge?.cityDetails?.cityName ?? 'staden'}</h2>
+            <DestinationQuestion onComplete={handleGameComplete} />
+          </>
+          
         )}
         {gameProgress === 3 && (
           <DestinationQuestion onComplete={handleGameComplete} />
