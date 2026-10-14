@@ -10,6 +10,6 @@ namespace Backend.Services.IServices
 		Task<CityDto> AddAsync(CityCreateDto cityDto);
 		Task<bool> DeleteAsync(int cityId);
 		Task<CityDto> UpdateAsync(int cityId, CityUpdateDto cityDto);
-
+		Task<int> GetCityCountAsync();
 	}
 }

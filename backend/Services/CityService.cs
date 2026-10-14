@@ -192,6 +192,10 @@ namespace Backend.Services
 
 		}
 
+		public async Task<int> GetCityCountAsync()
+		{
+			return (await _cityRepository.GetAllCitiesAsync()).Count();
+		}
 		private static CityDto MapToCityDto(City city)
 		{
 			return new CityDto

@@ -1,58 +1,44 @@
-
-using Azure.Storage.Blobs;
 using Backend.Data;
 using Backend.Middleware;
 using Scalar.AspNetCore;
 
 namespace Backend
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<WhereAreWeDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+			// Add services to the container.
+			builder.Services.AddInfrastructureServices(builder.Configuration);
+			builder.Services.AddControllers();
+			builder.Services.AddProblemDetails();
+			// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+			builder.Services.AddOpenApi();
 
-			builder.Services.AddOptions<BlobStorageOptions>()
-				.BindConfiguration("AzureBlobStorage");
+			var app = builder.Build();
 
-			builder.Services.AddIdentity<User, IdentityRole<int>>()
-                .AddEntityFrameworkStores<WhereAreWeDbContext>()
-                .AddDefaultTokenProviders();
+			// Configure the HTTP request pipeline.
+			if (app.Environment.IsDevelopment())
+			{
+				app.MapOpenApi();
+				app.MapScalarApiReference();
+				app.MapGet("/", () => Results.Redirect("/scalar"));
+			}
 
-            // Add services to the container.
-            builder.Services.AddScoped<ICityRepository, CityRepository>();
-            builder.Services.AddScoped<ICityService, CityService>();
-            builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
-            builder.Services.AddControllers();
-            builder.Services.AddProblemDetails();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+			app.UseHttpsRedirection();
 
-            var app = builder.Build();
+			app.UseCors("LocalConnection");
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-                app.MapScalarApiReference();
-                app.MapGet("/", () => Results.Redirect("/scalar"));
-            }
+			app.UseAuthentication();
+			app.UseAuthorization();
 
-            app.UseHttpsRedirection();
+			app.UseMiddleware<ExceptionMiddleware>();
 
-            app.UseCors("LocalConnection");
+			app.MapControllers();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseMiddleware<ExceptionMiddleware>();
-
-            app.MapControllers();
-
-            app.Run();
-        }
-    }
+			app.Run();
+		}
+	}
 }

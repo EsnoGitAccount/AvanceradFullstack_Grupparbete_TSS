@@ -1,5 +1,7 @@
 ﻿using Backend.Data;
 using Backend.Model;
+using Backend.Options;
+using Azure.Storage.Blobs;
 using Backend.Repositories;
 using Backend.Repositories.IRepositories;
 using Backend.Services;
@@ -21,8 +23,12 @@ namespace Backend
              options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
-            // Identity
-            services.AddIdentity<User, IdentityRole<int>>()
+            //Blob
+			services.AddOptions<BlobStorageOptions>()
+				.BindConfiguration("AzureBlobStorage");
+
+			// Identity
+			services.AddIdentity<User, IdentityRole<int>>()
               .AddEntityFrameworkStores<WhereAreWeDbContext>()
               .AddDefaultTokenProviders();
 
@@ -40,12 +46,13 @@ namespace Backend
                 );
             });
 
-            // Repositories
-            services.AddScoped<ICityReposistory, CityRepository>();
-            services.AddScoped<IGameRepository, GameRepository>();
+			// Repositories
+			services.AddScoped<ICityRepository, CityRepository>();
+			services.AddSingleton<IBlobStorageService, BlobStorageService>();
+			services.AddScoped<IGameRepository, GameRepository>();
 
             // Services
-            services.AddScoped<ICityService, CityService>();
+			services.AddScoped<ICityService, CityService>();
             services.AddScoped<IGameService, GameService>();
 
             // JWT
