@@ -29,8 +29,16 @@ namespace Backend.Repositories
 
         public async Task<bool> CreateDailyChallenge(DateOnly date, int cityId)
         {
-            // Implementation for creating today's challenge
-            return true;
+            var newChallenge = new DailyChallange
+            {
+                ChallangeDate = date,
+                CityId = cityId
+            };
+
+           await _context.DailyChallanges.AddAsync(newChallenge);
+           await _context.SaveChangesAsync();
+
+           return true;
         }
 
         public async Task<DailyChallange?> GetLastChallenge()
