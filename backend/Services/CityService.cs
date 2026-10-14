@@ -154,7 +154,6 @@ namespace Backend.Services
 				{
 					throw new InvalidOperationException("Failed to update city");
 				}
-
 			}
 			catch
 			{
@@ -165,7 +164,6 @@ namespace Backend.Services
 						await _blobStorage.DeleteBlobAsync(newPicture);
 
 					}
-
 				}
 				catch (Exception ex)
 				{
@@ -189,7 +187,6 @@ namespace Backend.Services
 			}
 
 			return MapToCityDto(city);
-
 		}
 
 		public async Task<int> GetCityCountAsync()
@@ -203,10 +200,7 @@ namespace Backend.Services
 				CityId = city.CityId,
 				Name = city.Name,
 				CityPicture = city.CityPicture
-
-
 			};
 		}
 	}
-
 }

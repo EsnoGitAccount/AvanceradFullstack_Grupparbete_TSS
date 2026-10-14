@@ -22,18 +22,15 @@ namespace Backend.Services
             {
                 return new DailyChallangeDto
                 {
-                    Id = challenge.DailyChallangeId,
                     CityDetails = new CityDetailsDto
                     {
                         CityName = challenge.City.Name,
                         Clues = challenge.City.Clues.Select(c => new ClueDto
                         {
-                            Id = c.ClueId,
                             ClueText = c.ClueText
                         }).ToList(),
                         Questions = challenge.City.Questions.Select(q => new QuestionDto
                         {
-                            Id = q.QuestionId,
                             QuestionText = q.QuestionText
                         }).ToList()
                     },
