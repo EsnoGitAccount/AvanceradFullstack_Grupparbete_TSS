@@ -3,6 +3,8 @@ import type { GameResult } from '@/models/GameResult'
 import type { DailyChallenge } from '@/models/DailyChallenge'
 
 import { submitGameResult } from '@/services/GameService'
+import { testCity } from "../../models/City.ts"
+import type { Clue } from '../../models/City.ts'
 import { getDailyChallenge } from '@/services/GameService'
 
 import { Badge } from '@/components/ui/Badge'
@@ -22,11 +24,16 @@ type QuestionProps = {
   onComplete: (score: number) => void
 }
 
-function WhereAreWe({ onComplete }: QuestionProps) {
+function WhereAreWe({ onComplete }: QuestionProps, clues: Clue[], correctCity: string) {
+  const [pointValue, setPointValue] = useState(10)
+
+  
+
   return (
-    <Button variant="outline" onClick={() => onComplete(10)}>
-      Var är vi?
-    </Button>
+    <form>
+      <Input placeholder=''/>
+      <Button>Svara</Button>
+    </form>
   )
 }
 
