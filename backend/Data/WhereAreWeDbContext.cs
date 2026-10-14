@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data
 {
-    public class WhereAreWeDbContext : IdentityDbContext<User , IdentityRole<int>, int>
+    public class WhereAreWeDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public WhereAreWeDbContext(DbContextOptions<WhereAreWeDbContext> options) : base(options)
         {

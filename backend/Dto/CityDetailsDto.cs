@@ -2,7 +2,7 @@
 {
     public class CityDetailsDto
     {
-        public int CityId { get; set; }
+        public string CityName { get; set; } = string.Empty;
         public List<ClueDto> Clues { get; set; } = [];
         public List<QuestionDto> Questions { get; set; } = [];
     }

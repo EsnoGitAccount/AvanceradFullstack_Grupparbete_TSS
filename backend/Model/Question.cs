@@ -7,5 +7,7 @@
 
         public int CityId { get; set; }
         public City City { get; set; } = null!;
+
+        public List<Option> Options { get; set; } = new List<Option>();
     }
 }
