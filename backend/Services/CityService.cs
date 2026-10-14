@@ -19,7 +19,7 @@ namespace Backend.Services
 			_logger = logger;
 		}
 
-		public async Task<CityDto> AddAsync(CityCreateDto cityDto)
+		public async Task<CityDto> CreateCityAsync(CityCreateDto cityDto)
 		{
 			var cityExists = await _cityRepository.GetCityByNameAsync(cityDto.Name);
 
@@ -38,7 +38,7 @@ namespace Backend.Services
 
 			try
 			{
-				await _cityRepository.AddAsync(city);
+				await _cityRepository.CreateCityAsync(city);
 				var result = await _cityRepository.SaveChangesAsync();
 
 				if (!result)
@@ -63,7 +63,7 @@ namespace Backend.Services
 			return MapToCityDto(city);
 		}
 
-		public async Task<bool> DeleteAsync(int cityId)
+		public async Task<bool> DeleteCityAsync(int cityId)
 		{
 			var city = await _cityRepository.GetCityByIdAsync(cityId);
 
@@ -73,7 +73,7 @@ namespace Backend.Services
 			}
 
 			var pictureUrl = city.CityPicture;
-			_cityRepository.Delete(city);
+			_cityRepository.DeleteCity(city);
 			var result = await _cityRepository.SaveChangesAsync();
 
 			if (!result)
@@ -111,7 +111,7 @@ namespace Backend.Services
 			return MapToCityDto(city);
 		}
 
-		public async Task<CityDto> UpdateAsync(int cityId, CityUpdateDto cityDto)
+		public async Task<CityDto> UpdateCityAsync(int cityId, CityUpdateDto cityDto)
 		{
 			var city = await _cityRepository.GetCityByIdAsync(cityId);
 
@@ -193,6 +193,7 @@ namespace Backend.Services
 		{
 			return (await _cityRepository.GetAllCitiesAsync()).Count();
 		}
+
 		private static CityDto MapToCityDto(City city)
 		{
 			return new CityDto

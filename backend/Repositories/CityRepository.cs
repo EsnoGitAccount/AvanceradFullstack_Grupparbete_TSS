@@ -14,12 +14,12 @@ namespace Backend.Repositories
 			_context = context;
 		}
 
-		public async Task AddAsync(City city)
+		public async Task CreateCityAsync(City city)
 		{
 			await _context.Cities.AddAsync(city);
 		}
 
-		public void Delete(City city)
+		public void DeleteCity(City city)
 		{
 			_context.Cities.Remove(city);
 		}

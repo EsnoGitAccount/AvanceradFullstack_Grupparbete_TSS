@@ -7,9 +7,9 @@ namespace Backend.Services.IServices
 	{
 		Task<IEnumerable<CityDto>> GetAllCitiesAsync();
 		Task<CityDto> GetCityByIdAsync(int cityId);
-		Task<CityDto> AddAsync(CityCreateDto cityDto);
-		Task<bool> DeleteAsync(int cityId);
-		Task<CityDto> UpdateAsync(int cityId, CityUpdateDto cityDto);
+		Task<CityDto> CreateCityAsync(CityCreateDto cityDto);
+		Task<bool> DeleteCityAsync(int cityId);
+		Task<CityDto> UpdateCityAsync(int cityId, CityUpdateDto cityDto);
 		Task<int> GetCityCountAsync();
 	}
 }

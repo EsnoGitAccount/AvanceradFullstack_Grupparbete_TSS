@@ -7,8 +7,8 @@ namespace Backend.Repositories.IRepositories
         Task<IEnumerable<City>> GetAllCitiesAsync();
         Task<City?> GetCityByIdAsync(int cityId);
         Task<bool> GetCityByNameAsync(string cityName);
-		Task AddAsync(City city);
-        void Delete(City city);
+		Task CreateCityAsync(City city);
+        void DeleteCity(City city);
         Task<bool> SaveChangesAsync();
 	}
 }
