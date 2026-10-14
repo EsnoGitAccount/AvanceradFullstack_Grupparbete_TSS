@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import type { GameResult } from '@/models/GameResult'
 import { submitGameResult } from '@/services/GameService'
+import { testCity } from "../../models/City.ts"
+import type { Clue } from '../../models/City.ts'
 
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -19,11 +21,16 @@ type QuestionProps = {
   onComplete: (score: number) => void
 }
 
-function WhereAreWe({ onComplete }: QuestionProps) {
+function WhereAreWe({ onComplete }: QuestionProps, clues: Clue[], correctCity: string) {
+  const [pointValue, setPointValue] = useState(10)
+
+  
+
   return (
-    <Button variant="outline" onClick={() => onComplete(10)}>
-      Var är vi?
-    </Button>
+    <form>
+      <Input placeholder=''/>
+      <Button>Svara</Button>
+    </form>
   )
 }
 
