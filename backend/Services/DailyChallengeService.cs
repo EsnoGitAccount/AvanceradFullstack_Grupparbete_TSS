@@ -1,4 +1,6 @@
 ﻿using Backend.Dto;
+using Backend.Exceptions;
+using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Backend.Services.IServices;
 
@@ -8,11 +10,13 @@ namespace Backend.Services
     {
         private readonly IDailyChallengeRepository _dailyChallengeRepository;
         private readonly ICityService _cityService;
+        private readonly CityRandomizer _cityRandomizer;
 
         public DailyChallengeService(IDailyChallengeRepository dailyChallengeRepository, ICityService cityService)
         {
             _dailyChallengeRepository = dailyChallengeRepository;
             _cityService = cityService;
+            _cityRandomizer = new CityRandomizer();
         }
         public async Task<DailyChallangeDto> GetChallengeForDateAsync(DateOnly date)
         {
@@ -20,35 +24,59 @@ namespace Backend.Services
 
             if (challenge != null)
             {
-                return new DailyChallangeDto
-                {
-                    Id = challenge.DailyChallangeId,
-                    CityDetails = new CityDetailsDto
-                    {
-                        CityName = challenge.City.Name,
-                        Clues = challenge.City.Clues.Select(c => new ClueDto
-                        {
-                            Id = c.ClueId,
-                            ClueText = c.ClueText
-                        }).ToList(),
-                        Questions = challenge.City.Questions.Select(q => new QuestionDto
-                        {
-                            Id = q.QuestionId,
-                            QuestionText = q.QuestionText
-                        }).ToList()
-                    },
-                    ChallangeDate = challenge.ChallangeDate
-                };
+                return MapToDto(challenge);
             }
-            else
+
+            var lastChallenge = await _dailyChallengeRepository.GetLastChallenge();
+            var amountCities = await _cityService.GetCityCountAsync();
+
+            List<int> recentCityIds = new List<int>();
+
+            if (lastChallenge != null)
             {
-                var lastChallenge = await _dailyChallengeRepository.GetLastChallenge();
-
-                var amountCities = await _cityService.GetCityCountAsync();
-                var newChallenge = await _dailyChallengeRepository.CreateDailyChallenge(date, 1); // Replace 1 with the actual city ID
-
-                throw new NotImplementedException();
+                recentCityIds.Add(lastChallenge.CityId);
             }
+
+            int? selectedCityId = _cityRandomizer.SelectNextCityId(recentCityIds, amountCities);
+
+            if (!selectedCityId.HasValue)
+            {
+                throw new NotFoundException("No cities found.");
+            }
+
+            await _dailyChallengeRepository.CreateDailyChallenge(date, selectedCityId.Value);
+
+            var newChallenge = await _dailyChallengeRepository.GetChallengeForDate(date);
+
+            if (newChallenge == null)
+            {
+                throw new NotFoundException("Could not retrieve the created challenge.");
+            }
+
+            return MapToDto(newChallenge);
+        }
+
+        private static DailyChallangeDto MapToDto(DailyChallange challenge)
+        {
+            return new DailyChallangeDto
+            {
+                Id = challenge.DailyChallangeId,
+                CityDetails = new CityDetailsDto
+                {
+                    CityName = challenge.City.Name,
+                    Clues = challenge.City.Clues.Select(c => new ClueDto
+                    {
+                        Id = c.ClueId,
+                        ClueText = c.ClueText
+                    }).ToList(),
+                    Questions = challenge.City.Questions.Select(q => new QuestionDto
+                    {
+                        Id = q.QuestionId,
+                        QuestionText = q.QuestionText
+                    }).ToList()
+                },
+                ChallangeDate = challenge.ChallangeDate
+            };
         }
     }
 }
