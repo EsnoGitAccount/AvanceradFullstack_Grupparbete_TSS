@@ -30,6 +30,11 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"));
 
+                    b.Property<string>("CityPicture")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -42,51 +47,61 @@ namespace Backend.Migrations
                         new
                         {
                             CityId = 1,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Stockholm"
                         },
                         new
                         {
                             CityId = 2,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Göteborg"
                         },
                         new
                         {
                             CityId = 3,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Malmö"
                         },
                         new
                         {
                             CityId = 4,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Uppsala"
                         },
                         new
                         {
                             CityId = 5,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Västerås"
                         },
                         new
                         {
                             CityId = 6,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Örebro"
                         },
                         new
                         {
                             CityId = 7,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Linköping"
                         },
                         new
                         {
                             CityId = 8,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Helsingborg"
                         },
                         new
                         {
                             CityId = 9,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Umeå"
                         },
                         new
                         {
                             CityId = 10,
+                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
                             Name = "Lund"
                         });
                 });
@@ -102,7 +117,10 @@ namespace Backend.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClueName")
+                    b.Property<int?>("CityId1")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClueText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -114,6 +132,8 @@ namespace Backend.Migrations
 
                     b.HasIndex("CityId");
 
+                    b.HasIndex("CityId1");
+
                     b.ToTable("Clues");
 
                     b.HasData(
@@ -121,350 +141,350 @@ namespace Backend.Migrations
                         {
                             ClueId = 1,
                             CityId = 1,
-                            ClueName = "Vi reser till en stad mellan en stor insjö och Östersjön.",
+                            ClueText = "Vi reser till en stad mellan en stor insjö och Östersjön.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 2,
                             CityId = 1,
-                            ClueName = "Här finns en kunglig bostad och byggnaden där Nobelbanketten hålls.",
+                            ClueText = "Här finns en kunglig bostad och byggnaden där Nobelbanketten hålls.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 3,
                             CityId = 1,
-                            ClueName = "Ett välbevarat krigsskepp från 1600-talet finns på ett museum här.",
+                            ClueText = "Ett välbevarat krigsskepp från 1600-talet finns på ett museum här.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 4,
                             CityId = 1,
-                            ClueName = "Gamla stan och Djurgården är välkända delar av staden.",
+                            ClueText = "Gamla stan och Djurgården är välkända delar av staden.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 5,
                             CityId = 1,
-                            ClueName = "Vi söker Sveriges huvudstad.",
+                            ClueText = "Vi söker Sveriges huvudstad.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 6,
                             CityId = 2,
-                            ClueName = "Vi reser till en stad vid västkusten med en lång sjöfartshistoria.",
+                            ClueText = "Vi reser till en stad vid västkusten med en lång sjöfartshistoria.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 7,
                             CityId = 2,
-                            ClueName = "Staden grundades av Gustav II Adolf år 1621.",
+                            ClueText = "Staden grundades av Gustav II Adolf år 1621.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 8,
                             CityId = 2,
-                            ClueName = "Här finns Avenyn och Feskekörka.",
+                            ClueText = "Här finns Avenyn och Feskekörka.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 9,
                             CityId = 2,
-                            ClueName = "Nöjesparken Liseberg ligger här.",
+                            ClueText = "Nöjesparken Liseberg ligger här.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 10,
                             CityId = 2,
-                            ClueName = "Vi söker Sveriges näst största stad, vid Göta älvs mynning.",
+                            ClueText = "Vi söker Sveriges näst största stad, vid Göta älvs mynning.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 11,
                             CityId = 3,
-                            ClueName = "Vi reser till en stad i ett landskap som länge tillhörde Danmark.",
+                            ClueText = "Vi reser till en stad i ett landskap som länge tillhörde Danmark.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 12,
                             CityId = 3,
-                            ClueName = "Här finns både ett gammalt slott och en vriden skyskrapa.",
+                            ClueText = "Här finns både ett gammalt slott och en vriden skyskrapa.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 13,
                             CityId = 3,
-                            ClueName = "Staden har en broförbindelse över Öresund till Danmark.",
+                            ClueText = "Staden har en broförbindelse över Öresund till Danmark.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 14,
                             CityId = 3,
-                            ClueName = "År 2024 stod staden värd för Eurovision Song Contest",
+                            ClueText = "År 2024 stod staden värd för Eurovision Song Contest",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 15,
                             CityId = 3,
-                            ClueName = "Vi söker Skånes största stad.",
+                            ClueText = "Vi söker Skånes största stad.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 16,
                             CityId = 4,
-                            ClueName = "Vi reser till en stad där vetenskap och kyrkohistoria möts.",
+                            ClueText = "Vi reser till en stad där vetenskap och kyrkohistoria möts.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 17,
                             CityId = 4,
-                            ClueName = "Carl von Linné bodde och arbetade här.",
+                            ClueText = "Carl von Linné bodde och arbetade här.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 18,
                             CityId = 4,
-                            ClueName = "Stadens universitet grundades år 1477.",
+                            ClueText = "Stadens universitet grundades år 1477.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 19,
                             CityId = 4,
-                            ClueName = "Fyrisån rinner genom staden, som har en stor domkyrka.",
+                            ClueText = "Fyrisån rinner genom staden, som har en stor domkyrka.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 20,
                             CityId = 4,
-                            ClueName = "Vi söker universitetsstaden norr om Stockholm.",
+                            ClueText = "Vi söker universitetsstaden norr om Stockholm.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 21,
                             CityId = 5,
-                            ClueName = "Här finns både gravhögen Anundshög och det obskyra lilla Utter Inn",
+                            ClueText = "Här finns både gravhögen Anundshög och det obskyra lilla Utter Inn.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 22,
                             CityId = 5,
-                            ClueName = "Staden har en lång historia inom svensk elektroteknisk industri.",
+                            ClueText = "Staden har en lång historia inom svensk elektroteknisk industri.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 23,
                             CityId = 5,
-                            ClueName = "I staden ligger Erik XIV begravd, i en för kort sarkofag, varför hans fötter fick huggas av",
+                            ClueText = "I staden ligger Erik XIV begravd, i en för kort sarkofag, varför hans fötter fick huggas av.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 24,
                             CityId = 5,
-                            ClueName = "Staden har en vänskaplig rivalitet med Örebro",
+                            ClueText = "Staden har en vänskaplig rivalitet med Örebro.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 25,
                             CityId = 5,
-                            ClueName = "Vi söker staden som ofta kallas Gurkstaden, eller pulverstaden.",
+                            ClueText = "Vi söker staden som ofta kallas Gurkstaden.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 26,
                             CityId = 6,
-                            ClueName = "Vår resa går till en stad mitt i det så kallade gnällbätet.",
+                            ClueText = "Vår resa går till en stad i landskapet Närke.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 27,
                             CityId = 6,
-                            ClueName = "Här finns ett välkänt vattentorn som också är ett besöksmål.",
+                            ClueText = "Här finns ett välkänt vattentorn som också är ett besöksmål.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 28,
                             CityId = 6,
-                            ClueName = "Svartån rinner genom stadens centrum.",
+                            ClueText = "Svartån rinner genom stadens centrum.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 29,
                             CityId = 6,
-                            ClueName = "Mitt i staden ligger ett slott på en ö.",
+                            ClueText = "Mitt i staden ligger ett slott på en ö",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 30,
                             CityId = 6,
-                            ClueName = "Staden hyser besöksmålet Wadköping",
+                            ClueText = "Staden hyser besöksmålet Wadköping",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 31,
                             CityId = 7,
-                            ClueName = "Vi reser till en universitetsstad i sydöstra Sverige.",
+                            ClueText = "Vi reser till en universitetsstad i sydöstra Sverige.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 32,
                             CityId = 7,
-                            ClueName = "Staden är känd för ett stort konvent tillägnat Japansk kultur.",
+                            ClueText = "Staden är känd för ett stort konvent tillägnat Japansk kultur.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 33,
                             CityId = 7,
-                            ClueName = "I luften över staden flyger tidvis Gripar, men Drakarna är sedan länge borta.",
+                            ClueText = "I luften över staden flyger tidvis Gripar, men Drakarna är sedan länge borta.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 34,
                             CityId = 7,
-                            ClueName = "Staden huserar den näst största kyrkan i Sverige.",
+                            ClueText = "Staden huserar den näst största kyrkan i Sverige.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 35,
                             CityId = 7,
-                            ClueName = "Staden slogan är den klämchecka ''Där ideér blir verklighet''.",
+                            ClueText = "Staden slogan är den klämchecka ''Där ideér blir verklighet''.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 36,
                             CityId = 8,
-                            ClueName = "Vi reser till en stad vid vattnet i Södra Sverige.",
+                            ClueText = "Vi reser till en stad vid vattnet i Södra Sverige.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 37,
                             CityId = 8,
-                            ClueName = "Här finns slottet Sofiero med sina trädgårdar.",
+                            ClueText = "Här finns slottet Sofiero med sina trädgårdar.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 38,
                             CityId = 8,
-                            ClueName = "Från staden går färjor till Danmark.",
+                            ClueText = "Från staden går färjor till Danmark.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 39,
                             CityId = 8,
-                            ClueName = "Det medeltida tornet Kärnan ligger i staden.",
+                            ClueText = "Det medeltida tornet Kärnan ligger i staden.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 40,
                             CityId = 8,
-                            ClueName = "Staden kallas ibland för ''Sundets Pärla''",
+                            ClueText = "Staden kallas ibland för ''Sundets Pärla''.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 41,
                             CityId = 9,
-                            ClueName = "Vi reser till en stad i norra Sverige, iblan kallad ''Norra Sveriges Huvudstad''.",
+                            ClueText = "Vi reser till en stad i norra Sverige, ibland kallad ''Norra Sveriges Huvudstad''.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 42,
                             CityId = 9,
-                            ClueName = "Efter en stor brand 1888 planterades många träd här.",
+                            ClueText = "Efter en stor brand 1888 planterades många träd här.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 43,
                             CityId = 9,
-                            ClueName = "Staden var Europas kulturhuvudstad år 2014.",
+                            ClueText = "Staden var Europas kulturhuvudstad år 2014.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 44,
                             CityId = 9,
-                            ClueName = "I staden finns ett univeristet.",
+                            ClueText = "I staden finns ett univeristet.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 45,
                             CityId = 9,
-                            ClueName = "Staden kallas ibland för ''Nordens Kulturhuvudstad''",
+                            ClueText = "Staden kallas ibland för ''Nordens Kulturhuvudstad''.",
                             Point = 2m
                         },
                         new
                         {
                             ClueId = 46,
                             CityId = 10,
-                            ClueName = "Vi reser till en skånsk stad med en lång akademisk historia.",
+                            ClueText = "Vi reser till en skånsk stad med en lång akademisk historia.",
                             Point = 10m
                         },
                         new
                         {
                             ClueId = 47,
                             CityId = 10,
-                            ClueName = "Universitetet här grundades år 1666.",
+                            ClueText = "Universitetet här grundades år 1666.",
                             Point = 8m
                         },
                         new
                         {
                             ClueId = 48,
                             CityId = 10,
-                            ClueName = "Staden har en medeltida domkyrka med ett astronomiskt ur.",
+                            ClueText = "Staden har en medeltida domkyrka med ett astronomiskt ur.",
                             Point = 6m
                         },
                         new
                         {
                             ClueId = 49,
                             CityId = 10,
-                            ClueName = "Friluftsmuseet Kulturen finns i denna stad.",
+                            ClueText = "Friluftsmuseet Kulturen finns i denna stad.",
                             Point = 4m
                         },
                         new
                         {
                             ClueId = 50,
                             CityId = 10,
-                            ClueName = "Staden är en av Sveriges äldsta, och grundades år 990.",
+                            ClueText = "Staden är en av Sveriges äldsta, och grundades år 990.",
                             Point = 2m
                         });
                 });
@@ -488,68 +508,6 @@ namespace Backend.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("DailyChallanges");
-
-                    b.HasData(
-                        new
-                        {
-                            DailyChallangeId = 1,
-                            ChallangeDate = new DateOnly(2024, 6, 1),
-                            CityId = 1
-                        },
-                        new
-                        {
-                            DailyChallangeId = 2,
-                            ChallangeDate = new DateOnly(2024, 6, 2),
-                            CityId = 2
-                        },
-                        new
-                        {
-                            DailyChallangeId = 3,
-                            ChallangeDate = new DateOnly(2024, 6, 3),
-                            CityId = 3
-                        },
-                        new
-                        {
-                            DailyChallangeId = 4,
-                            ChallangeDate = new DateOnly(2024, 6, 4),
-                            CityId = 4
-                        },
-                        new
-                        {
-                            DailyChallangeId = 5,
-                            ChallangeDate = new DateOnly(2024, 6, 5),
-                            CityId = 5
-                        },
-                        new
-                        {
-                            DailyChallangeId = 6,
-                            ChallangeDate = new DateOnly(2024, 6, 6),
-                            CityId = 6
-                        },
-                        new
-                        {
-                            DailyChallangeId = 7,
-                            ChallangeDate = new DateOnly(2024, 6, 7),
-                            CityId = 7
-                        },
-                        new
-                        {
-                            DailyChallangeId = 8,
-                            ChallangeDate = new DateOnly(2024, 6, 8),
-                            CityId = 8
-                        },
-                        new
-                        {
-                            DailyChallangeId = 9,
-                            ChallangeDate = new DateOnly(2024, 6, 9),
-                            CityId = 9
-                        },
-                        new
-                        {
-                            DailyChallangeId = 10,
-                            ChallangeDate = new DateOnly(2024, 6, 10),
-                            CityId = 10
-                        });
                 });
 
             modelBuilder.Entity("Backend.Model.Game", b =>
@@ -602,9 +560,14 @@ namespace Backend.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("QuestionId1")
+                        .HasColumnType("int");
+
                     b.HasKey("OptionId");
 
                     b.HasIndex("QuestionId");
+
+                    b.HasIndex("QuestionId1");
 
                     b.ToTable("Options");
 
@@ -1182,6 +1145,9 @@ namespace Backend.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CityId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1189,6 +1155,8 @@ namespace Backend.Migrations
                     b.HasKey("QuestionId");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("CityId1");
 
                     b.ToTable("Questions");
 
@@ -1524,6 +1492,10 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Backend.Model.City", null)
+                        .WithMany("Clues")
+                        .HasForeignKey("CityId1");
+
                     b.Navigation("City");
                 });
 
@@ -1563,6 +1535,10 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Backend.Model.Question", null)
+                        .WithMany("Options")
+                        .HasForeignKey("QuestionId1");
+
                     b.Navigation("Question");
                 });
 
@@ -1573,6 +1549,10 @@ namespace Backend.Migrations
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Backend.Model.City", null)
+                        .WithMany("Questions")
+                        .HasForeignKey("CityId1");
 
                     b.Navigation("City");
                 });
@@ -1626,6 +1606,18 @@ namespace Backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Backend.Model.City", b =>
+                {
+                    b.Navigation("Clues");
+
+                    b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("Backend.Model.Question", b =>
+                {
+                    b.Navigation("Options");
                 });
 #pragma warning restore 612, 618
         }
