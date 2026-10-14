@@ -18,11 +18,5 @@ namespace Backend.Controllers
 			_context = context;
 			_blobStorageService = blobStorageService;
 		}
-
-
-	
-
-
-
 	}
 }

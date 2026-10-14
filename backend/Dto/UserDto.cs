@@ -1,8 +1,9 @@
-﻿namespace Backend.Dto
+﻿using Backend.Model;
+
+namespace Backend.Dto
 {
     public class UserDto
     {
-        public int Id { get; set; }
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
     }

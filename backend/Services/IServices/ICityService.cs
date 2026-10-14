@@ -11,6 +11,6 @@ namespace Backend.Services.IServices
 		Task<bool> DeleteAsync(int cityId);
 		Task<CityDto> UpdateAsync(int cityId, CityUpdateDto cityDto);
 		Task<int> GetCityCountAsync();
-		Task<int> GetRandomCityIdAsync(int? excludeCityId);
+		//Task<int> GetRandomCityIdAsync(int? excludeCityId);
     }
 }
