@@ -27,16 +27,16 @@ namespace Backend.Services
                         CityName = challenge.City.Name,
                         Clues = challenge.City.Clues.Select(c => new ClueDto
                         {
-                            ClueText = c.ClueText
+                            ClueText = c.ClueText,
+                            PointValue = c.Point
                         }).ToList(),
                         Questions = challenge.City.Questions.Select(q => new QuestionDto
                         {
-                            Id = q.QuestionId,
                             QuestionText = q.QuestionText,
                             Options = q.Options.Select(o => new OptionDto
                             {
-                                Id = o.OptionId,
-                                OptionText = o.OptionText
+                                OptionText = o.OptionText,
+                                IsCorrect = o.IsCorrect
                             }).ToList()
                         }).ToList()
                     },
@@ -52,7 +52,6 @@ namespace Backend.Services
 
                 return new DailyChallangeDto
                 {
-                    Id = 1,
                     CityDetails = new CityDetailsDto
                     {
                         CityName = "Teststad",

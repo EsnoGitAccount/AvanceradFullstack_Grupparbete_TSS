@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import type { GameResult } from '@/models/GameResult'
+import type { DailyChallenge } from '@/models/DailyChallenge'
+
 import { submitGameResult } from '@/services/GameService'
 import { getDailyChallenge } from '@/services/GameService'
 
@@ -39,7 +41,7 @@ function DestinationQuestion({ onComplete }: QuestionProps) {
 function TestGame({ city }: { city: string }) {
   const [gameProgress, setGameProgress] = useState(0)
   const [currentScore, setCurrentScore] = useState(0)
-  const [dailyChallenge, setDailyChallenge] = useState(null)
+  const [dailyChallenge, setDailyChallenge] = useState<DailyChallenge | null>(null)
 
   // Update this to check if user is authenticated and if so, 
   // get the username from the token and set it to name. 
@@ -52,7 +54,6 @@ function TestGame({ city }: { city: string }) {
   const handleGameStart = async () => {
     const response = await getDailyChallenge(); 
     setDailyChallenge(response);
-    console.log("Daily challenge fetched:", response)
     setGameProgress(1)
   }
 
@@ -116,7 +117,11 @@ function TestGame({ city }: { city: string }) {
           <WhereAreWe onComplete={handleGameComplete} />
         )}
         {gameProgress === 2 && (
-          <DestinationQuestion onComplete={handleGameComplete} />
+          <>
+            <h2>Välkommen till {dailyChallenge?.cityDetails?.cityName ?? 'staden'}</h2>
+            <DestinationQuestion onComplete={handleGameComplete} />
+          </>
+          
         )}
         {gameProgress === 3 && (
           <DestinationQuestion onComplete={handleGameComplete} />
