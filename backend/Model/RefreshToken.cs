@@ -8,7 +8,7 @@
 
         public User User { get; set; } = null!;
 
-        public string TokenHash { get; set; } = string.Empty;
+        public string TokenHash { get; set; }
 
         public Guid SessionId { get; set; }
 
