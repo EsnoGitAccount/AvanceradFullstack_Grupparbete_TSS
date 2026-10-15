@@ -27,7 +27,14 @@ namespace Backend.Controllers
                 Message = "Game data received successfully.",
                 Data = gameDto
             });
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> GetGamesForDate([FromQuery] DateOnly? date)
+        {
+            var games = await _gameService.GetResultsForDateAsync(date);
+
+            return Ok(games);
         }
     }
 }
