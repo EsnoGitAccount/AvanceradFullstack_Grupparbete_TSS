@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Security.Claims;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Backend.Controllers
 {
@@ -14,20 +15,18 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private const string AccessTokenCookieName = "accessToken";
         private const string RefreshTokenCookieName = "refreshToken";
         private const string CsrfRequestCookieName = "XSRF-TOKEN";
 
-        private const string AccessTokenCookiePath = "/api";
-        private const string RefreshTokenCookiePath = "/api/auth";
-
         private readonly IAuthService _authService;
         private readonly IAntiforgery _antiforgery;
+        private readonly ICookieService _cookieService;
 
-        public AuthController(IAuthService authService, IAntiforgery antiforgery)
+        public AuthController(IAuthService authService, IAntiforgery antiforgery, ICookieService cookieService)
         {
             _authService = authService;
             _antiforgery = antiforgery;
+            _cookieService = cookieService;
         }
 
         // Generate a CSRF token and make it available to the frontend
@@ -58,7 +57,7 @@ namespace Backend.Controllers
         {
             var session = await _authService.LoginAsync(loginDto);
 
-            SetAuthenticationCookies(session);
+            _cookieService.SetAuthenticationCookie(Response, session);
 
             return Ok(session.User);
         }
@@ -90,7 +89,7 @@ namespace Backend.Controllers
 
             var session = await _authService.RefreshAsync(refreshToken ?? string.Empty);
 
-            SetAuthenticationCookies(session);
+            _cookieService.SetAuthenticationCookie(Response, session);
 
             return Ok(session.User);
         }
@@ -105,55 +104,9 @@ namespace Backend.Controllers
 
             await _authService.LogoutAsync(refreshToken);
 
-            DeleteAuthenticationCookies();
+            _cookieService.DeleteAuthenticationCookie(Response);
 
             return NoContent();
-        }
-
-        // Store access and refresh tokens in HTTP-only cookies
-        private void SetAuthenticationCookies(AuthSession session)
-        {
-            Response.Cookies.Append(AccessTokenCookieName, session.AccessToken,
-                CreateAuthenticationCookieOptions(session.AccessTokenExpiresAt, AccessTokenCookiePath));
-
-            Response.Cookies.Append(RefreshTokenCookieName, session.RefreshToken,
-                CreateAuthenticationCookieOptions(session.RefreshTokenExpiresAt, RefreshTokenCookiePath));
-        }
-
-        // Remove access and refresh token cookies
-        private void DeleteAuthenticationCookies()
-        {
-            Response.Cookies.Delete(AccessTokenCookieName,
-                CreateDeleteCookieOptions(AccessTokenCookiePath));
-
-            Response.Cookies.Delete(RefreshTokenCookieName,
-                CreateDeleteCookieOptions(RefreshTokenCookiePath));
-        }
-
-        // Configure secure cookie options for authentication tokens
-        private static CookieOptions CreateAuthenticationCookieOptions(DateTimeOffset expiresAt, string path)
-        {
-            return new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Lax,
-                Path = path,
-                Expires = expiresAt
-            };
-
-        }
-
-        // Configure cookie option used when deleting authentication cookies
-        private static CookieOptions CreateDeleteCookieOptions(string path)
-        {
-            return new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Lax,
-                Path = path
-            };
         }
     }
 }
