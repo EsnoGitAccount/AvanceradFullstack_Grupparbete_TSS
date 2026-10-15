@@ -6,7 +6,7 @@ namespace Backend
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,9 @@ namespace Backend
             {
                 using var scope = app.Services.CreateScope();
 
-                await IdentitySeed.SeedAsync(scope.ServiceProvider, app.Configuration);
+                IdentitySeed.SeedAsync(scope.ServiceProvider, app.Configuration)
+                    .GetAwaiter()
+                    .GetResult();
 
                 app.MapOpenApi();
                 app.MapScalarApiReference();
@@ -37,7 +39,7 @@ namespace Backend
 
             app.MapControllers();
 
-            await app.RunAsync();
+            app.Run();
         }
     }
 }
