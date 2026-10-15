@@ -65,7 +65,8 @@ namespace Backend.Services
                     CityName = challenge.City.Name,
                     Clues = challenge.City.Clues.Select(c => new ClueDto
                     {
-                        ClueText = c.ClueText
+                        ClueText = c.ClueText,
+                        PointValue = c.Point
                     }).ToList(),
                     Questions = challenge.City.Questions.Select(q => new QuestionDto
                     {
