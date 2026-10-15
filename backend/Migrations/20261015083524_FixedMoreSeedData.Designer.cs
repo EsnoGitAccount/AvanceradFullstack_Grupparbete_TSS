@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(WhereAreWeDbContext))]
-    [Migration("20261014135052_AddMoreSeedData")]
-    partial class AddMoreSeedData
+    [Migration("20261015083524_FixedMoreSeedData")]
+    partial class FixedMoreSeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -300,9 +300,6 @@ namespace Backend.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CityId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("ClueText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -314,8 +311,6 @@ namespace Backend.Migrations
                     b.HasKey("ClueId");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("CityId1");
 
                     b.ToTable("Clues");
 
@@ -1730,8 +1725,8 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DailyChallangeId"));
 
-                    b.Property<DateOnly>("ChallangeDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("ChallangeDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("CityId")
                         .HasColumnType("int");
@@ -1793,14 +1788,9 @@ namespace Backend.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("QuestionId1")
-                        .HasColumnType("int");
-
                     b.HasKey("OptionId");
 
                     b.HasIndex("QuestionId");
-
-                    b.HasIndex("QuestionId1");
 
                     b.ToTable("Options");
 
@@ -4058,9 +4048,6 @@ namespace Backend.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CityId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -4068,8 +4055,6 @@ namespace Backend.Migrations
                     b.HasKey("QuestionId");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("CityId1");
 
                     b.ToTable("Questions");
 
@@ -4760,14 +4745,10 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Model.Clue", b =>
                 {
                     b.HasOne("Backend.Model.City", "City")
-                        .WithMany()
+                        .WithMany("Clues")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Backend.Model.City", null)
-                        .WithMany("Clues")
-                        .HasForeignKey("CityId1");
 
                     b.Navigation("City");
                 });
@@ -4803,14 +4784,10 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Model.Option", b =>
                 {
                     b.HasOne("Backend.Model.Question", "Question")
-                        .WithMany()
+                        .WithMany("Options")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Backend.Model.Question", null)
-                        .WithMany("Options")
-                        .HasForeignKey("QuestionId1");
 
                     b.Navigation("Question");
                 });
@@ -4818,14 +4795,10 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Model.Question", b =>
                 {
                     b.HasOne("Backend.Model.City", "City")
-                        .WithMany()
+                        .WithMany("Questions")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Backend.Model.City", null)
-                        .WithMany("Questions")
-                        .HasForeignKey("CityId1");
 
                     b.Navigation("City");
                 });
