@@ -19,6 +19,11 @@ namespace Backend.Services
         {
             var todaysChallenge = await _dailyChallengeRepository.GetChallengeForDate(DateOnly.FromDateTime(DateTime.UtcNow));
 
+            if(todaysChallenge == null)
+            {
+                throw new InvalidOperationException("No daily challenge found for today.");
+            }
+
             var game = new Game
             {
                 UserName = gameDto.UserName ?? null,
