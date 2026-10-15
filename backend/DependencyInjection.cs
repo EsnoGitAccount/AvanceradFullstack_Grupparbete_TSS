@@ -71,6 +71,7 @@ namespace Backend
             services.AddScoped<IDailyChallengeService, DailyChallengeService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICookieService, CookieService>();
 
             // JWT
             var jwtIssuer = configuration["Jwt:Issuer"] ?? 

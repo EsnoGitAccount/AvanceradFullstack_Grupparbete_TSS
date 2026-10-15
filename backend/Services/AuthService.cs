@@ -39,7 +39,7 @@ namespace Backend.Services
             }
         }
 
-        public async Task<AuthSession> LoginAsync(LoginDto loginDto)
+        public async Task<AuthSessionDto> LoginAsync(LoginDto loginDto)
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username) ?? 
                 throw new UnauthorizedException("Invalid username or password.");
@@ -69,7 +69,7 @@ namespace Backend.Services
             return session;
         }
 
-        public async Task<AuthSession> RefreshAsync(string refreshToken)
+        public async Task<AuthSessionDto> RefreshAsync(string refreshToken)
         {
             if (string.IsNullOrWhiteSpace(refreshToken))
             {
@@ -146,34 +146,24 @@ namespace Backend.Services
             var user = await _userManager.FindByIdAsync(userId.ToString(CultureInfo.InvariantCulture)) ?? 
                 throw new UnauthorizedException("User was not found.");
 
-            return await CreateUserDtoAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            return new UserDto(user, userRoles);
         }
 
-        private async Task<AuthSession> CreateSessionAsync(User user, DateTimeOffset refreshTokenExpiresAt)
+        private async Task<AuthSessionDto> CreateSessionAsync(User user, DateTimeOffset refreshTokenExpiresAt)
         {
-            var userDto = await CreateUserDtoAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var userDto = new UserDto(user, userRoles);
 
             var accessTokenExpiresAt = DateTimeOffset.UtcNow.AddMinutes(_accessTokenMinutes);
 
-            return new AuthSession
+            return new AuthSessionDto
             {
                 User = userDto,
                 AccessToken = _tokenService.CreateAccessToken(user, userDto.Roles, accessTokenExpiresAt),
                 RefreshToken = _tokenService.CreateRefreshToken(),
                 AccessTokenExpiresAt = accessTokenExpiresAt,
                 RefreshTokenExpiresAt = refreshTokenExpiresAt
-            };
-        }
-
-        private async Task<UserDto> CreateUserDtoAsync(User user)
-        {
-            var roles = await _userManager.GetRolesAsync(user);
-
-            return new UserDto
-            {
-                Username = user.UserName ?? string.Empty,
-                Email = user.Email ?? string.Empty,
-                Roles = [.. roles]
             };
         }
     }

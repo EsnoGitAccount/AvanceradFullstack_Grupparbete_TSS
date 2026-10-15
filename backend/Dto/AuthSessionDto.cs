@@ -1,8 +1,6 @@
-﻿using Backend.Dto;
-
-namespace Backend.Services
+﻿namespace Backend.Dto
 {
-    public class AuthSession
+    public class AuthSessionDto
     {
         public required UserDto User { get; init; }
 

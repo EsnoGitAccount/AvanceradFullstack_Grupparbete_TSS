@@ -5,10 +5,10 @@ namespace Backend.Services.IServices
     public interface IAuthService
     {
         // Check credentials and return a session.
-        Task<AuthSession> LoginAsync(LoginDto loginDto);
+        Task<AuthSessionDto> LoginAsync(LoginDto loginDto);
 
         // Validate and rotate the refresh token, then issue a new access token.
-        Task<AuthSession> RefreshAsync(string refreshToken);
+        Task<AuthSessionDto> RefreshAsync(string refreshToken);
 
         // Revoke the supplied refresh token, effectively logging the user out.
         Task LogoutAsync(string? refreshToken);
