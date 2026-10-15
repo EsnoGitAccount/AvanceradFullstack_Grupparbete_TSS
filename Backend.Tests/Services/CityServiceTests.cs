@@ -6,35 +6,40 @@ using Moq;
 using Backend.Repositories.IRepositories;
 using Backend.Model;
 using Backend.Services;
+using Backend.Services.IServices;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Tests.Services
 {
-    public class CityServiceTests
-    {
-        [Fact]
-        public async Task GivenGetAllCities_ReturnsListOfCities()
-        {
-            // Arrange
-        //    var mockRepo = new Mock<ICityRepository>();
-        //    var expectedCities = new List<City>
-        //    {
-        //        new City { CityId = 1, Name = "City1" },
-        //        new City { CityId = 2, Name = "City2" }
-        //    };
+	public class CityServiceTests
+	{
+		[Fact]
+		public async Task GivenGetAllCities_ReturnsListOfCities()
+		{
+			// Arrange
+			var mockRepo = new Mock<ICityRepository>();
+			var mockBlobStorage = new Mock<IBlobStorageService>();
+			var mockLogger = new Mock<ILogger<CityService>>();
 
-        //    mockRepo.Setup(repo => repo.GetAllCitiesAsync()).ReturnsAsync(expectedCities);
+			var expectedCities = new List<City>
+			{
+				new City { CityId = 1, Name = "City1", CityPicture = "blob1" },
+				new City { CityId = 2, Name = "City2", CityPicture = "blob2" }
+			};
 
-        //    var cityService = new CityService(mockRepo.Object);
+			mockRepo.Setup(repo => repo.GetAllCitiesAsync()).ReturnsAsync(expectedCities);
 
-        //    // Act
-        //    var result = await cityService.GetAllCitiesAsync();
+			var cityService = new CityService(mockRepo.Object, mockBlobStorage.Object, mockLogger.Object);
 
-        //    // Assert
-        //    Assert.NotNull(result);
-        //    Assert.Equal(expectedCities.Count, result.Count);
-        //    Assert.Equal(expectedCities[0].CityId, result[0].CityId);
-        //    Assert.Equal(expectedCities[0].Name, result[0].Name);
-        //    mockRepo.Verify(repo => repo.GetAllCitiesAsync(), Times.Once);
-        }
-    }
+			// Act
+			var result = await cityService.GetAllCitiesAsync();
+			var resultList = result.ToList();
+			// Assert
+			Assert.NotNull(result);
+			Assert.Equal(expectedCities.Count, resultList.Count);
+			Assert.Equal(expectedCities[0].CityId, resultList[0].CityId);
+			Assert.Equal(expectedCities[0].Name, resultList[0].Name);
+			mockRepo.Verify(repo => repo.GetAllCitiesAsync(), Times.Once);
+		}
+	}	
 }
