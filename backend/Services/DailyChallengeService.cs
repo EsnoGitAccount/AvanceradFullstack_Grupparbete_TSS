@@ -70,7 +70,12 @@ namespace Backend.Services
                     }).ToList(),
                     Questions = challenge.City.Questions.Select(q => new QuestionDto
                     {
-                        QuestionText = q.QuestionText
+                        QuestionText = q.QuestionText,
+                        Options = q.Options.Select(o => new OptionDto
+                        {
+                            OptionText = o.OptionText,
+                            IsCorrect = o.IsCorrect
+                        }).ToList()
                     }).ToList()
                 },
                 ChallangeDate = challenge.ChallangeDate
