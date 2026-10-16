@@ -27,6 +27,15 @@ jobs:
       - name: Build with dotnet
         run: dotnet build ./Backend.Tests/Backend.Tests.csproj --configuration Release
 
+      - name: Install Azurite
+        run: npm install -g azurite
+
+      - name: Start Azurite
+        run: 
+              Start-Process azurite -ArgumentList "--skipApiVersionCheck"
+              Start-Sleep -Seconds 2
+        shell: powershell
+
       - name: Test with dotnet
         run: dotnet test ./Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --no-restore --verbosity normal
   
