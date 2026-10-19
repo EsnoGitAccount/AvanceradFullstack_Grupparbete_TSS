@@ -30,11 +30,6 @@ jobs:
       - name: Install Azurite
         shell: bash
         run: npx --yes --loglevel info azurite --version
-  
-    
-      - name: Install Azurite
-        shell: bash
-        run: npx --yes --loglevel info azurite --version
 
       - name: Start Azurite
         shell: bash
