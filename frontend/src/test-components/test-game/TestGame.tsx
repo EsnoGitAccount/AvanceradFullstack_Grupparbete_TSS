@@ -25,37 +25,31 @@ type QuestionProps = {
   onComplete: (score: number) => void
 }
 
+type WhereAreWeProps = {
+  onComplete: (score: number) => void
+  clues: Clue[]
+  correctCity: string
+}
 
 
-function WhereAreWe({ onComplete }: QuestionProps, clues: Clue[], correctCity: string) {
+function WhereAreWe({ onComplete, clues, correctCity }: WhereAreWeProps) {
   const [currentScore, setCurrentScore] = useState(10)
   const [cityGuess, setCityGuess] = useState("");
 
-
-  const renderClues = () =>{
-    return(
-     <>
-        {clues.map(clue =>
-          {clue.point >= currentScore && 
-            <p>{clue.clueText}</p>
-          }
-        )}
-     </> 
-    )
-  }
   const handleWhereAreWeSubmit = (event: React.SubmitEvent) =>{
     event.preventDefault();
 
-    if(cityGuess == correctCity){
+    // Checks if the guess and the correct city are the same, ignoring empty spaces and casing
+    if(cityGuess.trim().toLocaleLowerCase('sv-SE') === correctCity.trim().toLocaleLowerCase('sv-SE')){
       onComplete(currentScore)
     }
 
-    setCurrentScore(currentScore - 2);
+    const nextScore = Math.max(currentScore - 2, 0)
+    setCurrentScore(nextScore);
 
-    if(currentScore === 0){
+    if(nextScore === 0){
       onComplete(0)
     }
-
     setCityGuess("");
    }
 
@@ -63,13 +57,16 @@ function WhereAreWe({ onComplete }: QuestionProps, clues: Clue[], correctCity: s
     <div>
       {clues.map((clue) => (
         clue.point >= currentScore &&
+        <div>
+          <p>För {clue.point} poäng:</p>
           <p>{clue.clueText}</p>
+        </div>
         )
       )}
 
       <form onSubmit={handleWhereAreWeSubmit}>
         <Input value={cityGuess} onChange={(e) => setCityGuess(e.target.value)} placeholder=''/>
-        <Button>Svara</Button>
+        <Button type="submit">Svara</Button>
       </form>
     </div>
   )
