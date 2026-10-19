@@ -12,10 +12,13 @@ namespace Backend.Services
         private readonly IGameRepository _gameRepository;
         private readonly IDailyChallengeRepository _dailyChallengeRepository;
 
-        public GameService(IGameRepository gameRepository, IDailyChallengeRepository dailyChallengeRepository)
+        private readonly IUserRepository _userRepository;
+
+        public GameService(IGameRepository gameRepository, IDailyChallengeRepository dailyChallengeRepository, IUserRepository userRepository)
         {
             _gameRepository = gameRepository;
             _dailyChallengeRepository = dailyChallengeRepository;
+            _userRepository = userRepository;
         }
         public async Task CreateGameAsync(GameDto gameDto)
         {
@@ -66,7 +69,7 @@ namespace Backend.Services
                     {
                         results.Add(new ReusltDto
                         {
-                            UserName = result.UserName, //Call for logic to get name from UserId goes here, ternary if Username is empty
+                            UserName = result.UserName,
                             UserId = result.UserId,
                             FinalScore = result.TotalScore,
                         });
@@ -74,10 +77,11 @@ namespace Backend.Services
                     }
            
                     var currentStreak = await GetStreakForUserAsync(result.UserId.Value);
+                    var user = await _userRepository.GetUserByIdAsync(result.UserId.Value);
 
                     results.Add(new ReusltDto
                     {
-                        UserName = result.UserName, //Call for logic to get name from UserId goes here, ternary if Username is empty
+                        UserName = user?.UserName ?? result.UserName, 
                         UserId = result.UserId,
                         FinalScore = result.TotalScore,
                         Streak = currentStreak
@@ -108,10 +112,11 @@ namespace Backend.Services
                     }
 
                     var currentStreak = await GetStreakForUserAsync(result.UserId.Value);
+                    var user = await _userRepository.GetUserByIdAsync(result.UserId.Value);
 
                     results.Add(new ReusltDto
                     {
-                        UserName = result.UserName,
+                        UserName = user?.UserName ?? result.UserName,
                         UserId = result.UserId,
                         FinalScore = result.TotalScore,
                         Streak = currentStreak
@@ -130,7 +135,7 @@ namespace Backend.Services
                 .ToList();
 
             // TakeWhile grabs the current game, and the index of it in the List 
-            // which we ordered above, it then adds 1 day to the previous date and compares it to the current date,
+            // which we ordered above, it then removes 1 day from the previous date and compares it to the current date,
             // if they are equal it will continue to add to the streak until it finds a date that is not equal to the previous date + 1 day
             var currentStreak = orderedGames.
                 TakeWhile((game, index) =>
@@ -140,7 +145,7 @@ namespace Backend.Services
                         return true;
                     }
 
-                    var expectedDate = orderedGames[index - 1].CompletedAt.AddDays(1);
+                    var expectedDate = orderedGames[index - 1].CompletedAt.AddDays(-1);
                     return game.CompletedAt == expectedDate;
                 })
                 .Count();
