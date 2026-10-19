@@ -19,21 +19,59 @@ import {
 import { Input } from '@/components/ui/Input'
 
 import './TestGame.css'
+import { useFetcher } from 'react-router'
 
 type QuestionProps = {
   onComplete: (score: number) => void
 }
 
-function WhereAreWe({ onComplete }: QuestionProps, clues: Clue[], correctCity: string) {
-  const [pointValue, setPointValue] = useState(10)
 
-  
+
+function WhereAreWe({ onComplete }: QuestionProps, clues: Clue[], correctCity: string) {
+  const [currentScore, setCurrentScore] = useState(10)
+  const [cityGuess, setCityGuess] = useState("");
+
+
+  const renderClues = () =>{
+    return(
+     <>
+        {clues.map(clue =>
+          {clue.point >= currentScore && 
+            <p>{clue.clueText}</p>
+          }
+        )}
+     </> 
+    )
+  }
+  const handleWhereAreWeSubmit = (event: React.SubmitEvent) =>{
+    event.preventDefault();
+
+    if(cityGuess == correctCity){
+      onComplete(currentScore)
+    }
+
+    setCurrentScore(currentScore - 2);
+
+    if(currentScore === 0){
+      onComplete(0)
+    }
+
+    setCityGuess("");
+   }
 
   return (
-    <form>
-      <Input placeholder=''/>
-      <Button>Svara</Button>
-    </form>
+    <div>
+      {clues.map((clue) => (
+        clue.point >= currentScore &&
+          <p>{clue.clueText}</p>
+        )
+      )}
+
+      <form onSubmit={handleWhereAreWeSubmit}>
+        <Input value={cityGuess} onChange={(e) => setCityGuess(e.target.value)} placeholder=''/>
+        <Button>Svara</Button>
+      </form>
+    </div>
   )
 }
 
@@ -121,7 +159,7 @@ function TestGame({ city }: { city: string }) {
           </>
         )}
         {gameProgress === 1 && (
-          <WhereAreWe onComplete={handleGameComplete} />
+          <WhereAreWe onComplete={handleGameComplete} clues={testCity.clues} correctCity={testCity.name}/>
         )}
         {gameProgress === 2 && (
           <>
