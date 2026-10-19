@@ -70,8 +70,9 @@ namespace Backend.Services
                         results.Add(new ReusltDto
                         {
                             UserName = result.UserName,
-                            UserId = result.UserId,
                             FinalScore = result.TotalScore,
+                            Rank = 0,
+                            IsCurrentUser = false,
                         });
                         continue;
                     }
@@ -82,9 +83,10 @@ namespace Backend.Services
                     results.Add(new ReusltDto
                     {
                         UserName = user?.UserName ?? result.UserName, 
-                        UserId = result.UserId,
                         FinalScore = result.TotalScore,
-                        Streak = currentStreak
+                        Streak = currentStreak,
+                        Rank = 0,
+                        IsCurrentUser = user?.UserName == "user1", //replace with actual logic for checking if the user is the currently logged in user
                     });
                 }
             }
@@ -98,33 +100,81 @@ namespace Backend.Services
                 {
                     var result = topList[i];
 
-                    if (result.UserId == null || i >= 11)
+                    User? user = null;
+                    var isCurrentUser = result.UserName == "user1";
+
+                    if (result.UserId.HasValue)
+                    {
+                        user = await _userRepository.GetUserByIdAsync(result.UserId.Value);
+                        if (user != null)
+                        {
+                            isCurrentUser = isCurrentUser || user.UserName == "user1";
+                        }
+                    }
+
+                    if (result.UserId == null || (i >= 10 && !isCurrentUser))
                     {
                         //create result with streak = null and add to results list
                         results.Add(new ReusltDto
                         {
-                            UserName = result.UserName,
-                            UserId = result.UserId,
+                            UserName = user?.UserName ?? result.UserName,
                             FinalScore = result.TotalScore,
-                            Streak = null
+                            Rank = 0,
+                            Streak = null,
+                            IsCurrentUser = isCurrentUser
                         });
                         continue;
                     }
 
                     var currentStreak = await GetStreakForUserAsync(result.UserId.Value);
-                    var user = await _userRepository.GetUserByIdAsync(result.UserId.Value);
 
                     results.Add(new ReusltDto
                     {
                         UserName = user?.UserName ?? result.UserName,
-                        UserId = result.UserId,
                         FinalScore = result.TotalScore,
-                        Streak = currentStreak
+                        Rank = 0,
+                        Streak = currentStreak,
+                        IsCurrentUser = isCurrentUser,
                     });
                 }
             }
 
-            return results.OrderByDescending(r => r.FinalScore);
+            var completeRanking = results
+                .OrderByDescending(r => r.FinalScore)
+                .ToList();
+
+            int prevRank = 1;
+            decimal prevScore = -1;
+
+            var displayResults = new List<ReusltDto>();
+
+            foreach (var result in completeRanking)
+            {
+                if (completeRanking.IndexOf(result) > 9 && !result.IsCurrentUser)
+                {
+                    continue; //Early skip if we are outside of the top 10 and we are not the current user
+                }
+
+                if (result.FinalScore != prevScore)
+                {
+                    prevRank = completeRanking.IndexOf(result) + 1;
+                    result.Rank = prevRank;
+                    prevScore = result.FinalScore;
+                }
+                else
+                {
+                    result.Rank = prevRank;
+                }
+
+                displayResults.Add(result);
+
+                if (completeRanking.IndexOf(result) > 9 && result.IsCurrentUser)
+                {
+                    break; //if we are outside of the top 10 and we have found the current user, we can break out of the loop
+                }
+            }
+
+            return displayResults;
         }
 
         private async Task<int> GetStreakForUserAsync(int userId)
