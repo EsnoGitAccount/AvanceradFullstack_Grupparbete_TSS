@@ -1,4 +1,5 @@
-﻿using Backend.Repositories.IRepositories;
+﻿using Backend.Dto;
+using Backend.Repositories.IRepositories;
 using Backend.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,27 @@ namespace Backend.Controllers
             });
 
             return Ok(dailyCity);
+        }
+
+        private void ClearCacheForDate(DateOnly date)
+        {
+            var cacheKey = $"DailyChallenge_{date:yyyy-MM-dd}";
+            _cache.Remove(cacheKey);
+        }
+
+        private void ClearCacheForToday()
+        {
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+            ClearCacheForDate(today);
+        }
+
+        private void EditCacheForDate(DateOnly date, DailyChallangeDto updatedChallenge)
+        {
+            var cacheKey = $"DailyChallenge_{date:yyyy-MM-dd}";
+            _cache.Set(cacheKey, updatedChallenge, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = new DateTimeOffset(DateTime.UtcNow.Date.AddDays(1))
+            });
         }
     }
 }
