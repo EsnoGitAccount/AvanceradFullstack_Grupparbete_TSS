@@ -2,6 +2,7 @@
 using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Backend.Services.IServices;
+using Backend.Exceptions;
 
 namespace Backend.Services
 {
@@ -22,6 +23,11 @@ namespace Backend.Services
             if(todaysChallenge == null)
             {
                 throw new InvalidOperationException("No daily challenge found for today.");
+            }
+
+            if (todaysChallenge.City.IsArchived)
+            {
+                throw new ConflictException("This challenge is currently unavailable.");
             }
 
             var game = new Game
