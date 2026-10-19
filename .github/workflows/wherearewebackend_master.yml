@@ -27,12 +27,16 @@ jobs:
       - name: Build with dotnet
         run: dotnet build ./Backend.Tests/Backend.Tests.csproj --configuration Release
 
+      - name: Get npm cache path
+        id: npm-cache
+        shell: powershell
+        run: echo "dir=$(npm config get cache)" >> $env:GITHUB_OUTPUT
+
       - name: Cache npm
         uses: actions/cache@v4
         with:
-          path: ~/.npm
+          path: ${{ steps.npm-cache.outputs.dir }}
           key: ${{ runner.os }}-azurite-3.37.0
-
       - name: Install Azurite
         shell: bash
         run: npx --yes --loglevel info azurite@3.37.0 --version
