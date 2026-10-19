@@ -43,14 +43,14 @@ namespace Backend.Controllers
 			return Ok(updatedCity);
 		}
 
-		[HttpDelete("{id}")]
-		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> DeleteCity(int id)
-		{
-			await _cityService.DeleteCityAsync(id);
+		//[HttpDelete("{id}")]
+		//[Authorize(Roles = "Admin")]
+		//public async Task<IActionResult> DeleteCity(int id)
+		//{
+		//	await _cityService.DeleteCityAsync(id);
 
-			return NoContent();
-		}
+		//	return NoContent();
+		//}
 
 	}
 }
