@@ -27,13 +27,19 @@ jobs:
       - name: Build with dotnet
         run: dotnet build ./Backend.Tests/Backend.Tests.csproj --configuration Release
 
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-azurite-3.37.0
+
       - name: Install Azurite
         shell: bash
-        run: npx --yes --loglevel info azurite --version
-  
+        run: npx --yes --loglevel info azurite@3.37.0 --version
+
       - name: Start Azurite
         shell: bash
-        run: npx --yes azurite --silent --inMemoryPersistence --skipApiVersionCheck &
+        run: npx --yes azurite@3.37.0 --silent --inMemoryPersistence --skipApiVersionCheck &
 
       - name: Test with dotnet
         run: dotnet test ./Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --no-restore --verbosity normal
