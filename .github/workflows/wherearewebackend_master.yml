@@ -31,23 +31,14 @@ jobs:
         shell: bash
         run: npx --yes --loglevel info azurite --version
   
-      - name: Test with Azurite
+    
+      - name: Install Azurite
         shell: bash
-        run: |
-          npx --yes azurite --inMemoryPersistence --skipApiVersionCheck &
+        run: npx --yes --loglevel info azurite --version
 
-            for i in {1..15}; do
-              if curl -s http://127.0.0.1:10000 > /dev/null; then
-              echo "Azurite is ready"
-            break
-            fi
+      - name: Start Azurite
+        shell: bash
+        run: npx --yes azurite --silent --inMemoryPersistence --skipApiVersionCheck &
 
-            echo "Waiting for Azurite..."
-            sleep 1
-            done
-
-          dotnet test ./Backend.Tests/Backend.Tests.csproj \
-          --configuration Release \
-          --no-build \
-          --no-restore \
-          --verbosity normal
+      - name: Test with dotnet
+        run: dotnet test ./Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --no-restore --verbosity normal
