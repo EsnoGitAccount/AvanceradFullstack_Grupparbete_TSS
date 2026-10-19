@@ -36,16 +36,10 @@ namespace Backend.Controllers
             return Ok(dailyCity);
         }
 
-        private void ClearCacheForDate(DateOnly date)
-        {
-            var cacheKey = $"DailyChallenge_{date:yyyy-MM-dd}";
-            _cache.Remove(cacheKey);
-        }
-
         private void ClearCacheForToday()
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
-            ClearCacheForDate(today);
+            _cache.Remove($"DailyChallenge_{today:yyyy-MM-dd}");
         }
 
         private void EditCacheForDate(DateOnly date, DailyChallangeDto updatedChallenge)
