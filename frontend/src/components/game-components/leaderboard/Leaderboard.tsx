@@ -10,9 +10,12 @@ import './Leaderboard.css'
 
 export default function Leaderboard() {
     const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
+    const [today, setToday] = useState('');
   
     useEffect(() => {
         const fetchLeaderboard = async () => {
+            setToday(new Date().toLocaleDateString('sv-SE'));
+
             try {
                 const data = await getLeaderboard();
                 setLeaderboardData(data);
@@ -37,7 +40,7 @@ export default function Leaderboard() {
                     </p>
                 </div>
                 <div className="leaderboard-page__date-badge">
-                    {new Date(Date.now()).toLocaleDateString('sv-SE')} · {leaderboardData.length} resenärer
+                    {today} · {leaderboardData.length} resenärer
                 </div>
             </div>
 
