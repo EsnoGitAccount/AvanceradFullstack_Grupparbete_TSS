@@ -31,10 +31,9 @@ jobs:
         shell: bash
         run: npx --yes --loglevel info azurite --version
   
-      - name: Start Azurite
+      - name: Test with Azurite
         shell: bash
-        run: npx --yes azurite --silent --inMemoryPersistence --skipApiVersionCheck & 
-            
-      - name: Test with dotnet
-        run: dotnet test ./Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --no-restore --verbosity normal
-  
+        run: |
+          npx --yes azurite --silent --inMemoryPersistence --skipApiVersionCheck &
+          sleep 3
+          dotnet test ./Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --no-restore --verbosity normal
