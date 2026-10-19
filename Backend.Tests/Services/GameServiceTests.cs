@@ -29,14 +29,17 @@ namespace Backend.Tests.Services
             };
 
             var mockRepo = new Mock<IGameRepository>();
-            var secondMockRepo = new Mock<IDailyChallengeRepository>(); //appease the args
+            var dailyChallengeMockRepo = new Mock<IDailyChallengeRepository>(); //appease the args
+            var userMockRepo = new Mock<IUserRepository>(); //appease the args
 
             secondMockRepo.Setup(r => r.GetChallengeForDate(It.IsAny<DateOnly>()))
                 .ReturnsAsync(todaysChallenge);
 
+            userMockRepo.Setup(r => r.GetUserByIdAsync(It.IsAny<int>())).ReturnsAsync(new User { UserName = "player1" });
+
             mockRepo.Setup(r => r.CreateGameAsync(It.IsAny<Game>())).ReturnsAsync(true);
 
-            var service = new GameService(mockRepo.Object, secondMockRepo.Object);
+            var service = new GameService(mockRepo.Object, dailyChallengeMockRepo.Object, userMockRepo.Object);
 
             // Act
             await service.CreateGameAsync(gameDto);
