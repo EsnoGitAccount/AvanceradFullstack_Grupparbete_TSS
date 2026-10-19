@@ -132,8 +132,8 @@ function QuestionPage() {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="info-card__stats-content">
-                                    <div className="info-card__score">0 / 50</div>
-                                    <div className="info-card__remaining">50 p</div>
+                                    <div className="info-card__score">{score} / 30</div>
+                                    <div className="info-card__remaining">{30 - score} p</div>
                                 </CardContent>
                             </Card>
 
@@ -148,7 +148,7 @@ function QuestionPage() {
                                 </CardHeader>
                                 <CardContent>
                                     <p className="info-card__footer-text">
-                                        5 stopp · Max 50 poäng · Ingen tidspress
+                                        3 stopp · Max 30 poäng · Ingen tidspress
                                     </p>
                                 </CardContent>
                             </Card>
