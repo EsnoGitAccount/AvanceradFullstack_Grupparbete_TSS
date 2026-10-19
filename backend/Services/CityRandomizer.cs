@@ -4,7 +4,7 @@
     {
         public int? SelectNextCityId(IEnumerable<int> recentCityIds, int totalCities)
         {
-            if(totalCities <= 0)
+            if (totalCities <= 0)
             {
                 return null;
             }
@@ -25,7 +25,7 @@
                 availableCityIds = Enumerable.Range(1, totalCities).ToList();
                 var lastCityId = recentCityIds?.LastOrDefault();
 
-                if(lastCityId.HasValue && totalCities > 1)
+                if (lastCityId.HasValue && totalCities > 1)
                 {
                     availableCityIds.Remove(lastCityId.Value);
                 }

@@ -74,13 +74,13 @@ namespace Backend
             services.AddScoped<ICookieService, CookieService>();
 
             // JWT
-            var jwtIssuer = configuration["Jwt:Issuer"] ?? 
+            var jwtIssuer = configuration["Jwt:Issuer"] ??
                 throw new InvalidOperationException("Jwt:Issuer is missing.");
 
-            var jwtAudience = configuration["Jwt:Audience"] ?? 
+            var jwtAudience = configuration["Jwt:Audience"] ??
                 throw new InvalidOperationException("Jwt:Audience is missing.");
 
-            var jwtSigningKey = configuration["Jwt:SigningKey"] ?? 
+            var jwtSigningKey = configuration["Jwt:SigningKey"] ??
                 throw new InvalidOperationException("Jwt:SigningKey is missing.");
 
             // Ensure the signing key is at least 32 bytes for HMAC-SHA256
