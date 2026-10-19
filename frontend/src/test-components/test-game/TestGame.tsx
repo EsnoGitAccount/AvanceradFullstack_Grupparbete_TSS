@@ -19,8 +19,6 @@ import {
 import { Input } from '@/components/ui/Input'
 
 import './TestGame.css'
-import { useFetcher } from 'react-router'
-
 type QuestionProps = {
   onComplete: (score: number) => void
 }
@@ -57,7 +55,7 @@ function WhereAreWe({ onComplete, clues, correctCity }: WhereAreWeProps) {
     <div>
       {clues.map((clue) => (
         clue.point >= currentScore &&
-        <div>
+        <div key={clue.point}>
           <p>För {clue.point} poäng:</p>
           <p>{clue.clueText}</p>
         </div>
