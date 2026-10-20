@@ -48,7 +48,7 @@ namespace Backend.Services
             }
         }
 
-        public async Task<IEnumerable<ReusltDto>> GetResultsForDateAsync(DateOnly? date)
+        public async Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date)
         {
             var dateToUse = date ?? DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -57,7 +57,7 @@ namespace Backend.Services
                 .OrderByDescending(g => g.TotalScore)
                 .ToList();
             
-            var results = new List<ReusltDto>();
+            var results = new List<ResultDto>();
 
             //If we have 10 or less results for the date, we will check for streaks for each user
             if (topList.Count() <= 10)
@@ -67,7 +67,7 @@ namespace Backend.Services
                     //skip if the userId is null, as we cannot get a streak for a guest user
                     if (result.UserId == null)
                     {
-                        results.Add(new ReusltDto
+                        results.Add(new ResultDto
                         {
                             UserName = result.UserName,
                             FinalScore = result.TotalScore,
@@ -80,7 +80,7 @@ namespace Backend.Services
                     var currentStreak = await GetStreakForUserAsync(result.UserId.Value);
                     var user = await _userRepository.GetUserByIdAsync(result.UserId.Value);
 
-                    results.Add(new ReusltDto
+                    results.Add(new ResultDto
                     {
                         UserName = user?.UserName ?? result.UserName, 
                         FinalScore = result.TotalScore,
@@ -115,7 +115,7 @@ namespace Backend.Services
                     if (result.UserId == null || (i >= 10 && !isCurrentUser))
                     {
                         //create result with streak = null and add to results list
-                        results.Add(new ReusltDto
+                        results.Add(new ResultDto
                         {
                             UserName = user?.UserName ?? result.UserName,
                             FinalScore = result.TotalScore,
@@ -128,7 +128,7 @@ namespace Backend.Services
 
                     var currentStreak = await GetStreakForUserAsync(result.UserId.Value);
 
-                    results.Add(new ReusltDto
+                    results.Add(new ResultDto
                     {
                         UserName = user?.UserName ?? result.UserName,
                         FinalScore = result.TotalScore,
@@ -146,7 +146,7 @@ namespace Backend.Services
             int prevRank = 1;
             decimal prevScore = -1;
 
-            var displayResults = new List<ReusltDto>();
+            var displayResults = new List<ResultDto>();
 
             foreach (var result in completeRanking)
             {

@@ -7,6 +7,6 @@ namespace Backend.Services.IServices
     {
         Task CreateGameAsync(GameDto gameDto);
 
-        Task<IEnumerable<ReusltDto>> GetResultsForDateAsync(DateOnly? date);
+        Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date);
     }
 }

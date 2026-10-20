@@ -1,6 +1,6 @@
 ﻿namespace Backend.Dto
 {
-    public class ReusltDto
+    public class ResultDto
     {
         public string UserName { get; set; } //This will be either inputted name or extracted from the user's profile
         public decimal FinalScore { get; set; }
