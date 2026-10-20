@@ -56,6 +56,7 @@ namespace Backend.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = "Admin")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> CreateCity([FromForm] CityCreateDto cityDto)
 		{
 			var createdCity = await _cityService.CreateCityAsync(cityDto);
@@ -66,6 +67,7 @@ namespace Backend.Controllers
 
 		[HttpPut("{id}")]
 		[Authorize(Roles = "Admin")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> UpdateCity(int id, [FromForm] CityUpdateDto cityDto)
 		{
 			var updatedCity = await _cityService.UpdateCityAsync(id, cityDto);

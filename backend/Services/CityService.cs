@@ -171,9 +171,11 @@ namespace Backend.Services
 				throw new NotFoundException("City not found");
 			}
 
-			if (city.Name != cityDto.Name)
+			var trimmedCityName = cityDto.Name.Trim();
+
+			if (city.Name != trimmedCityName)
 			{
-				var cityExists = await _cityRepository.GetCityByNameAsync(cityDto.Name);
+				var cityExists = await _cityRepository.GetCityByNameAsync(trimmedCityName);
 
 				if (cityExists)
 				{
@@ -181,12 +183,12 @@ namespace Backend.Services
 				}
 			}
 
-			if (city.Name == cityDto.Name && cityDto.CityPicture == null)
+			if (city.Name == trimmedCityName && cityDto.CityPicture == null)
 			{
 				return MapToCityDto(city);
 			}
 
-			city.Name = cityDto.Name;
+			city.Name = trimmedCityName;
 			var oldPictureUrl = city.CityPicture;
 
 			string? newPicture = null;
