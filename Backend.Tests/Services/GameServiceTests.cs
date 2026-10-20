@@ -22,21 +22,17 @@ namespace Backend.Tests.Services
                 FinalScore = 99.5m,
                 CompletedAt = DateOnly.FromDateTime(new DateTime(2026, 10, 01))
             };
-            var todaysChallenge = new DailyChallangeDto
+            var todaysChallenge = new DailyChallange
             {
-                CityDetails = new CityDetailsDto
-                {
-                    CityName = "TestCity",
-                    Clues = new List<ClueDto>(),
-                    Questions = new List<QuestionDto>()
-                }
+                DailyChallangeId = 1,
+                City = new City { CityId = 1, Name = "TestCity", IsArchived = false }
             };
 
             var mockRepo = new Mock<IGameRepository>();
             var secondMockRepo = new Mock<IDailyChallengeRepository>(); //appease the args
 
             secondMockRepo.Setup(r => r.GetChallengeForDate(It.IsAny<DateOnly>()))
-                .ReturnsAsync(new DailyChallange { DailyChallangeId = 1 });
+                .ReturnsAsync(todaysChallenge);
 
             mockRepo.Setup(r => r.CreateGameAsync(It.IsAny<Game>())).ReturnsAsync(true);
 
@@ -50,7 +46,8 @@ namespace Backend.Tests.Services
                 g.UserName == gameDto.UserName &&
                 g.UserId == gameDto.UserId &&
                 g.TotalScore == (int)gameDto.FinalScore &&
-                g.CompletedAt == gameDto.CompletedAt
+                g.CompletedAt == gameDto.CompletedAt &&
+                g.DailyChallangeId == todaysChallenge.DailyChallangeId
             )), Times.Once);
         }
     }
