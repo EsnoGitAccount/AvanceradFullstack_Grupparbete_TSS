@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LoaderCircle } from "lucide-react"
 import SiteHeader from '@/components/site-header/SiteHeader'
 import SiteFooter from '@/components/site-footer/SiteFooter'
-import './QuestionPage.css'
+import './QuestionDestination.css'
 import { ProgressStepper } from '@/components/ui/Progressbar'
 
 /**
@@ -16,7 +16,7 @@ import { ProgressStepper } from '@/components/ui/Progressbar'
  * 3. Update ProgressStepper to reflect overall game progress instead of resetting to 0 on this page.
  */
 
-function QuestionPage() {
+function QuestionDestination() {
     const [challenge, setChallenge] = useState<DailyChallenge | null>(null)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
     const [selectedOption, setSelectedOption] = useState<string | null>(null)
@@ -163,4 +163,4 @@ function QuestionPage() {
     )
 }
 
-export default QuestionPage
+export default QuestionDestination
