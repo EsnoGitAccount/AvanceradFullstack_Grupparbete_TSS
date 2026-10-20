@@ -6,17 +6,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LoaderCircle } from "lucide-react"
 import SiteHeader from '@/components/site-header/SiteHeader'
 import SiteFooter from '@/components/site-footer/SiteFooter'
-import './QuestionDestination.css'
+import './questionDestination.css'
 import { ProgressStepper } from '@/components/ui/Progressbar'
 
-/**
+/*
  * TODO (Game Flow):
  * 1. Connect this page with the initial phase of the game 
  * 2. Receive starting score from previous steps and carry it over
  * 3. Update ProgressStepper to reflect overall game progress instead of resetting to 0 on this page.
  */
 
-function QuestionDestination() {
+export default function QuestionDestination() {
     const [challenge, setChallenge] = useState<DailyChallenge | null>(null)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
     const [selectedOption, setSelectedOption] = useState<string | null>(null)
@@ -43,6 +43,7 @@ function QuestionDestination() {
         return (
             <div className="question-page">
                 <SiteHeader />
+                {/* Remove main element */}
                 <main className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
                     <LoaderCircle className="w-8 h-8 animate-spin text-[var(--primary)]" />
                     <p className="text-sm font-medium text-[var(--muted-foreground)]">
@@ -85,7 +86,7 @@ function QuestionDestination() {
         <div className="question-page">
             <SiteHeader />
             <ProgressStepper currentStep={currentQuestionIndex} totalSteps={4} />
-
+            {/* Remove main element */}
             <main className="question-page__main">
                 <section className="question-page__hero">
                     <div className="question-page__grid">
@@ -163,4 +164,3 @@ function QuestionDestination() {
     )
 }
 
-export default QuestionDestination

@@ -4,7 +4,7 @@ import HomePage from './pages/home-page/HomePage'
 import TestPage from './test-pages/TestPage'
 import ErrorTestPage from './pages/error-test-page/ErrorTestPage';
 import NotFoundPage from './pages/not-found-page/NotFoundPage';
-import QuestionDestination from './components/game-components/question-destination/QuestionDestination';
+import QuestionDestination from './components/game-components/question-destination/questionDestination';
 
 function App() {
   return (
