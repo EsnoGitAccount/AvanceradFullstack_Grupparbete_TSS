@@ -1,7 +1,9 @@
-﻿using Backend.Repositories.IRepositories;
+﻿using Backend.Dto;
+using Backend.Repositories.IRepositories;
 using Backend.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Backend.Controllers
 {
@@ -9,21 +11,44 @@ namespace Backend.Controllers
     [ApiController]
     public class DailyChallengeController : ControllerBase
     {
+        private readonly IMemoryCache _cache;
         private readonly IDailyChallengeService _dailyChallengeService;
-        public DailyChallengeController(IDailyChallengeService dailyChallengeService)
+        public DailyChallengeController(IDailyChallengeService dailyChallengeService, IMemoryCache cache)
         {
             _dailyChallengeService = dailyChallengeService;
+            _cache = cache;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDailyCity(DateOnly? date)
+        public async Task<IActionResult> GetDailyCity([FromQuery] DateOnly? date)
         {
-            if (date == null)
+            var now = DateTime.UtcNow;
+            var challengeDate = date ?? DateOnly.FromDateTime(now);
+
+            var cacheKey = $"DailyChallenge_{challengeDate:yyyy-MM-dd}";
+
+            var dailyCity = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
-                date = DateOnly.FromDateTime(DateTime.UtcNow.Date);
-            }
-            var dailyCity = await _dailyChallengeService.GetChallengeForDateAsync(date.Value);
+                entry.AbsoluteExpiration = new DateTimeOffset(now.Date.AddDays(1));
+                return await _dailyChallengeService.GetChallengeForDateAsync(challengeDate);
+            });
+
             return Ok(dailyCity);
+        }
+
+        private void ClearCacheForToday()
+        {
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+            _cache.Remove($"DailyChallenge_{today:yyyy-MM-dd}");
+        }
+
+        private void EditCacheForDate(DateOnly date, DailyChallangeDto updatedChallenge)
+        {
+            var cacheKey = $"DailyChallenge_{date:yyyy-MM-dd}";
+            _cache.Set(cacheKey, updatedChallenge, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = new DateTimeOffset(DateTime.UtcNow.Date.AddDays(1))
+            });
         }
     }
 }
