@@ -29,7 +29,7 @@ namespace Backend.Tests.Services
             };
 
             var mockRepo = new Mock<IGameRepository>();
-            var dailyChallengeMockRepo = new Mock<IDailyChallengeRepository>(); //appease the args
+            var secondMockRepo = new Mock<IDailyChallengeRepository>(); //appease the args
             var userMockRepo = new Mock<IUserRepository>(); //appease the args
 
             secondMockRepo.Setup(r => r.GetChallengeForDate(It.IsAny<DateOnly>()))
@@ -39,7 +39,7 @@ namespace Backend.Tests.Services
 
             mockRepo.Setup(r => r.CreateGameAsync(It.IsAny<Game>())).ReturnsAsync(true);
 
-            var service = new GameService(mockRepo.Object, dailyChallengeMockRepo.Object, userMockRepo.Object);
+            var service = new GameService(mockRepo.Object, secondMockRepo.Object, userMockRepo.Object);
 
             // Act
             await service.CreateGameAsync(gameDto);
