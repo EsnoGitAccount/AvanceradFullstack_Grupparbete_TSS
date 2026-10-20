@@ -63,7 +63,18 @@ namespace Backend.Services
 			return MapToCityDto(city);
 		}
 
-		public async Task<bool> DeleteCityAsync(int cityId)
+        public async Task<List<int>> GetActiveCityIdsAsync()
+        {
+            return await _cityRepository.GetActiveCityIdsAsync();
+        }
+        public async Task<IEnumerable<CityDto>> GetActiveCitiesAsync()
+        {
+            var cities = await _cityRepository.GetActiveCitiesAsync();
+
+            return cities.Select(MapToCityDto);
+        }
+
+        public async Task<bool> DeleteCityAsync(int cityId)
 		{
 			var city = await _cityRepository.GetCityByIdAsync(cityId);
 
@@ -92,6 +103,46 @@ namespace Backend.Services
 
 			return result;
 		}
+
+		public async Task ArchiveCityAsync(int cityId)
+		{
+            var city = await _cityRepository.GetCityByIdAsync(cityId) ?? 
+				throw new NotFoundException("City not found");
+
+			if (city.IsArchived)
+			{
+				return;
+			}
+
+			city.IsArchived = true;
+
+			var saved = await _cityRepository.SaveChangesAsync();
+
+			if (!saved)
+			{
+                throw new InvalidOperationException("Failed to archive city");
+            }
+        }
+
+		public async Task RestoreCityAsync(int cityId)
+		{
+            var city = await _cityRepository.GetCityByIdAsync(cityId) ?? 
+				throw new NotFoundException("City not found");
+
+			if (!city.IsArchived)
+			{
+				return;
+			}
+
+			city.IsArchived = false;
+
+			var saved = await _cityRepository.SaveChangesAsync();
+
+			if (!saved)
+			{
+                throw new InvalidOperationException("Failed to restore city");
+            }
+        }
 
 		public async Task<IEnumerable<CityDto>> GetAllCitiesAsync()
 		{
