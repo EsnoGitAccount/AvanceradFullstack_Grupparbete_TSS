@@ -60,6 +60,15 @@ namespace Backend.Repositories
 				.FirstOrDefaultAsync(c => c.Name == cityName) != null;
 		}
 
+		public async Task<City?> GetCityWithQuestionsAsync(int cityId)
+		{
+    		return await _context.Cities
+        		.Include(city => city.Questions)
+            	.ThenInclude(question => question.Options)
+        		.FirstOrDefaultAsync(city => city.CityId == cityId);
+		}
+
+		
 		public async Task<bool> SaveChangesAsync()
 		{
 			return await _context.SaveChangesAsync() > 0;

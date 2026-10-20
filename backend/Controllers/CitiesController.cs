@@ -75,6 +75,25 @@ namespace Backend.Controllers
 			return Ok(updatedCity);
 		}
 
+		[HttpPut("{cityId:int}/questions")]
+		[Authorize(Roles = "Admin")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UpdateCityQuestions(int cityId, [FromBody] CityQuestionsUpdateDto updateDto)
+		{
+			await _cityService.UpdateCityQuestionsAsync(cityId, updateDto);
+
+			return NoContent();
+		}
+		
+		[HttpGet("{cityId:int}/questions")]
+		[Authorize(Roles = "Admin")]
+		public async Task<ActionResult<CityQuestionsUpdateDto>> GetCityQuestionsForEdit(int cityId)
+		{
+			var questions = await _cityService
+				.GetCityQuestionsForEditAsync(cityId);
+
+			return Ok(questions);
+		}
 		//[HttpDelete("{id}")]
 		//[Authorize(Roles = "Admin")]
 		//public async Task<IActionResult> DeleteCity(int id)
