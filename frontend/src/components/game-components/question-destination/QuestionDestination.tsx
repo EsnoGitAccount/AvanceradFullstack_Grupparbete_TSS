@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { getDailyChallenge } from '@/services/GameService'
+import { useState } from 'react'
 import type { DailyChallenge } from '@/models/DailyChallenge'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
@@ -16,49 +15,55 @@ import { ProgressStepper } from '@/components/ui/Progressbar'
  * 3. Update ProgressStepper to reflect overall game progress instead of resetting to 0 on this page.
  */
 
-export default function QuestionDestination() {
+import type { Question } from '@/models/City'
+
+type QuestionDestinationProps = {
+    onComplete: (score: number) => void
+    questions: Question[]
+}
+
+export default function QuestionDestination({ onComplete, questions }: QuestionDestinationProps) {
     const [challenge, setChallenge] = useState<DailyChallenge | null>(null)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
     const [selectedOption, setSelectedOption] = useState<string | null>(null)
-    const [loading, setLoading] = useState<boolean>(true)
+    const [loading, setLoading] = useState<boolean>(false)
     const [score, setScore] = useState<number>(0)
 
+    const [challengeQuestions, setChallengeQuestions] = useState<Question[]>(questions)
+
     // Get daily challenge
-    useEffect(() => {
-        async function loadChallenge() {
-            try {
-                const data = await getDailyChallenge()
-                setChallenge(data)
-            } catch (error) {
-                console.error("Kunde inte hämta dagsutmaningen:", error)
-            } finally {
-                setLoading(false)
-            }
-        }
-        loadChallenge()
-    }, [])
+    // useEffect(() => {
+    //     async function loadChallenge() {
+    //         try {
+    //             const data = await getDailyChallenge()
+    //             setChallenge(data)
+    //         } catch (error) {
+    //             console.error("Kunde inte hämta dagsutmaningen:", error)
+    //         } finally {
+    //             setLoading(false)
+    //         }
+    //     }
+    //     loadChallenge()
+    // }, [])
 
     // Loading circle
     if (loading) {
         return (
             <div className="question-page">
                 <SiteHeader />
-                {/* Remove main element */}
-                <main className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+                <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
                     <LoaderCircle className="w-8 h-8 animate-spin text-[var(--primary)]" />
                     <p className="text-sm font-medium text-[var(--muted-foreground)]">
                         Laddar dagsutmaningen...
                     </p>
-                </main>
+                </div>
                 <SiteFooter />
             </div>
         )
     }
 
-    if (!challenge) return <div>Kunde inte hitta någon utmaning för idag.</div>
-
     // Get the active question based on the current index
-    const currentQuestion = challenge.cityDetails.questions[currentQuestionIndex]
+    const currentQuestion = challengeQuestions[currentQuestionIndex]
 
     const handleSelectOption = (optionText: string, isCorrect: boolean) => {
         setSelectedOption(optionText)
@@ -70,24 +75,20 @@ export default function QuestionDestination() {
         }
 
         setTimeout(() => {
-            if (currentQuestionIndex < challenge.cityDetails.questions.length - 1) {
+            if (currentQuestionIndex < challengeQuestions.length - 1) {
                 setCurrentQuestionIndex((prev) => prev + 1)
                 setSelectedOption(null)
             } else {
                 console.log("Alla frågor besvarade! Slutgiltig poäng:", newScore)
-
-                // TODO: Connect to the leaderboard page and pass the final score
-
+                onComplete(score);
             }
         }, 400)
     }
 
     return (
         <div className="question-page">
-            <SiteHeader />
             <ProgressStepper currentStep={currentQuestionIndex} totalSteps={4} />
-            {/* Remove main element */}
-            <main className="question-page__main">
+            <div className="question-page__main">
                 <section className="question-page__hero">
                     <div className="question-page__grid">
 
@@ -95,7 +96,8 @@ export default function QuestionDestination() {
                             <Card className="question-card">
                                 <CardHeader>
                                     <p className="question-card__eyebrow">
-                                        STOPP 0{currentQuestionIndex + 1} · {challenge.cityDetails.cityName.toUpperCase()}
+                                        {/*TO DO: Dynamically write city name instead of hardcoding "Stockholm"*/}
+                                        STOPP 0{currentQuestionIndex + 1} · {"Stockholm"}
                                     </p>
                                     <CardTitle className="question-card__title">
                                         {currentQuestion.questionText}
@@ -157,9 +159,7 @@ export default function QuestionDestination() {
 
                     </div>
                 </section>
-            </main>
-
-            <SiteFooter />
+            </div>
         </div>
     )
 }
