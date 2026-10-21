@@ -136,10 +136,10 @@ public class LeaderboardService(
             if (sorted[i].FinalScore != previousScore)
             {
                 rank = i + 1;
-
-                sorted[i].Rank = rank;
-                previousScore = sorted[i].FinalScore;
             }
+
+            sorted[i].Rank = rank;
+            previousScore = sorted[i].FinalScore;            
         }
 
         return sorted;
