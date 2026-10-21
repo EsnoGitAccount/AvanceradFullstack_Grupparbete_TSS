@@ -74,7 +74,7 @@ export default function Leaderboard() {
                 </div>
                 {data && (
                 <div className="leaderboard-page__date-badge">
-                    {data.date} resenärer
+                    {period === 'daily' ? data.dailyCount : data.allTimeCount} resenärer
                 </div>
                 )}
             </div>

@@ -91,6 +91,10 @@ public class LeaderboardService(
         return new LeaderboardDto
         {
             Date = today,
+
+            DailyCount = dailyResults.Count,
+            AllTimeCount = allTimeResults.Count,
+
             DailyTop10 = dailyResults.Take(10).ToList(),
             AllTimeTop10 = allTimeResults.Take(10).ToList(),
             CurrentUser = currentUser
