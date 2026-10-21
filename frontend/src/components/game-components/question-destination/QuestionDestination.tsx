@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
-import './questionDestination.css'
+import './QuestionDestination.css'
 import { ProgressStepper } from '@/components/ui/Progressbar'
 
 /*
