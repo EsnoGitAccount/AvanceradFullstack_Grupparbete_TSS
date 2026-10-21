@@ -31,7 +31,24 @@ namespace Backend.Repositories
 				.ToListAsync();
 		}
 
-		public async Task<City?> GetCityByIdAsync(int cityId)
+        public async Task<List<int>> GetActiveCityIdsAsync()
+        {
+            return await _context.Cities
+                .Where(city => !city.IsArchived)
+                .OrderBy(city => city.CityId)
+                .Select(city => city.CityId)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<City>> GetActiveCitiesAsync()
+        {
+            return await _context.Cities
+                .AsNoTracking()
+                .Where(city => !city.IsArchived)
+                .OrderBy(city => city.CityId)
+                .ToListAsync();
+        }
+
+        public async Task<City?> GetCityByIdAsync(int cityId)
 		{
 			return await _context.Cities
 				.FirstOrDefaultAsync(c => c.CityId == cityId);

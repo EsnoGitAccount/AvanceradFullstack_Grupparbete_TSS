@@ -8,7 +8,6 @@ namespace Backend.Dto
 		[MaxLength(100)]
 		public string Name { get; set; } = null!;
 
-		[Required]
 		public IFormFile? CityPicture { get; set; }
 	}
 }

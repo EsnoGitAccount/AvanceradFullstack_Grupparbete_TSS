@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Backend.Services.IServices;
 using Backend.Dto;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -16,16 +16,47 @@ namespace Backend.Controllers
 			_cityService = cityService;
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> GetAllCities()
-		{
-			var cities = await _cityService.GetAllCitiesAsync();
+        [HttpGet]
+        public async Task<IActionResult> GetActiveCities()
+        {
+            var cities = await _cityService.GetActiveCitiesAsync();
+
+            return Ok(cities);
+        }
+
+        // Admin only endpoints 
+        [HttpPost("{cityId:int}/archive")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ArchiveCity(int cityId)
+        {
+            await _cityService.ArchiveCityAsync(cityId);
+
+            return NoContent();
+        }
+
+        [HttpPost("{cityId:int}/restore")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RestoreCity(int cityId)
+        {
+            await _cityService.RestoreCityAsync(cityId);
+
+            return NoContent();
+        }
+
+        [HttpGet("admin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllCities()
+        {
+            var cities = await _cityService.GetAllCitiesAsync();
 
 			return Ok(cities);
 		}
 
 		[HttpPost]
 		[Authorize(Roles = "Admin")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> CreateCity([FromForm] CityCreateDto cityDto)
 		{
 			var createdCity = await _cityService.CreateCityAsync(cityDto);
@@ -36,6 +67,7 @@ namespace Backend.Controllers
 
 		[HttpPut("{id}")]
 		[Authorize(Roles = "Admin")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> UpdateCity(int id, [FromForm] CityUpdateDto cityDto)
 		{
 			var updatedCity = await _cityService.UpdateCityAsync(id, cityDto);

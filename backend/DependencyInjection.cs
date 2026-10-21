@@ -42,6 +42,7 @@ namespace Backend
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IDailyChallengeRepository, DailyChallengeRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // Blob storage service
             services.AddSingleton<IBlobStorageService, BlobStorageService>();
@@ -72,6 +73,7 @@ namespace Backend
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICookieService, CookieService>();
+            services.AddScoped<ILeaderboardService, LeaderboardService>();
 
             // JWT
             var jwtIssuer = configuration["Jwt:Issuer"] ?? 
