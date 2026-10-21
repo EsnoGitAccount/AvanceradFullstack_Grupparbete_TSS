@@ -5,6 +5,7 @@ import TestPage from './test-pages/TestPage'
 import ErrorTestPage from './pages/error-test-page/ErrorTestPage';
 import NotFoundPage from './pages/not-found-page/NotFoundPage';
 import QuestionDestination from './components/game-components/question-destination/QuestionDestination';
+import StartGameTest from './test-components/start-game-test/StartGameTest';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/leaderboard" element={<LeaderboardPage />} />
       <Route path="/destination-question" element={<QuestionDestination />} />
       <Route path="/errortesting" element={<ErrorTestPage />} />
+      <Route path="/testgame" element={<StartGameTest />} />
       <Route path='/*' element={<NotFoundPage />} />
     </Routes>
   );
