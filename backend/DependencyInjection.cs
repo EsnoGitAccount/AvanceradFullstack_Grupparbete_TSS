@@ -73,6 +73,7 @@ namespace Backend
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICookieService, CookieService>();
+            services.AddScoped<ILeaderboardService, LeaderboardService>();
 
             // JWT
             var jwtIssuer = configuration["Jwt:Issuer"] ?? 
