@@ -29,7 +29,7 @@ export default function QuestionDestination({ onComplete, questions }: QuestionD
     const [loading, setLoading] = useState<boolean>(false)
     const [score, setScore] = useState<number>(0)
 
-    const [challengeQuestions, setChallengeQuestions] = useState<Question[]>(questions)
+    const [challengeQuestions] = useState<Question[]>(questions)
 
     // Get daily challenge
     // useEffect(() => {
@@ -80,7 +80,7 @@ export default function QuestionDestination({ onComplete, questions }: QuestionD
                 setSelectedOption(null)
             } else {
                 console.log("Alla frågor besvarade! Slutgiltig poäng:", newScore)
-                onComplete(score);
+                onComplete(newScore);
             }
         }, 400)
     }
@@ -156,7 +156,6 @@ export default function QuestionDestination({ onComplete, questions }: QuestionD
                                 </CardContent>
                             </Card>
                         </div>
-
                     </div>
                 </section>
             </div>
