@@ -14,8 +14,8 @@ public class LeaderboardService(
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         var games = await gameRepository.GetAllGamesAsync();
 
-        // Registrerade spelare får ett resultat per dag.
-        // Varje gästspel behandlas separat.
+        // Registered players receive a streak for each consecutive day they have played, including today.
+        // Guestplayers do not receive a streak and are not included in the all-time leaderboard.
         var dailyBest = games
             .Where(g => g.CompletedAt <= today)
             .GroupBy(g => new
@@ -49,7 +49,7 @@ public class LeaderboardService(
                     currentUserId,
                     streaks)));
 
-        // Gästnamn kan inte identifiera samma person mellan dagar.
+        // Guests are not included in the all-time leaderboard, only registered players.
         var allTimeResults = Rank(
             dailyBest
                 .Where(g => g.UserId.HasValue)
@@ -107,7 +107,7 @@ public class LeaderboardService(
         {
             UserName = game.User?.UserName
                 ?? game.UserName
-                ?? "Gäst",
+                ?? "Guest",
 
             FinalScore = score,
 
@@ -134,10 +134,12 @@ public class LeaderboardService(
         for (var i = 0; i < sorted.Count; i++)
         {
             if (sorted[i].FinalScore != previousScore)
+            {
                 rank = i + 1;
 
-            sorted[i].Rank = rank;
-            previousScore = sorted[i].FinalScore;
+                sorted[i].Rank = rank;
+                previousScore = sorted[i].FinalScore;
+            }
         }
 
         return sorted;
