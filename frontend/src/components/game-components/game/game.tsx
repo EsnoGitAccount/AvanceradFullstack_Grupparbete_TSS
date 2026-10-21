@@ -4,7 +4,7 @@ import axios from "axios";
 import { LoaderCircle } from "lucide-react"
 
 // Components
-import QuestionDestination from "../question-destination/questionDestination"
+import QuestionDestination from "@/components/game-components/question-destination/questionDestination"
 import WhereAreWe from "../where-are-we/whereAreWe"
 import { Button } from "../../ui/Button"
 import { Input } from "../../ui/Input"
