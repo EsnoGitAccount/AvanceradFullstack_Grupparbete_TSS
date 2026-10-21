@@ -158,8 +158,7 @@ export default function Leaderboard() {
                             </div>
 
                             <p className="leaderboard-page__footnote">
-                                {' '}
-                                {isDaily ? 'Listan uppdateras när en resa slutförs.' : 'Listan uppdateras när en resa slutförs.'}
+                                Listan uppdateras när en resa slutförs.
                             </p>
                         </CardContent>
                     </Card>
