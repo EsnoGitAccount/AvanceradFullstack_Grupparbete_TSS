@@ -3,6 +3,7 @@ using Backend.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
@@ -20,6 +21,17 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> PostGame([FromBody] GameDto gameDto)
         {
+            gameDto.UserId = null;
+
+            if (User.Identity?.IsAuthenticated == true && int.TryParse
+                (User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
+            {
+                gameDto.UserId = userId;
+                gameDto.UserName = User.Identity.Name;
+            }
+
+            gameDto.IsGuest = !gameDto.UserId.HasValue;
+            
             await _gameService.CreateGameAsync(gameDto);
 
             return Ok(new

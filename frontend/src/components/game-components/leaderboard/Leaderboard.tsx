@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getLeaderboard } from '@/services/LeaderboardService'
 
-import type { LeaderboardEntry } from '@/models/LeaderboardEntry'
+import type { LeaderboardData } from '@/models/LeaderboardEntry'
 
 import { Button } from "@/components/ui/Button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
@@ -9,23 +9,56 @@ import { TrophyIcon } from "@/assets/icons/Icons"
 import './Leaderboard.css'
 
 export default function Leaderboard() {
-    const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
-    const [today, setToday] = useState('');
+    const [data, setData] = useState<LeaderboardData | null>(null);
+    const [period, setPeriod] = useState<'daily' | 'allTime'>('daily');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [reload, setReload] = useState(0);
   
     useEffect(() => {
-        const fetchLeaderboard = async () => {
-            setToday(new Date().toLocaleDateString('sv-SE'));
+        const Controller = new AbortController();
 
+        async function fetchLeaderboard() {
             try {
-                const data = await getLeaderboard();
-                setLeaderboardData(data);
-            } catch (error) {
-                console.error('Error fetching leaderboard data:', error);
+                const result = await getLeaderboard(Controller.signal);
+
+                if (!Controller.signal.aborted) {
+                    setData(result);
+                }
+            } catch  {
+                if (!Controller.signal.aborted) {
+                    setError('Kunde inte hämta topplistan. Försök igen senare.');
+                }
+            }
+            finally {
+                if (!Controller.signal.aborted) {
+                    setLoading(false);
+                }
             }
         };
 
-        fetchLeaderboard();
-    }, []); // Clear previous data before fetching new data
+        void fetchLeaderboard();
+
+        return () => {
+            Controller.abort();
+        }
+    }, [reload]);
+
+    function retry() {
+        setLoading(true);
+        setError(null);
+        setReload(value => value + 1);
+    }
+
+    const isDaily = period === 'daily';
+    
+    const entries = (isDaily ? data?.dailyTop10 : data?.allTimeTop10) ?? [];
+
+    const player = data?.currentUser;
+
+    const playerRank = isDaily ? player?.dailyRank : player?.allTimeRank;
+
+    const playerScore = isDaily ? player?.dailyScore : player?.allTimeScore;
 
 
     return (
@@ -39,19 +72,41 @@ export default function Leaderboard() {
                         Samma fem ledtrådar. Vem har bäst koll på Sverige i dag?
                     </p>
                 </div>
+                {data && (
                 <div className="leaderboard-page__date-badge">
-                    {today} · {leaderboardData.length} resenärer
+                    {data.date} resenärer
                 </div>
+                )}
             </div>
 
             {/* Tab buttons */}
             <div className="leaderboard-page__tabs">
-                <Button variant="secondary" className="leaderboard-page__tab--active">I dag</Button>
-                <Button variant="ghost">Genom tiderna</Button>
+                <Button variant={isDaily ? "secondary" : "ghost"} 
+                className={isDaily ? "leaderboard-page__tab--active" : ""}
+                aria-pressed={!isDaily}
+                onClick={() => setPeriod('daily')}>
+                    I dag
+                </Button>
+                <Button variant={isDaily ? "ghost" : "secondary"} 
+                className={isDaily ? "" : "leaderboard-page__tab--active"}
+                aria-pressed={isDaily}
+                onClick={() => setPeriod('allTime')}>
+                    Genom tiderna
+                </Button>
             </div>
 
             {/* Main grid: two columns */}
-            <div className="leaderboard-page__grid">
+            {loading ? (
+                <div className="leaderboard-page__loading">
+                    <p>Laddar topplistan...</p>
+                </div>
+            ) : error ? (
+                <div className="leaderboard-page__error">
+                    <p>{error}</p>
+                    <Button onClick={retry}>Försök igen</Button>
+                </div>
+            ) : data ? (
+                <div className="leaderboard-page__grid">
 
                 {/* Left column: Leaderboard */}
                 <div className="leaderboard-page__left-column">
@@ -59,7 +114,10 @@ export default function Leaderboard() {
                     {/* Leaderboard card */}
                     <Card className="leaderboard-page__leaderboard-card">
                         <CardHeader className="leaderboard-page__card-header">
-                            <CardTitle style={{ fontWeight: 800 }}>Dagens topplista </CardTitle>
+                            <CardTitle style={{ fontWeight: 800 }}>
+                                {isDaily ? 
+                                'Dagens top 10 topplista' :
+                                'Topplista top 10 genom tiderna'} </CardTitle>
                             <TrophyIcon color="var(--destructive)" />
                         </CardHeader>
                         <CardContent>
@@ -70,11 +128,9 @@ export default function Leaderboard() {
 
                             {/* Placeholder for leaderboard rows */}
                             <div className="leaderboard-page__table">
-                                {leaderboardData.map((entry, index) => {
-
-                                    return (
+                                {entries.map ((entry, index) => (
                                         <div
-                                            key={index}
+                                            key={`${period}-${index}`}
                                             className={`leaderboard-page__row ${entry.isCurrentUser
                                                     ? 'leaderboard-page__row--active'
                                                     : ''
@@ -85,6 +141,7 @@ export default function Leaderboard() {
                                                     {String(entry.rank).padStart(2, '0')}
                                                 </strong>{' '}
                                                 {entry.userName}
+                                                {entry.isCurrentUser && ' (du)'}
                                             </span>
 
                                             <span>
@@ -92,12 +149,17 @@ export default function Leaderboard() {
                                                 <strong>{entry.finalScore} p</strong>
                                             </span>
                                         </div>
-                                    );
-                                })}
+                                ))}
+                                {entries.length === 0 && (
+                                    <div className="leaderboard-page__row">
+                                        <span>Ingen data tillgänglig</span>
+                                    </div>
+                                )}
                             </div>
 
                             <p className="leaderboard-page__footnote">
-                                Vid lika poäng delas placeringen. Listan uppdateras när en resa slutförs.
+                                Vid lika poäng delas placeringen.{' '}
+                                {isDaily ? 'Listan uppdateras när en resa slutförs.' : 'Listan uppdateras när en resa slutförs.'}
                             </p>
                         </CardContent>
                     </Card>
@@ -109,13 +171,29 @@ export default function Leaderboard() {
                     {/* Card 1: Your placement */}
                     <Card className="leaderboard-page__stat-card1">
                         <CardContent className="leaderboard-page__stat-card-content">
-                            <div className="leaderboard-page__avatar">A</div>
-                            <p className="leaderboard-page__stat-sub">ANTON · DIN PLACERING</p>
-                            <h2 className="leaderboard-page__stat-title">Plats 4</h2>
-                            <p className="leaderboard-page__stat-score">40 poäng · 4 av 5 rätt</p>
-                            <p className="leaderboard-page__stat-desc">
-                                Du är bland dagens främsta resenärer. Bra jobbat!
+                            {player ? (
+                                <>
+                            <div className="leaderboard-page__avatar">{player.userName.charAt(0).toUpperCase()}</div>
+                                
+                            <p className="leaderboard-page__stat-sub">
+                                {player.userName} · DIN PLACERING</p>
+                            <h2 className="leaderboard-page__stat-title">
+                                {playerRank ? `#${playerRank}` : 'Ingen placering ännu'}
+                            </h2>
+                            <p className="leaderboard-page__stat-score">
+                                {playerScore !== null ? `${playerScore} poäng` : 'Du har inte spelat än'}
                             </p>
+                            <p className="leaderboard-page__stat-desc">
+                                {isDaily ?
+                                'Din placering i dagens topplista. Listan uppdateras när en resa slutförs.' :
+                                'Din placering i topplistan genom tiderna. Listan uppdateras när en resa slutförs.'}
+                            </p>
+                            </>
+                            ) : (
+                                <p>
+                                    Logga in för att se din placering och statistik.
+                                </p>
+                            )}
                         </CardContent>
                     </Card>
 
@@ -123,7 +201,9 @@ export default function Leaderboard() {
                     <Card className="leaderboard-page__stat-card2">
                         <CardContent>
                             <p className="leaderboard-page__stat-sub">Genom tiderna</p>
-                            <h2 className="leaderboard-page__stat-title">400 p</h2>
+                            <h2 className="leaderboard-page__stat-title">
+                                {player?.allTimeScore ? `${player.allTimeScore} poäng` : 'Ingen poäng ännu'}
+                            </h2>
                             <p className="leaderboard-page__stat-desc">Dina samlade poäng från alla resor</p>
                         </CardContent>
                     </Card>
@@ -139,10 +219,10 @@ export default function Leaderboard() {
                             </p>
                         </CardContent>
                     </Card>
-
+                            
                 </div>
             </div>
-
+            ) : null}
         </section>
-    )
+    );
 }

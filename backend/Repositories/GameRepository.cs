@@ -30,5 +30,12 @@ namespace Backend.Repositories
                 .Where(g => g.UserId == userId)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Game>> GetAllGamesAsync()
+        {
+            return await _context.Games
+                .AsNoTracking()
+                .Include(g => g.User)
+                .ToListAsync();
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace Backend.Repositories.IRepositories
         Task <IEnumerable<Game>> GetGamesForDateAsync(DateOnly date);
 
         Task <IEnumerable<Game>> GetGamesForUserAsync(int userId);
+
+        Task <IEnumerable<Game>> GetAllGamesAsync();
     }
 }
