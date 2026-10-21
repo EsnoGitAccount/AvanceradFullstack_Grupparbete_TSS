@@ -59,11 +59,9 @@ export default function Game() {
     }
 
     useEffect (() => {
-
-        // 
-        setLoadingMessage("Laddar dagsutmaningen...")
         async function loadChallenge(){
             try{
+                setLoadingMessage("Laddar dagsutmaningen...")
                 const responseData = await getDailyChallenge()
                 setDailyChallenge(responseData)
             }

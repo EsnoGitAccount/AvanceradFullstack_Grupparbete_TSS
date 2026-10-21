@@ -1,10 +1,6 @@
 import { useState } from 'react'
-import type { DailyChallenge } from '@/models/DailyChallenge'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
-import { LoaderCircle } from "lucide-react"
-import SiteHeader from '@/components/site-header/SiteHeader'
-import SiteFooter from '@/components/site-footer/SiteFooter'
 import './questionDestination.css'
 import { ProgressStepper } from '@/components/ui/Progressbar'
 
@@ -23,44 +19,11 @@ type QuestionDestinationProps = {
 }
 
 export default function QuestionDestination({ onComplete, questions }: QuestionDestinationProps) {
-    const [challenge, setChallenge] = useState<DailyChallenge | null>(null)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
     const [selectedOption, setSelectedOption] = useState<string | null>(null)
-    const [loading, setLoading] = useState<boolean>(false)
     const [score, setScore] = useState<number>(0)
 
     const [challengeQuestions] = useState<Question[]>(questions)
-
-    // Get daily challenge
-    // useEffect(() => {
-    //     async function loadChallenge() {
-    //         try {
-    //             const data = await getDailyChallenge()
-    //             setChallenge(data)
-    //         } catch (error) {
-    //             console.error("Kunde inte hämta dagsutmaningen:", error)
-    //         } finally {
-    //             setLoading(false)
-    //         }
-    //     }
-    //     loadChallenge()
-    // }, [])
-
-    // Loading circle
-    if (loading) {
-        return (
-            <div className="question-page">
-                <SiteHeader />
-                <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
-                    <LoaderCircle className="w-8 h-8 animate-spin text-[var(--primary)]" />
-                    <p className="text-sm font-medium text-[var(--muted-foreground)]">
-                        Laddar dagsutmaningen...
-                    </p>
-                </div>
-                <SiteFooter />
-            </div>
-        )
-    }
 
     // Get the active question based on the current index
     const currentQuestion = challengeQuestions[currentQuestionIndex]
