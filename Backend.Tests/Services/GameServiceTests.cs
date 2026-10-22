@@ -11,6 +11,17 @@ namespace Backend.Tests.Services
 {
     public class GameServiceTests
     {
+        private readonly Mock<IGameRepository> _mockRepo;
+        private readonly Mock<IDailyChallengeRepository> _dailyChallengeMockRepo;
+        private readonly Mock<IUserRepository> _userMockRepo;
+
+        public GameServiceTests()
+        {
+            _mockRepo = new Mock<IGameRepository>();
+            _dailyChallengeMockRepo = new Mock<IDailyChallengeRepository>();
+            _userMockRepo = new Mock<IUserRepository>();
+        }
+
         [Fact]
         public async Task CreateGameAsync_CallsRepositoryWithMappedGame_WhenRepositoryReturnsTrue()
         {
@@ -22,35 +33,31 @@ namespace Backend.Tests.Services
                 FinalScore = 99.5m,
                 CompletedAt = DateOnly.FromDateTime(new DateTime(2026, 10, 01))
             };
-            var todaysChallenge = new DailyChallangeDto
+            var todaysChallenge = new DailyChallange
             {
-                CityDetails = new CityDetailsDto
-                {
-                    CityName = "TestCity",
-                    Clues = new List<ClueDto>(),
-                    Questions = new List<QuestionDto>()
-                }
+                DailyChallangeId = 1,
+                City = new City { CityId = 1, Name = "TestCity", IsArchived = false }
             };
 
-            var mockRepo = new Mock<IGameRepository>();
-            var secondMockRepo = new Mock<IDailyChallengeRepository>(); //appease the args
+            _dailyChallengeMockRepo.Setup(r => r.GetChallengeForDate(It.IsAny<DateOnly>()))
+                .ReturnsAsync(todaysChallenge);
 
-            secondMockRepo.Setup(r => r.GetChallengeForDate(It.IsAny<DateOnly>()))
-                .ReturnsAsync(new DailyChallange { DailyChallangeId = 1 });
+            _userMockRepo.Setup(r => r.GetUserByIdAsync(It.IsAny<int>())).ReturnsAsync(new User { UserName = "player1" });
 
-            mockRepo.Setup(r => r.CreateGameAsync(It.IsAny<Game>())).ReturnsAsync(true);
+            _mockRepo.Setup(r => r.CreateGameAsync(It.IsAny<Game>())).ReturnsAsync(true);
 
-            var service = new GameService(mockRepo.Object, secondMockRepo.Object);
+            var service = new GameService(_mockRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object);
 
             // Act
             await service.CreateGameAsync(gameDto);
 
             // Assert - verify mapping and that repo was called once
-            mockRepo.Verify(r => r.CreateGameAsync(It.Is<Game>(g =>
+            _mockRepo.Verify(r => r.CreateGameAsync(It.Is<Game>(g =>
                 g.UserName == gameDto.UserName &&
                 g.UserId == gameDto.UserId &&
                 g.TotalScore == (int)gameDto.FinalScore &&
-                g.CompletedAt == gameDto.CompletedAt
+                g.CompletedAt == gameDto.CompletedAt &&
+                g.DailyChallangeId == todaysChallenge.DailyChallangeId
             )), Times.Once);
         }
     }

@@ -3,6 +3,8 @@ import type { GameResult } from '@/models/GameResult'
 import type { DailyChallenge } from '@/models/DailyChallenge'
 
 import { submitGameResult } from '@/services/GameService'
+import { testCity } from "../../models/City.ts"
+import type { Clue } from '../../models/City.ts'
 import { getDailyChallenge } from '@/services/GameService'
 
 import { Badge } from '@/components/ui/Badge'
@@ -17,16 +19,54 @@ import {
 import { Input } from '@/components/ui/Input'
 
 import './TestGame.css'
-
 type QuestionProps = {
   onComplete: (score: number) => void
 }
 
-function WhereAreWe({ onComplete }: QuestionProps) {
+type WhereAreWeProps = {
+  onComplete: (score: number) => void
+  clues: Clue[]
+  correctCity: string
+}
+
+
+function WhereAreWe({ onComplete, clues, correctCity }: WhereAreWeProps) {
+  const [currentScore, setCurrentScore] = useState(10)
+  const [cityGuess, setCityGuess] = useState("");
+
+  const handleWhereAreWeSubmit = (event: React.SubmitEvent) =>{
+    event.preventDefault();
+
+    // Checks if the guess and the correct city are the same, ignoring empty spaces and casing
+    if(cityGuess.trim().toLocaleLowerCase('sv-SE') === correctCity.trim().toLocaleLowerCase('sv-SE')){
+      onComplete(currentScore)
+    }
+
+    const nextScore = Math.max(currentScore - 2, 0)
+    setCurrentScore(nextScore);
+
+    if(nextScore === 0){
+      onComplete(0)
+    }
+    setCityGuess("");
+   }
+
   return (
-    <Button variant="outline" onClick={() => onComplete(10)}>
-      Var är vi?
-    </Button>
+    <div>
+      {clues.map((clue) => (
+        clue.pointValue >= currentScore &&
+        <div key={clue.pointValue}>
+          <p>För {clue.pointValue} poäng:</p>
+          <p>{clue.clueText}</p>
+        </div>
+        )
+      )}
+
+      <form onSubmit={handleWhereAreWeSubmit}>
+        <Input value={cityGuess} onChange={(e) => setCityGuess(e.target.value)} placeholder=''/>
+        <Button type="submit">Svara</Button>
+      </form>
+    </div>
   )
 }
 
@@ -114,7 +154,7 @@ function TestGame({ city }: { city: string }) {
           </>
         )}
         {gameProgress === 1 && (
-          <WhereAreWe onComplete={handleGameComplete} />
+          <WhereAreWe onComplete={handleGameComplete} clues={testCity.clues} correctCity={testCity.cityName}/>
         )}
         {gameProgress === 2 && (
           <>

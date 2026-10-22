@@ -24,11 +24,19 @@ namespace Backend.Services
 
             if (challenge != null)
             {
+                if (challenge.City.IsArchived)
+                {
+                    throw new ConflictException("This challenge is currently unavailable.");
+                }
+
                 return MapToDto(challenge);
             }
 
             var lastChallenge = await _dailyChallengeRepository.GetLastChallenge();
-            var amountCities = await _cityService.GetCityCountAsync();
+            var activeCityIds = await _cityService.GetActiveCityIdsAsync();
+
+            // SCRAPPED CODE USED FOR RANDOMIZATION
+            // var amountCities = await _cityService.GetCityCountAsync();
 
             List<int> recentCityIds = new List<int>();
 
@@ -37,7 +45,10 @@ namespace Backend.Services
                 recentCityIds.Add(lastChallenge.CityId);
             }
 
-            int? selectedCityId = _cityRandomizer.SelectNextCityId(recentCityIds, amountCities);
+            int? selectedCityId = _cityRandomizer.SelectNextCityId(recentCityIds, activeCityIds);
+            
+            // SCRAPPED CODE USED FOR RANDOMIZATION
+            // int? selectedCityId = _cityRandomizer.SelectNextCityId(recentCityIds, amountCities);
 
             if (!selectedCityId.HasValue)
             {

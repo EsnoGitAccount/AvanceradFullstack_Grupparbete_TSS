@@ -63,7 +63,18 @@ namespace Backend.Services
 			return MapToCityDto(city);
 		}
 
-		public async Task<bool> DeleteCityAsync(int cityId)
+        public async Task<List<int>> GetActiveCityIdsAsync()
+        {
+            return await _cityRepository.GetActiveCityIdsAsync();
+        }
+        public async Task<IEnumerable<CityDto>> GetActiveCitiesAsync()
+        {
+            var cities = await _cityRepository.GetActiveCitiesAsync();
+
+            return cities.Select(MapToCityDto);
+        }
+
+        public async Task<bool> DeleteCityAsync(int cityId)
 		{
 			var city = await _cityRepository.GetCityByIdAsync(cityId);
 
@@ -93,6 +104,46 @@ namespace Backend.Services
 			return result;
 		}
 
+		public async Task ArchiveCityAsync(int cityId)
+		{
+            var city = await _cityRepository.GetCityByIdAsync(cityId) ?? 
+				throw new NotFoundException("City not found");
+
+			if (city.IsArchived)
+			{
+				return;
+			}
+
+			city.IsArchived = true;
+
+			var saved = await _cityRepository.SaveChangesAsync();
+
+			if (!saved)
+			{
+                throw new InvalidOperationException("Failed to archive city");
+            }
+        }
+
+		public async Task RestoreCityAsync(int cityId)
+		{
+            var city = await _cityRepository.GetCityByIdAsync(cityId) ?? 
+				throw new NotFoundException("City not found");
+
+			if (!city.IsArchived)
+			{
+				return;
+			}
+
+			city.IsArchived = false;
+
+			var saved = await _cityRepository.SaveChangesAsync();
+
+			if (!saved)
+			{
+                throw new InvalidOperationException("Failed to restore city");
+            }
+        }
+
 		public async Task<IEnumerable<CityDto>> GetAllCitiesAsync()
 		{
 			var cities = await _cityRepository.GetAllCitiesAsync();
@@ -120,9 +171,11 @@ namespace Backend.Services
 				throw new NotFoundException("City not found");
 			}
 
-			if (city.Name != cityDto.Name)
+			var trimmedCityName = cityDto.Name.Trim();
+
+			if (city.Name != trimmedCityName)
 			{
-				var cityExists = await _cityRepository.GetCityByNameAsync(cityDto.Name);
+				var cityExists = await _cityRepository.GetCityByNameAsync(trimmedCityName);
 
 				if (cityExists)
 				{
@@ -130,12 +183,12 @@ namespace Backend.Services
 				}
 			}
 
-			if (city.Name == cityDto.Name && cityDto.CityPicture == null)
+			if (city.Name == trimmedCityName && cityDto.CityPicture == null)
 			{
 				return MapToCityDto(city);
 			}
 
-			city.Name = cityDto.Name;
+			city.Name = trimmedCityName;
 			var oldPictureUrl = city.CityPicture;
 
 			string? newPicture = null;

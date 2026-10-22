@@ -7,6 +7,7 @@ import {
   Route as RouteIcon,
   Sun as SunIcon,
   Trophy as TrophyIcon,
+  Ticket as TicketIcon,
 
 } from 'lucide-react'
 
@@ -16,5 +17,6 @@ export {
   RouteIcon,
   SunIcon,
   TrophyIcon,
+  TicketIcon,
 
 }
