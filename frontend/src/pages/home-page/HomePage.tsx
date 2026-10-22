@@ -1,17 +1,17 @@
 import { ArrowRightIcon } from '@/assets/icons/Icons'
 import SiteFooter from '@/components/site-footer/SiteFooter'
 import SiteHeader from '@/components/site-header/SiteHeader'
-import TrainIllustration from '@/assets/illustrations/trainillustration'
+// import TrainIllustration from '@/assets/illustrations/trainillustration'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 
-import {getTimeOfDay, type TimeOfDay} from '@/models/TimeOfDay'
+// import {getTimeOfDay, type TimeOfDay} from '@/models/TimeOfDay'
 import './HomePage.css'
 
 
 function HomePage() {
 
-  const timeOfDay: TimeOfDay = getTimeOfDay();
+  // const timeOfDay: TimeOfDay = getTimeOfDay();
 
   return (
     <div className="home-page">
@@ -50,9 +50,9 @@ function HomePage() {
               className="home-page__journey-card"
               aria-label="Dagens Sverigeresa"
             >
-            <TrainIllustration
-              className={`train-illustration train-illustration--${timeOfDay}`}
-            />
+            {/* // <TrainIllustration */}
+              {/* className={`train-illustration train-illustration--${timeOfDay}`} */}
+            {/* /> */}
             </Card>
           </div>
         </section>
