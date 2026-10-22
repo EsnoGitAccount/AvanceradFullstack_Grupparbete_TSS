@@ -18,9 +18,14 @@ export function LoginForm() {
         event.preventDefault();
         setErrorMessage(null);
 
-        try {
-            const res = await login({ username: userName, password });
+        if (!userName.trim() || !password.trim()) {
+            setErrorMessage('Användarnamn/e-post och lösenord krävs.');
+            return;
+        }
+        setIsSubmitting(true);
 
+        try {
+            await login({ username: userName, password });
             navigate('/homepage');
         } catch (err) {
             if (err instanceof Error) {
@@ -31,27 +36,7 @@ export function LoginForm() {
         } finally {
             setIsSubmitting(false);
         }
-
-        if (!userName.trim() || !password.trim()) {
-            setErrorMessage('Användarnamn/e-post och lösenord krävs.');
-            return;
-        }
-
-        setIsSubmitting(true);
-
-        try {
-            await login({ username: userName, password: password });
-            navigate('/homepage');
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-                setErrorMessage(err.message);
-            } else {
-                setErrorMessage('Fel användarnamn/e-post eller lösenord.');
-            }
-        } finally {
-            setIsSubmitting(false);
-        }
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit} className="login-card__form">
