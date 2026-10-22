@@ -52,7 +52,7 @@ namespace Backend.Services
             return new CookieOptions
             {
                 HttpOnly = true,
-                Secure = !isDevelopment,
+                Secure = true,
                 SameSite = SameSiteMode.Lax,
                 Path = path,
                 Expires = expiresAt
@@ -67,7 +67,7 @@ namespace Backend.Services
             return new CookieOptions
             {
                 HttpOnly = true,
-                Secure = !isDevelopment,
+                Secure = true,
                 SameSite = SameSiteMode.Lax,
                 Path = path
             };

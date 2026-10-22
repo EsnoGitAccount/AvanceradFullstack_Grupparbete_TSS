@@ -45,8 +45,8 @@ namespace Backend.Controllers
                 new CookieOptions
                 {
                     HttpOnly = false,
-                    Secure = !_environment.IsDevelopment(),
-                    SameSite = SameSiteMode.Lax,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
                     Path = "/"
                 });
 

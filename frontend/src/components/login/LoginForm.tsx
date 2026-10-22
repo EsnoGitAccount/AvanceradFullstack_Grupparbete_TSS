@@ -19,14 +19,15 @@ export function LoginForm() {
         setErrorMessage(null);
 
         try {
-            console.log("1. Skickar inloggning...");
             const res = await login({ username: userName, password });
-
-            console.log("2. Inloggning lyckades, response:", res);
 
             navigate('/homepage');
         } catch (err) {
-            console.error("3. Det blev ett fel i try/catch:", err);
+            if (err instanceof Error) {
+                setErrorMessage(err.message);
+            } else {
+                setErrorMessage('Fel användarnamn/e-post eller lösenord.');
+            }
         } finally {
             setIsSubmitting(false);
         }
