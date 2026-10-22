@@ -87,18 +87,7 @@
   background: var(--card);
 }
 
-.home-page__journey-illustration {
-  --illustration-sky-top: #75e1fd;
-  --illustration-sky-bottom: #faf5d9;
-  --illustration-teal: #00676f;
-  --illustration-light-teal: #4d99a1;
-  --illustration-lightest-teal: #92bcc2;
-  --illustration-cloud: #ecf9fb;
-  --illustration-cart-3: #2797a1;
-  --illustration-cart-2: #007b85;
-  --illustration-cart-1: #00676f;
-  --illustration-train: #00575e;
-  --illustration-window: rgba(254, 254, 254, 0);
+.train-illustration {
   display: block;
   width: 100%;
   height: 100%;
@@ -106,48 +95,7 @@
   border-radius: inherit;
 }
 
-.home-page__journey-illustration--dusk {
-  --illustration-sky-top: #eec056;
-  --illustration-sky-bottom: #f1e1bc;
-  --illustration-teal: #066450;
-  --illustration-light-teal: #138a45;
-  --illustration-lightest-teal: #22a84e;
-  --illustration-cloud: #fdedc2;
-  --illustration-cart-3: #138146;
-  --illustration-cart-2: #0a7649;
-  --illustration-cart-1: #066450;
-  --illustration-train: #065f4c;
-  --illustration-window: rgba(254, 254, 254, 0);
-}
 
-.home-page__journey-illustration--dawn {
-  --illustration-sky-top: #eec056;
-  --illustration-sky-bottom: #f1e1bc;
-  --illustration-teal: #066450;
-  --illustration-light-teal: #138a45;
-  --illustration-lightest-teal: #22a84e;
-  --illustration-cloud: #fdedc2;
-  --illustration-cart-3: #2b8245;
-  --illustration-cart-2: #0a7649;
-  --illustration-cart-1: #066450;
-  --illustration-train: #065f4c;
-  --illustration-window: rgba(254, 254, 254, 0);
-}
-
-.home-page__journey-illustration--night {
-  --illustration-sky-top: #22274e;
-  --illustration-sky-bottom: #51306b;
-  --illustration-teal: #0a0c22;
-  --illustration-light-teal: #141738;
-  --illustration-lightest-teal: #393d68;
-  --illustration-cloud: #464d9b;
-  --illustration-cart-3: #15183e;
-  --illustration-cart-2: #111438;
-  --illustration-cart-1: #0a0c22;
-  --illustration-train: #050612;
-  --illustration-window: rgb(201, 168, 91);
-
-}
 
 @media (max-width: 63.999rem) {
   .home-page__hero {
