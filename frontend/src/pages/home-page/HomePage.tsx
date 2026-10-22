@@ -1,11 +1,17 @@
 import { ArrowRightIcon } from '@/assets/icons/Icons'
 import SiteFooter from '@/components/site-footer/SiteFooter'
 import SiteHeader from '@/components/site-header/SiteHeader'
+// import HomeIllustration from '@/assets/illustrations/homeillustration'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+
+// import {getTimeOfDay, type TimeOfDay} from '@/models/TimeOfDay'
 import './HomePage.css'
 
 function HomePage() {
+
+  // const timeOfDay: TimeOfDay = getTimeOfDay();
+
   return (
     <div className="home-page">
       <SiteHeader />
@@ -42,7 +48,14 @@ function HomePage() {
             <Card
               className="home-page__journey-card"
               aria-label="Dagens Sverigeresa"
-            />
+            >
+            
+            {/* Move this wherever we might want the stupid train illustration
+            Remember to also move corresponding css classes and variables to the new location */}
+            {/* <HomeIllustration
+              className={`home-page__journey-illustration home-page__journey-illustration--${timeOfDay}`}
+            /> */}
+            </Card>
           </div>
         </section>
       </main>
