@@ -10,7 +10,7 @@ namespace Backend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddInfrastructureServices(builder.Configuration, builder.Environment);
 
             var app = builder.Build();
 
@@ -27,7 +27,10 @@ namespace Backend
                 app.MapGet("/", () => Results.Redirect("/scalar"));
             }
 
-            app.UseHttpsRedirection();
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
 
             // Behåll CORS-konfigurationen från master.
             app.UseCors("LocalConnection");

@@ -22,8 +22,9 @@ namespace Backend
     /// </summary>
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
+
             services.AddDbContext<WhereAreWeDbContext>(options =>
              options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 sqlOptions => sqlOptions.EnableRetryOnFailure()));
@@ -74,13 +75,13 @@ namespace Backend
             services.AddScoped<ICookieService, CookieService>();
 
             // JWT
-            var jwtIssuer = configuration["Jwt:Issuer"] ?? 
+            var jwtIssuer = configuration["Jwt:Issuer"] ??
                 throw new InvalidOperationException("Jwt:Issuer is missing.");
 
-            var jwtAudience = configuration["Jwt:Audience"] ?? 
+            var jwtAudience = configuration["Jwt:Audience"] ??
                 throw new InvalidOperationException("Jwt:Audience is missing.");
 
-            var jwtSigningKey = configuration["Jwt:SigningKey"] ?? 
+            var jwtSigningKey = configuration["Jwt:SigningKey"] ??
                 throw new InvalidOperationException("Jwt:SigningKey is missing.");
 
             // Ensure the signing key is at least 32 bytes for HMAC-SHA256
@@ -150,9 +151,11 @@ namespace Backend
 
                 var c = options.Cookie;
 
-                c.Name = "__Host-antiforgery";
+                c.Name = "Antiforgery";
                 c.HttpOnly = true;
-                c.SecurePolicy = CookieSecurePolicy.Always;
+                c.SecurePolicy = environment.IsDevelopment()
+                    ? CookieSecurePolicy.None
+                    : CookieSecurePolicy.Always;
                 c.SameSite = SameSiteMode.Lax;
                 c.Path = "/";
             });

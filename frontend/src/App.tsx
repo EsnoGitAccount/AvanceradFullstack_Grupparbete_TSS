@@ -5,6 +5,7 @@ import TestPage from './test-pages/TestPage'
 import ErrorTestPage from './pages/error-test-page/ErrorTestPage';
 import NotFoundPage from './pages/not-found-page/NotFoundPage';
 import QuestionDestination from './components/game-components/question-destination/QuestionDestination';
+import LoginPage from './pages/login-page/LoginPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/destination-question" element={<QuestionDestination />} />
       <Route path="/errortesting" element={<ErrorTestPage />} />
       <Route path='/*' element={<NotFoundPage />} />
+      <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 }

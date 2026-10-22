@@ -21,12 +21,14 @@ namespace Backend.Controllers
         private readonly IAuthService _authService;
         private readonly IAntiforgery _antiforgery;
         private readonly ICookieService _cookieService;
+        private readonly IWebHostEnvironment _environment;
 
-        public AuthController(IAuthService authService, IAntiforgery antiforgery, ICookieService cookieService)
+        public AuthController(IAuthService authService, IAntiforgery antiforgery, ICookieService cookieService, IWebHostEnvironment environment)
         {
             _authService = authService;
             _antiforgery = antiforgery;
             _cookieService = cookieService;
+            _environment = environment;
         }
 
         // Generate a CSRF token and make it available to the frontend
@@ -36,12 +38,14 @@ namespace Backend.Controllers
         {
             var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
 
-            Response.Cookies.Append(CsrfRequestCookieName, tokens.RequestToken!,
+            Response.Cookies.Append(
+                CsrfRequestCookieName,
+                tokens.RequestToken!,
 
                 new CookieOptions
                 {
                     HttpOnly = false,
-                    Secure = true,
+                    Secure = !_environment.IsDevelopment(),
                     SameSite = SameSiteMode.Lax,
                     Path = "/"
                 });
