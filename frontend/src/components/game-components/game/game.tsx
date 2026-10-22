@@ -228,7 +228,7 @@ export default function Game() {
         case "gameCompleted":
             return(
                 <>
-                    <div>Klar. Grattis {gameState.playerName}! Du fick {gameState.score} poäng</div>
+                    <p>Klar. Grattis {gameState.playerName}! Du fick {gameState.score} poäng</p>
                     <Button onClick={handleGoToLeaderBoard}>Spara resultat</Button>
                 </>
             )
