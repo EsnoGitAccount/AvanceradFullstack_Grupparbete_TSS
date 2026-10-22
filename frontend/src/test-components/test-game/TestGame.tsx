@@ -54,9 +54,9 @@ function WhereAreWe({ onComplete, clues, correctCity }: WhereAreWeProps) {
   return (
     <div>
       {clues.map((clue) => (
-        clue.point >= currentScore &&
-        <div key={clue.point}>
-          <p>För {clue.point} poäng:</p>
+        clue.pointValue >= currentScore &&
+        <div key={clue.pointValue}>
+          <p>För {clue.pointValue} poäng:</p>
           <p>{clue.clueText}</p>
         </div>
         )
@@ -154,7 +154,7 @@ function TestGame({ city }: { city: string }) {
           </>
         )}
         {gameProgress === 1 && (
-          <WhereAreWe onComplete={handleGameComplete} clues={testCity.clues} correctCity={testCity.name}/>
+          <WhereAreWe onComplete={handleGameComplete} clues={testCity.clues} correctCity={testCity.cityName}/>
         )}
         {gameProgress === 2 && (
           <>
