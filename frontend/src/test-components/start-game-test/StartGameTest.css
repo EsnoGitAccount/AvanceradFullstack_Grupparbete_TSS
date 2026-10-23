@@ -188,7 +188,7 @@
  
 }
 
-@media (max-width: 768px) {
+@media (max-width: 64rem) {
     .start-game-test {
         padding: 1rem;
     }
