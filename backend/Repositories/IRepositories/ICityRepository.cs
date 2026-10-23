@@ -12,5 +12,6 @@ namespace Backend.Repositories.IRepositories
 		Task CreateCityAsync(City city);
         void DeleteCity(City city);
         Task<bool> SaveChangesAsync();
+        Task<City?> GetCityWithQuestionsAsync(int cityId);
 	}
 }
