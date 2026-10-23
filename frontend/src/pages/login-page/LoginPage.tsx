@@ -32,7 +32,7 @@ function LoginPage() {
 
                         {/* Left column */}
                         <div className="login-page__left-column">
-                            <span className="login-page__eyebrow">VÄLKOMMEN TILLBAKA</span>
+                            <span className="login-page__eyebrow ">VÄLKOMMEN TILLBAKA</span>
                             <h1 className="login-page__title">Redo för nästa stopp?</h1>
                             <p className="login-page__subtitle">
                                 Logga in och fortsätt din resa. Dagens 3 ledtrådar väntar på dig.
@@ -52,12 +52,7 @@ function LoginPage() {
                         <div className="login-page__right-column">
                             <Card className="login-card">
                                 <CardHeader>
-                                    <CardTitle className="login-card__title" style={{
-                                        width: "85%",
-                                        marginInline: "auto",
-                                        textAlign: "left",
-                                        marginTop: "1rem"
-                                    }}>
+                                    <CardTitle className="login-card__title w-[85%] mx-auto text-left mt-4" >
                                         Logga in
                                     </CardTitle>
                                 </CardHeader>

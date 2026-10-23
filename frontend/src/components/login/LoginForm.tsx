@@ -43,7 +43,7 @@ export function LoginForm() {
 
             {/* Email & username */}
             <div className="form-group">
-                <label htmlFor="username" style={{ textAlign: "left", width: '85%' }}>
+                <label htmlFor="username" className="text-left w-[85%]">
                     E-post eller användarnamn
                 </label>
                 <Input
@@ -51,13 +51,13 @@ export function LoginForm() {
                     value={userName}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Exempel@epost.se"
-                    style={{ height: '3rem', width: '85%' }}
+                    className="h-12 w-[85%]"
                 />
             </div>
 
             {/* Password */}
             <div className="form-group">
-                <label htmlFor="password" style={{ textAlign: "left", width: '85%' }}>
+                <label htmlFor="password" className="text-left w-[85%]">
                     Lösenord
                 </label>
                 <Input
@@ -66,7 +66,7 @@ export function LoginForm() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    style={{ height: '3rem', width: '85%' }}
+                    className="h-12 w-[85%]"
                 />
             </div>
 
