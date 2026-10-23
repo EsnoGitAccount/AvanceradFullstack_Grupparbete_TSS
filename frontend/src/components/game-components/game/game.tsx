@@ -7,7 +7,7 @@ import { LoaderCircle } from "lucide-react"
 import QuestionDestination from "../question-destination/QuestionDestination";
 import WhereAreWe from "../where-are-we/whereAreWe"
 import { Button } from "../../ui/Button"
-import { Input } from "../../ui/Input"
+import StartGameTest  from "@/test-components/start-game-test/StartGameTest";   
 
 // Services
 import { submitGameResult, getDailyChallenge } from "@/services/GameService";
@@ -189,22 +189,18 @@ export default function Game() {
         case "notStarted":
             return (
                 <>
+                    <StartGameTest handleStart={handleStart} 
+                    isAuthenticated={isAuthenticated}
+                     guestUserName={guestUserName} 
+                     setGuestUserName={setGuestUserName}
+                     authenticatedUserName={fakeUser.userName}
+                     />
+
                     <label>
                         <input type="checkbox" checked={isAuthenticated} onChange={(e) => setIsAuthenticated(e.target.checked)}/>
                         Authenticated
                     </label>
 
-                    {!isAuthenticated ? (
-                        <form onSubmit={(event) => {
-                            event.preventDefault()
-                            handleStart(guestUserName)
-                        }}>
-                            <Input type="text" required={true} placeholder="Username" onChange={(e) => setGuestUserName(e.target.value)}></Input>
-                            <Button type="submit">Start</Button>
-                        </form>
-                    ): (
-                        <Button type="button" onClick={() => handleStart(fakeUser.userName)}> Start!</Button>
-                    )}
                 </>
             )
         

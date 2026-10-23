@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/Button'
 import { Ticket } from 'lucide-react';
 import photoExample from '@/assets/images/photo-example.jpg';
 import './StartGameTest.css';
+import Game from '@/components/game-components/game/game';
+import { Input } from '@/components/ui/Input';
 
 const gameInstructions = [
     {id:1,text: "5 oberoende frågor om Sverige – en vid varje stopp."},
@@ -13,7 +15,18 @@ const gameInstructions = [
     {id:5,text: "Du kan spela en gång per dag. Nästa resa öppnar i morgon."},
 ];
 
-function StartGameTest() {
+type StartGameProps={
+    handleStart:(userName:string)=>void;
+    isAuthenticated: boolean;
+    guestUserName:string;
+    setGuestUserName:(name:string)=>void;
+    authenticatedUserName:string;
+}
+function StartGameTest({handleStart, 
+                        isAuthenticated, 
+                        guestUserName,
+                        setGuestUserName, 
+                        authenticatedUserName}:StartGameProps) {
 
     const currentDate = new Date().toLocaleDateString('sv-SE', {
         day:"numeric",
@@ -64,12 +77,27 @@ function StartGameTest() {
 
 
             <CardFooter className="start-game-test__footer">
+                <form onSubmit={(e)=>{
+                    e.preventDefault();
+
+                    handleStart(isAuthenticated?authenticatedUserName : guestUserName.trim())
+                }}>
+
+
+                {!isAuthenticated && (<Input type="text" 
+                                             placeholder="Ange ditt namn"
+                                             value={guestUserName}
+                                             onChange={(e)=>setGuestUserName(e.target.value)}
+                                             required   
+                                             />)}
+
                 <Button  size="lg" className="h-10 w-full">
                     Starta resan
                 </Button>
                 <p className="text-xs text-muted-foreground">
                     Ingen tidspress. Din första gissning räknas.
                 </p>
+                                             </form>
             </CardFooter>
         </Card>
        
