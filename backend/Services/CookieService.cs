@@ -1,4 +1,6 @@
 ﻿using Backend.Dto;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Backend.Services
 {
@@ -14,6 +16,13 @@ namespace Backend.Services
         private const string RefreshTokenCookieName = "refreshToken";
         private const string AccessTokenCookiePath = "/api";
         private const string RefreshTokenCookiePath = "/api/auth";
+
+        private readonly IWebHostEnvironment _environment;
+
+        public CookieService(IWebHostEnvironment environment)
+        {
+            _environment = environment;
+        }
 
         // Store access and refresh tokens in HTTP-only cookies
         public void SetAuthenticationCookie(HttpResponse response, AuthSessionDto session)
@@ -36,8 +45,10 @@ namespace Backend.Services
         }
 
         // Configure secure cookie options for authentication tokens
-        private static CookieOptions CreateAuthenticationCookieOptions(DateTimeOffset expiresAt, string path)
+        private CookieOptions CreateAuthenticationCookieOptions(DateTimeOffset expiresAt, string path)
         {
+            var isDevelopment = _environment.IsDevelopment();
+
             return new CookieOptions
             {
                 HttpOnly = true,
@@ -49,8 +60,10 @@ namespace Backend.Services
         }
 
         // Configure cookie option used when deleting authentication cookies
-        private static CookieOptions CreateDeleteCookieOptions(string path)
+        private CookieOptions CreateDeleteCookieOptions(string path)
         {
+            var isDevelopment = _environment.IsDevelopment();
+
             return new CookieOptions
             {
                 HttpOnly = true,
