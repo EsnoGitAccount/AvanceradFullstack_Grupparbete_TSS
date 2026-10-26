@@ -37,17 +37,27 @@ namespace Backend.Tests.Services
         // // Assert
         // Assert.Null(result);
         // }
+        private readonly CityRandomizer _cityRandomizer;
+        private readonly List<int> _recentCityIds;
+        private readonly List<int> _eligibleCityIds;
+
+        public ClityRandomizerTests()
+        {
+            _cityRandomizer = new CityRandomizer();
+            _recentCityIds = new List<int>();
+            _eligibleCityIds = new List<int>();
+        }
 
         [Fact]
         public void SelectNextCityId_ReturnsCityId_WhenRecentCityIsExcludedAndIdsHaveGaps()
         {
             // Arrange
-            var randomizer = new CityRandomizer();
-            var recentCityIds = new List<int> { 1 };
-            var eligibleCityIds = new List<int> { 1, 4 };
+
+            _recentCityIds.Add(1);
+            _eligibleCityIds.AddRange(new List<int> { 1, 4 });
 
             // Act
-            var result = randomizer.SelectNextCityId(recentCityIds, eligibleCityIds);
+            var result = _cityRandomizer.SelectNextCityId(_recentCityIds, _eligibleCityIds);
 
             // Assert
             Assert.NotNull(result);
@@ -57,13 +67,8 @@ namespace Backend.Tests.Services
         [Fact]
         public void SelectNextCityId_ReturnsNull_WhenNoEligibleCities()
         {
-            // Arrange
-            var randomizer = new CityRandomizer();
-            var recentCityIds = new List<int>();
-            var eligibleCityIds = new List<int>();
-
             // Act
-            var result = randomizer.SelectNextCityId(recentCityIds, eligibleCityIds);
+            var result = _cityRandomizer.SelectNextCityId(_recentCityIds, _eligibleCityIds);
 
             // Assert
             Assert.Null(result);

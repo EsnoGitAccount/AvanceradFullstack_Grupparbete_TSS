@@ -65,7 +65,7 @@ function CitiesTest() {
         {cities.length > 0 && (
           <ul className="cities-test__list">
             {cities.map((city, index) => (
-              <li key={index}>{city.name}</li>
+              <li key={index}>{city.cityName}</li>
             ))}
           </ul>
         )}
