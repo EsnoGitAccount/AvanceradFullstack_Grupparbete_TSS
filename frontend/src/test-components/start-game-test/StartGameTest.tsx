@@ -20,7 +20,7 @@ const gameInstructions = [
     id: 4,
     text: "Efter du har hittad staden får du svara på ett antal frågor om staden.",
   },
-  { id: 5, text: "När du spelat klart får du ett resultat och du rankade mot andra spelare" },
+  { id: 5, text: "När du spelat klart får du ett resultat och hur du rankade mot andra spelare." },
 ];
 
 type StartGameProps = {
