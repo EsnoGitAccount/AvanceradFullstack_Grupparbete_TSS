@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Clue } from '../../../models/City.ts'
 import placeholderImg from '../../../assets/images/photo-example.jpg'
+import { SWEDISH_CITIES } from '../../../constants/swedishCities'
 
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -83,7 +84,18 @@ export default function WhereAreWe({
 </div>
   
         <form className="where-are-we__form" onSubmit={handleWhereAreWeSubmit}>
-          <Input value={cityGuess} onChange={(e) => setCityGuess(e.target.value)} placeholder='Vart är vi?'/>
+          <Input
+            list="swedish-city-suggestions"
+            value={cityGuess}
+            onChange={(e) => setCityGuess(e.target.value)}
+            placeholder="Vart är vi?"
+            aria-label="Gissa vilken svensk stad vi är i"
+          />
+          <datalist id="swedish-city-suggestions">
+            {SWEDISH_CITIES.map((city) => (
+              <option key={city} value={city} />
+            ))}
+          </datalist>
           <Button className="where-are-we__submit-button" type="submit">Svara</Button>
         </form>
         </div>
