@@ -4,6 +4,7 @@ function HomeIllustration(props: SVGProps<SVGSVGElement>) {
     return (
         <svg
             {...props}
+            className='train-illustration'
             width="297mm"
             height="210mm"
             viewBox="0 0 297 210"

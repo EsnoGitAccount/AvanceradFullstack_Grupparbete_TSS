@@ -3,14 +3,16 @@ import SiteFooter from '@/components/site-footer/SiteFooter'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { ArrowLeft } from 'lucide-react'
-import Train from "../../assets/TrainDeleteLater.jpg"
+import TrainIllustration from "../../assets/illustrations/trainillustration"
 import { useNavigate } from 'react-router'
+import { getTimeOfDay } from '@/models/TimeOfDay'
 
 import "./LoginPage.css"
 import { LoginForm } from '@/components/login/LoginForm'
 
 function LoginPage() {
     const navigate = useNavigate();
+    const time = getTimeOfDay();
     return (
         <div className="login-page">
             <SiteHeader />
@@ -39,8 +41,8 @@ function LoginPage() {
                             </p>
 
                             {/* Train illustration, delete pic later */}
-                            <div className="login-page__illustration">
-                                <img src={Train} alt="Sverigeresa illustration" />
+                            <div className={`login-page__illustration train-illustration--${time}`}>
+                                <TrainIllustration />
                             </div>
 
                             <div className="login-page__badge">
