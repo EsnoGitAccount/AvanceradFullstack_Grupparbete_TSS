@@ -194,6 +194,7 @@ export default function Game() {
                      guestUserName={guestUserName} 
                      setGuestUserName={setGuestUserName}
                      authenticatedUserName={fakeUser.userName}
+                     dailyChallenge={dailyChallenge}
                      />
 
                     <label>
