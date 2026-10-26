@@ -42,7 +42,7 @@ namespace Backend.Tests.Services
             var service = new GameService(mockRepo.Object, secondMockRepo.Object, userMockRepo.Object);
 
             // Act
-            await service.CreateGameAsync(gameDto);
+            var gameId = await service.CreateGameAsync(gameDto);
 
             // Assert - verify mapping and that repo was called once
             mockRepo.Verify(r => r.CreateGameAsync(It.Is<Game>(g =>
