@@ -44,6 +44,11 @@ namespace Backend.Services
             var user = await _userManager.FindByNameAsync(loginDto.Username) ?? 
                 throw new UnauthorizedException("Invalid username or password.");
 
+            if (user.IsArchived)
+            {
+                throw new UnauthorizedException("Invalid username or password.");
+            }
+
             var result = await _signInManager.CheckPasswordSignInAsync(
                 user,
                 loginDto.Password,
@@ -95,7 +100,7 @@ namespace Backend.Services
 
             var user = await _userManager.FindByIdAsync(currentToken.UserId.ToString(CultureInfo.InvariantCulture));
 
-            if (user == null || !await _signInManager.CanSignInAsync(user) || await _userManager.IsLockedOutAsync(user))
+            if (user == null || user.IsArchived || !await _signInManager.CanSignInAsync(user) || await _userManager.IsLockedOutAsync(user))
             {
                 await _refreshTokenRepository.RevokeSessionAsync(currentToken.SessionId);
 
@@ -145,6 +150,11 @@ namespace Backend.Services
         {
             var user = await _userManager.FindByIdAsync(userId.ToString(CultureInfo.InvariantCulture)) ?? 
                 throw new UnauthorizedException("User was not found.");
+
+            if (user.IsArchived)
+            {
+                throw new UnauthorizedException("Session is no longer valid.");
+            }
 
             var userRoles = await _userManager.GetRolesAsync(user);
             return new UserDto(user, userRoles);
