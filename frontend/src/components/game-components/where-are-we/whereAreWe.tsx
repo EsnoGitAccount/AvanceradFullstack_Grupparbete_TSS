@@ -56,19 +56,31 @@ export default function WhereAreWe({
         <div className="where-are-we__right-side">
 
         <div className="where-are-we__clues">
-          {clues.map((clue) => (
-            clue.pointValue >= currentScore &&
-            <div key={clue.pointValue} className="clue-entry">
-              <p className="clue-entry__points">{clue.pointValue}</p>
-              <p>{clue.clueText}</p>
-            </div>
-            )
-          )}
+  {clues.map((clue) => {
+    const isVisible = clue.pointValue >= currentScore;
 
-          <Button className="where-are-we__show-clue-button" onClick={handleNextClue} disabled={currentScore <= 2} variant="secondary">
-            {currentScore <= 2 ? 'Inga fler ledtrådar!' : 'Visa nästa ledtråd'}
-          </Button>
-        </div>
+    return (
+      <div
+        key={clue.pointValue}
+        className={`where-are-we__clue ${
+          isVisible ? "" : "where-are-we__clue--hidden"
+        }`}
+      >
+        <p className="where-are-we__clue-label">{clue.pointValue}</p>
+        <p className="where-are-we__clue-text">{clue.clueText}</p>
+      </div>
+    );
+  })}
+
+  <Button
+    className="where-are-we__show-clue-button"
+    onClick={handleNextClue}
+    disabled={currentScore <= 2}
+    variant="secondary"
+  >
+    {currentScore <= 2 ? "Inga fler ledtrådar!" : "Visa nästa ledtråd"}
+  </Button>
+</div>
   
         <form className="where-are-we__form" onSubmit={handleWhereAreWeSubmit}>
           <Input value={cityGuess} onChange={(e) => setCityGuess(e.target.value)} placeholder='Vart är vi?'/>
