@@ -182,13 +182,13 @@
 .start-game-test__info-description{
     color: var(--muted-foreground);
     font-family: 'Inter',sans-serif;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     font-weight: 400;
     line-height: 1.25rem;
- 
+    width: 75%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 64rem) {
     .start-game-test {
         padding: 1rem;
     }

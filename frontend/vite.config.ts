@@ -12,11 +12,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      // '/api': {
-      //   target: 'https://localhost:7021',
-      //   changeOrigin: true,
-      //   secure: false,
-      // },
+       '/api': {
+        target: 'https://localhost:7021',
+       changeOrigin: true,
+       secure: false,
+      },
     },
   },
 })
