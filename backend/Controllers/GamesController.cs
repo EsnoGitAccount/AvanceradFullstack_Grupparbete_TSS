@@ -3,6 +3,7 @@ using Backend.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -28,6 +29,25 @@ namespace Backend.Controllers
                 Data = gameDto
             });
 
+        }
+
+        [HttpGet("admin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetGameResults()
+        {
+            var results = await _gameService.GetGameResultsAsync();
+
+            return Ok(results);
+        }
+
+        [HttpDelete("admin/{gameId:int}")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGameResult(int gameId)
+        {
+            await _gameService.DeleteGameResultAsync(gameId);
+
+            return NoContent();
         }
     }
 }

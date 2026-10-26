@@ -16,11 +16,12 @@ namespace Backend.Services
             _gameRepository = gameRepository;
             _dailyChallengeRepository = dailyChallengeRepository;
         }
+
         public async Task CreateGameAsync(GameDto gameDto)
         {
             var todaysChallenge = await _dailyChallengeRepository.GetChallengeForDate(DateOnly.FromDateTime(DateTime.UtcNow));
 
-            if(todaysChallenge == null)
+            if (todaysChallenge == null)
             {
                 throw new InvalidOperationException("No daily challenge found for today.");
             }
@@ -48,6 +49,34 @@ namespace Backend.Services
             else
             {
                 return;
+            }
+        }
+
+        public async Task<IEnumerable<GameResultDto>> GetGameResultsAsync()
+        {
+            var games = await _gameRepository.GetAllGamesAsync();
+
+            return games.Select(game => new GameResultDto
+            {
+                GameId = game.GameId,
+                UserId = game.UserId,
+                UserName = game.UserName ?? "Guest",
+                TotalScore = game.TotalScore,
+                CompletedAt = game.CompletedAt,
+                CityName = game.DailyChallange.City.Name
+            });
+        }
+
+        public async Task DeleteGameResultAsync(int gameId)
+        {
+            var game = await _gameRepository.GetGameByIdAsync(gameId) ??
+                throw new NotFoundException("Game result not found");
+
+            var deleted = await _gameRepository.DeleteGameAsync(game);
+
+            if (!deleted)
+            {
+                throw new InvalidOperationException("Failed to delete game result");
             }
         }
     }
