@@ -1,0 +1,7 @@
+.profile-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--page);
+    color: var(--foreground);
+}

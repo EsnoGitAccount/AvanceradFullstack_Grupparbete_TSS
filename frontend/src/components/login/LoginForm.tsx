@@ -26,7 +26,7 @@ export function LoginForm() {
 
         try {
             await login({ username: userName, password });
-            navigate('/homepage');
+            navigate('/profile');
         } catch (err) {
             if (err instanceof Error) {
                 setErrorMessage(err.message);

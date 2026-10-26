@@ -5,6 +5,8 @@ import ErrorTestPage from './pages/error-test-page/ErrorTestPage';
 import NotFoundPage from './pages/not-found-page/NotFoundPage';
 import LoginPage from './pages/login-page/LoginPage';
 import GamePage from './pages/game-page/gamePage';
+import ProfilePage from "./pages/profile-page/ProfilePage";
+import ProtectedRoute from './protected-route/ProtectedRoute';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <Route path="/game" element={<GamePage />} />
       <Route path='/*' element={<NotFoundPage />} />
       <Route path="/login" element={<LoginPage />} />
+
+      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
     </Routes>
   );
 }

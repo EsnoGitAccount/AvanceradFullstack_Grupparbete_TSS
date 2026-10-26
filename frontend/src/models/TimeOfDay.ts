@@ -6,7 +6,7 @@ export function getTimeOfDay(): TimeOfDay {
         return 'dawn'
     } else if (currentHour >= 10 && currentHour < 17) {
         return 'day'
-    } else if (currentHour >= 17 && currentHour <22) {
+    } else if (currentHour >= 17 && currentHour < 22) {
         return 'dusk'
     } else {
         return 'night'
