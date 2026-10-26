@@ -14,6 +14,8 @@ namespace Backend.Services.IServices
 		Task ArchiveCityAsync(int cityId);
         Task RestoreCityAsync(int cityId);
         Task<CityDto> UpdateCityAsync(int cityId, CityUpdateDto cityDto);
+		Task UpdateCityQuestionsAsync(int cityId, CityQuestionsUpdateDto updateDto);
+		Task<CityQuestionsUpdateDto> GetCityQuestionsForEditAsync(int cityId);
 		Task<int> GetCityCountAsync();
 		//Task<int> GetRandomCityIdAsync(int? excludeCityId);
     }

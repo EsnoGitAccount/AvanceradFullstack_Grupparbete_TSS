@@ -63,18 +63,18 @@ namespace Backend.Services
 			return MapToCityDto(city);
 		}
 
-        public async Task<List<int>> GetActiveCityIdsAsync()
-        {
-            return await _cityRepository.GetActiveCityIdsAsync();
-        }
-        public async Task<IEnumerable<CityDto>> GetActiveCitiesAsync()
-        {
-            var cities = await _cityRepository.GetActiveCitiesAsync();
+		public async Task<List<int>> GetActiveCityIdsAsync()
+		{
+			return await _cityRepository.GetActiveCityIdsAsync();
+		}
+		public async Task<IEnumerable<CityDto>> GetActiveCitiesAsync()
+		{
+			var cities = await _cityRepository.GetActiveCitiesAsync();
 
-            return cities.Select(MapToCityDto);
-        }
+			return cities.Select(MapToCityDto);
+		}
 
-        public async Task<bool> DeleteCityAsync(int cityId)
+		public async Task<bool> DeleteCityAsync(int cityId)
 		{
 			var city = await _cityRepository.GetCityByIdAsync(cityId);
 
@@ -106,7 +106,7 @@ namespace Backend.Services
 
 		public async Task ArchiveCityAsync(int cityId)
 		{
-            var city = await _cityRepository.GetCityByIdAsync(cityId) ?? 
+			var city = await _cityRepository.GetCityByIdAsync(cityId) ??
 				throw new NotFoundException("City not found");
 
 			if (city.IsArchived)
@@ -120,13 +120,13 @@ namespace Backend.Services
 
 			if (!saved)
 			{
-                throw new InvalidOperationException("Failed to archive city");
-            }
-        }
+				throw new InvalidOperationException("Failed to archive city");
+			}
+		}
 
 		public async Task RestoreCityAsync(int cityId)
 		{
-            var city = await _cityRepository.GetCityByIdAsync(cityId) ?? 
+			var city = await _cityRepository.GetCityByIdAsync(cityId) ??
 				throw new NotFoundException("City not found");
 
 			if (!city.IsArchived)
@@ -140,9 +140,9 @@ namespace Backend.Services
 
 			if (!saved)
 			{
-                throw new InvalidOperationException("Failed to restore city");
-            }
-        }
+				throw new InvalidOperationException("Failed to restore city");
+			}
+		}
 
 		public async Task<IEnumerable<CityDto>> GetAllCitiesAsync()
 		{
@@ -171,9 +171,11 @@ namespace Backend.Services
 				throw new NotFoundException("City not found");
 			}
 
-			if (city.Name != cityDto.Name)
+			var trimmedCityName = cityDto.Name.Trim();
+
+			if (city.Name != trimmedCityName)
 			{
-				var cityExists = await _cityRepository.GetCityByNameAsync(cityDto.Name);
+				var cityExists = await _cityRepository.GetCityByNameAsync(trimmedCityName);
 
 				if (cityExists)
 				{
@@ -181,12 +183,12 @@ namespace Backend.Services
 				}
 			}
 
-			if (city.Name == cityDto.Name && cityDto.CityPicture == null)
+			if (city.Name == trimmedCityName && cityDto.CityPicture == null)
 			{
 				return MapToCityDto(city);
 			}
 
-			city.Name = cityDto.Name;
+			city.Name = trimmedCityName;
 			var oldPictureUrl = city.CityPicture;
 
 			string? newPicture = null;
@@ -219,7 +221,7 @@ namespace Backend.Services
 				catch (Exception ex)
 				{
 					_logger.LogError(ex, "Failed to delete newly uploaded picture from blob storage after city update failed {CityId}", cityId);
-					
+
 				}
 				throw;
 			}
@@ -243,6 +245,149 @@ namespace Backend.Services
 		public async Task<int> GetCityCountAsync()
 		{
 			return (await _cityRepository.GetAllCitiesAsync()).Count();
+		}
+
+		public async Task UpdateCityQuestionsAsync(int cityId, CityQuestionsUpdateDto updateDto)
+		{
+    		var city = await _cityRepository.GetCityWithQuestionsAsync(cityId) ??
+        		throw new NotFoundException("City not found");
+
+    			ValidateCityQuestions(city, updateDto);
+
+    			ApplyQuestionUpdates(city, updateDto);
+
+	    		var saved = await _cityRepository.SaveChangesAsync();
+
+			if (!saved)
+			{
+				throw new InvalidOperationException("Failed to update city questions");
+			}
+		}
+
+		private static void ApplyQuestionUpdates(City city,	CityQuestionsUpdateDto updateDto)
+		{
+			foreach (var updatedQuestion in updateDto.Questions)
+			{
+				var question = city.Questions.Single(question => question.QuestionId == updatedQuestion.QuestionId);
+
+				question.QuestionText = updatedQuestion.QuestionText.Trim();
+
+				foreach (var updatedOption in updatedQuestion.Options)
+				{
+					var option = question.Options.Single(
+						option => option.OptionId == updatedOption.OptionId);
+
+					option.OptionText = updatedOption.OptionText.Trim();
+					option.IsCorrect = updatedOption.IsCorrect;
+				}
+			}
+		}
+
+		private static void ValidateCityQuestions(City city, CityQuestionsUpdateDto updateDto)
+		{
+			if (updateDto.Questions == null)
+			{
+				throw new AppValidationException("Questions are required");
+			}
+
+			if (updateDto.Questions.Any(question => question is null))
+			{
+				throw new AppValidationException("Questions cannot be null");
+			}
+
+			var existingIds = city.Questions
+				.Select(question => question.QuestionId)
+				.ToHashSet();
+
+			var updatedIds = updateDto.Questions
+				.Select(question => question.QuestionId)
+				.ToList();
+
+			if (updatedIds.Count != existingIds.Count || !existingIds.SetEquals(updatedIds))
+			{
+				throw new AppValidationException("Include every existing question exactly once. " + "Adding or removing questions is not allowed.");
+			}
+
+			foreach (var updatedQuestion in updateDto.Questions)
+			{
+				if (string.IsNullOrWhiteSpace(updatedQuestion.QuestionText))
+				{
+					throw new AppValidationException("Question text cannot be empty");
+				}
+
+				var existingQuestion = city.Questions.Single(question => question.QuestionId == updatedQuestion.QuestionId);
+
+				ValidateQuestionOptions(existingQuestion, updatedQuestion);
+			}
+
+		}
+
+		private static void ValidateQuestionOptions(Question existingQuestion, QuestionUpdateDto updatedQuestion)
+		{
+			if (updatedQuestion.Options == null)
+			{
+				throw new AppValidationException("Options cannot be null");
+			}
+
+			if (updatedQuestion.Options.Any(option => option is null))
+			{
+				throw new AppValidationException("Options cannot contain null entries.");
+			}
+
+			var existingIds = existingQuestion.Options
+				.Select(option => option.OptionId)
+				.ToHashSet();
+
+			var updatedIds = updatedQuestion.Options
+				.Select(option => option.OptionId)
+				.ToList();
+
+			if (updatedIds.Count != existingIds.Count || !existingIds.SetEquals(updatedIds))
+			{
+				throw new AppValidationException("Include every existing option exactly once. " + "Adding or removing options is not allowed.");
+			}
+
+			if (updatedQuestion.Options.Any(option => string.IsNullOrWhiteSpace(option.OptionText)))
+			{
+				throw new AppValidationException("Option text cannot be empty");
+			}
+
+			if (updatedQuestion.Options.Count(option => option.IsCorrect) != 1)
+			{
+				throw new AppValidationException("Each question must have exactly one correct option.");
+			}
+		}
+
+		public async Task<CityQuestionsUpdateDto> GetCityQuestionsForEditAsync(int cityId)
+		{
+			var city = await _cityRepository.GetCityWithQuestionsAsync(cityId) ??
+				throw new NotFoundException("City not found");
+
+			return MapToCityQuestionsUpdateDto(city);
+		}
+
+		private static CityQuestionsUpdateDto MapToCityQuestionsUpdateDto(City city)
+		{
+			return new CityQuestionsUpdateDto
+			{
+				Questions = city.Questions
+					.OrderBy(question => question.QuestionId)
+					.Select(question => new QuestionUpdateDto
+					{
+						QuestionId = question.QuestionId,
+						QuestionText = question.QuestionText,
+						Options = question.Options
+							.OrderBy(option => option.OptionId)
+							.Select(option => new OptionUpdateDto
+							{
+								OptionId = option.OptionId,
+								OptionText = option.OptionText,
+								IsCorrect = option.IsCorrect
+							})
+							.ToList()
+					})
+					.ToList()
+			};
 		}
 
 		private static CityDto MapToCityDto(City city)
