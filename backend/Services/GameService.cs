@@ -20,7 +20,7 @@ namespace Backend.Services
             _dailyChallengeRepository = dailyChallengeRepository;
             _userRepository = userRepository;
         }
-        public async Task CreateGameAsync(GameDto gameDto)
+        public async Task<int> CreateGameAsync(GameDto gameDto)
         {
             var todaysChallenge = await _dailyChallengeRepository.GetChallengeForDate(DateOnly.FromDateTime(DateTime.UtcNow));
 
@@ -36,16 +36,7 @@ namespace Backend.Services
 
             var game = MapDtoToGame(gameDto, todaysChallenge.DailyChallangeId);
 
-            var result = await _gameRepository.CreateGameAsync(game);
-
-            if (result != true)
-            {
-                throw new InvalidOperationException("Failed to create game.");
-            }
-            else
-            {
-                return;
-            }
+            return await _gameRepository.CreateGameAsync(game);
         }
 
         public async Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date)

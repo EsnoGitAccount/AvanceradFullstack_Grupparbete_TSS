@@ -9,7 +9,7 @@ namespace Backend.Controllers
     public class LeaderboardController(ILeaderboardService leaderboardService) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetLeaderboard()
+        public async Task<IActionResult> GetLeaderboard([FromQuery] int? gameId)
         {
             int? currentUser = null;
 
@@ -18,7 +18,7 @@ namespace Backend.Controllers
                 currentUser = userId;
             }
 
-            var results = await leaderboardService.GetAsync(currentUser);
+            var results = await leaderboardService.GetAsync(currentUser, gameId);
 
             return Ok(results);
         }
