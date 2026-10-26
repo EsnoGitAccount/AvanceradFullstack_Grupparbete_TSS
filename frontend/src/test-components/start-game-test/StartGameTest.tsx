@@ -146,7 +146,8 @@ function StartGameTest({
 
               <CardContent>
                 <p className="start-game-test__info-description">
-                 Du behöver bara din nyfikenhet. Stor bokstav spelar ingen roll.
+                 Du behöver bara din nyfikenhet. Stor bokstav spelar
+                  ingen roll, och vanliga stavningsvarianter godkänns.
                 </p>
               </CardContent>
             </Card>
