@@ -13,14 +13,14 @@ import type { DailyChallenge } from "@/models/DailyChallenge";
 import { Input } from "@/components/ui/Input";
 
 const gameInstructions = [
-  { id: 1, text: "5 oberoende frågor om Sverige – en vid varje stopp." },
-  { id: 2, text: "Skriv ditt svar själv. Du får en gissning per fråga." },
-  { id: 3, text: "Varje rätt svar ger 10 poäng. Fel svar ger 0 poäng." },
+  { id: 1, text: "Försök hitta dagens stad. Du har 5 försök." },
+  { id: 2, text: "Varje felaktig gissning visar en ny ledtråd." },
+  { id: 3, text: "Du får poäng baserat på hur tidigt du hittar rätt stad." },
   {
     id: 4,
-    text: "Efter varje gissning visas rätt svar. Fortsätt sedan till nästa stopp.",
+    text: "Efter du har hittad staden får du svara på ett antal frågor om staden.",
   },
-  { id: 5, text: "Du kan spela en gång per dag. Nästa resa öppnar i morgon." },
+  { id: 5, text: "När du spelat klart får du ett resultat och du rankade mot andra spelare" },
 ];
 
 type StartGameProps = {
@@ -66,9 +66,10 @@ function StartGameTest({
                 <span className="start-game-test__ticket-number">
                   DIN BILJETT · NR 281
                 </span>
-                <span className="start-game-test__points">Max 50 poäng</span>
+                {/*TO DO: Swap for max score variable.*/}
+                <span className="start-game-test__points">Max 30 poäng</span>
               </div>
-              <CardTitle>Så går dagens resa till</CardTitle>
+              <CardTitle>Så går dagens resa till:</CardTitle>
             </CardHeader>
 
             <CardContent>
@@ -145,8 +146,7 @@ function StartGameTest({
 
               <CardContent>
                 <p className="start-game-test__info-description">
-                  Du behöver bara din nyfikenhet. Bokstävernas storlek spelar
-                  ingen roll, och vanliga stavningsvarianter godkänns.
+                 Du behöver bara din nyfikenhet. Stor bokstav spelar ingen roll.
                 </p>
               </CardContent>
             </Card>

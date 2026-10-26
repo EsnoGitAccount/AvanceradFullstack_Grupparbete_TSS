@@ -6,7 +6,6 @@ import ErrorTestPage from './pages/error-test-page/ErrorTestPage';
 import NotFoundPage from './pages/not-found-page/NotFoundPage';
 import LoginPage from './pages/login-page/LoginPage';
 
-
 function App() {
   return (
     <Routes>
