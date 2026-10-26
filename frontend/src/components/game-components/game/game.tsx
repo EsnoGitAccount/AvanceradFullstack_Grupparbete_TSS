@@ -9,6 +9,9 @@ import WhereAreWe from "../where-are-we/whereAreWe"
 import { Button } from "../../ui/Button"
 import { Input } from "../../ui/Input"
 
+// Constants
+import { GAME_RULES } from "@/constants/gameConstants";
+
 // Services
 import { submitGameResult, getDailyChallenge } from "@/services/GameService";
 
@@ -93,7 +96,7 @@ export default function Game() {
     }
 
     function handleWhereAreWeComplete(score: number){
-        setCurrentScore((currentScore) => ( currentScore + score))
+        setCurrentScore((currentScore) => ( currentScore + (score * GAME_RULES.whereAreWeScoreMultiplier)))
         setGameState((previousGameState) => ({
             ...previousGameState,
             phase: {

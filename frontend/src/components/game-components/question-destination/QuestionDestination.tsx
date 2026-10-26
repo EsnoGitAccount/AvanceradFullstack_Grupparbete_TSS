@@ -4,15 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import './QuestionDestination.css'
 import { ProgressStepper } from '@/components/ui/Progressbar'
 
-/*
- * TODO (Game Flow):
- * 1. Connect this page with the initial phase of the game 
- * 2. Receive starting score from previous steps and carry it over
- * 3. Update ProgressStepper to reflect overall game progress instead of resetting to 0 on this page.
- */
-
 import type { Question } from '@/models/City'
 import type { DailyChallenge } from '@/models/DailyChallenge'
+import { GAME_RULES } from '@/constants/gameConstants'
 
 type QuestionDestinationProps = {
     onComplete: (score: number) => void
@@ -36,7 +30,7 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
         setSelectedOption(optionText)
 
         // Calculate new score based on whether the selected option is correct
-        const newScore = isCorrect ? score + 10 : score
+        const newScore = isCorrect ? score + GAME_RULES.destinationQuestionScore : score
         if (isCorrect) {
             setScore(newScore)
         }
@@ -63,7 +57,6 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
                             <Card className="question-card">
                                 <CardHeader>
                                     <p className="question-card__eyebrow">
-                                        {/*TO DO: Dynamically write city name instead of hardcoding "Stockholm"*/}
                                         STOPP 0{currentQuestionIndex + 1} · {dailyChallange.cityDetails.cityName}
                                     </p>
                                     <CardTitle className="question-card__title">
@@ -102,7 +95,7 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="info-card__stats-content">
-                                    <div className="info-card__score">{score + previousScore} / 30</div>
+                                    <div className="info-card__score">{score + previousScore} / {GAME_RULES.maxScore}</div>
                                     <div className="info-card__remaining">{20 - (currentQuestionIndex * 10)} p</div>
                                 </CardContent>
                             </Card>
@@ -118,7 +111,7 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
                                 </CardHeader>
                                 <CardContent>
                                     <p className="info-card__footer-text">
-                                        3 stopp · Max 30 poäng · Ingen tidspress
+                                        3 stopp · Max {GAME_RULES.maxScore} poäng · Ingen tidspress
                                     </p>
                                 </CardContent>
                             </Card>
