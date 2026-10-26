@@ -1,0 +1,142 @@
+.where-are-we__page {
+    box-sizing: border-box;
+    min-height: calc(100dvh - 4.5rem);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background-color: var(--page);
+}
+
+.where-are-we__main {
+    flex: 1;
+    padding-block: 1.5rem;
+    max-width: 90%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-radius: var(--radius);
+    border: 1px solid var(--card-border);
+    background-color: var(--card);
+    color: var(--card-foreground);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    padding: 2.5rem;
+}
+
+
+.where-are-we__left-side {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    margin-right: 2rem;
+}
+
+.where-are-we__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+    align-self: center;
+}
+
+.where-are-we__image {
+    margin-top: 1rem;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 20rem;
+    border-radius: var(--radius-lg);
+    align-self: center;
+    justify-self: center;
+}
+
+.where-are-we__content  {
+    padding: 0;
+}
+.where-are-we__clues {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    width: 100%;
+    perspective: 800px;
+}
+
+.where-are-we__clue {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.5rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transform-origin: top;
+    animation: where-are-we__clue-flip-in 600ms ease-out both;
+}
+
+.where-are-we__clue--hidden {
+  visibility: hidden;
+  animation: none;
+}
+
+.where-are-we__clue-label {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.where-are-we__clue-text {
+  letter-spacing: 0.03em;
+}
+
+.where-are-we__form {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.where-are-we__submit-button {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    width: 25%;
+}
+
+@media (max-width: 768px) {
+    .where-are-we__main {
+        grid-template-columns: 1fr;
+        padding-block: 1.5rem;
+    }
+
+    .where-are-we__image {
+        max-height: 15rem;
+        margin-top: 0rem;
+    }
+
+    .where-are-we__left-side {
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+    }
+}
+
+@keyframes where-are-we__clue-flip-in {
+  from {
+    opacity: 0;
+    transform: rotateX(-90deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .where-are-we__clue {
+    animation: none;
+  }
+}
