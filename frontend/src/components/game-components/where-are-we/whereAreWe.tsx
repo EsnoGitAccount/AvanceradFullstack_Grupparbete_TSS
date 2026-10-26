@@ -24,6 +24,13 @@ export default function WhereAreWe({
 
   const [currentScore, setCurrentScore] = useState(10)
   const [cityGuess, setCityGuess] = useState("");
+  const [isCitySuggestionsOpen, setIsCitySuggestionsOpen] = useState(false);
+
+  const filteredCities = SWEDISH_CITIES.filter((city) =>
+    city.toLocaleLowerCase('sv-SE').includes(
+      cityGuess.trim().toLocaleLowerCase('sv-SE')
+    )
+  );
 
   const handleWhereAreWeSubmit = (event: React.SubmitEvent) =>{
     event.preventDefault();
@@ -84,18 +91,54 @@ export default function WhereAreWe({
 </div>
   
         <form className="where-are-we__form" onSubmit={handleWhereAreWeSubmit}>
-          <Input
-            list="swedish-city-suggestions"
-            value={cityGuess}
-            onChange={(e) => setCityGuess(e.target.value)}
-            placeholder="Vart är vi?"
-            aria-label="Gissa vilken svensk stad vi är i"
-          />
-          <datalist id="swedish-city-suggestions">
-            {SWEDISH_CITIES.map((city) => (
-              <option key={city} value={city} />
-            ))}
-          </datalist>
+          <div className="where-are-we__city-field">
+            <Input
+              value={cityGuess}
+              onChange={(event) => {
+                const value = event.target.value;
+                setCityGuess(value);
+                setIsCitySuggestionsOpen(value.trim().length > 0);
+              }}
+              onFocus={() => {
+                if (cityGuess.trim().length > 0) {
+                  setIsCitySuggestionsOpen(true);
+                }
+              }}
+              placeholder="Vart är vi?"
+              aria-label="Gissa vilken svensk stad vi är i"
+              autoComplete="off"
+            />
+
+            {isCitySuggestionsOpen && cityGuess.trim().length > 0 && (
+              <div
+                className="where-are-we__city-suggestions"
+                role="listbox"
+                aria-label="Stadsförslag"
+              >
+                {filteredCities.length > 0 ? (
+                  filteredCities.map((city) => (
+                    <button
+                      className="where-are-we__city-suggestion"
+                      key={city}
+                      type="button"
+                      role="option"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => {
+                        setCityGuess(city);
+                        setIsCitySuggestionsOpen(false);
+                      }}
+                    >
+                      {city}
+                    </button>
+                  ))
+                ) : (
+                  <p className="where-are-we__city-empty">
+                    Ingen stad hittades.
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
           <Button className="where-are-we__submit-button" type="submit">Svara</Button>
         </form>
         </div>
