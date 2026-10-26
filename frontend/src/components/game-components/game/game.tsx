@@ -221,7 +221,8 @@ export default function Game() {
             return(
                 <QuestionDestination
                     onComplete={handleQuestionDestinationComplete}
-                    questions={dailyChallenge.cityDetails.questions}
+                    dailyChallange={dailyChallenge}
+                    previousScore={currentScore}
                 />
             )
 

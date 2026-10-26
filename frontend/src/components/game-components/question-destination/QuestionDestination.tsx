@@ -12,20 +12,24 @@ import { ProgressStepper } from '@/components/ui/Progressbar'
  */
 
 import type { Question } from '@/models/City'
+import type { DailyChallenge } from '@/models/DailyChallenge'
 
 type QuestionDestinationProps = {
     onComplete: (score: number) => void
-    questions: Question[]
+    dailyChallange: DailyChallenge
+    previousScore: number
 }
 
-export default function QuestionDestination({ onComplete, questions }: QuestionDestinationProps) {
+export default function QuestionDestination({ onComplete, dailyChallange, previousScore }: QuestionDestinationProps) {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
     const [selectedOption, setSelectedOption] = useState<string | null>(null)
     const [score, setScore] = useState<number>(0)
 
-    const [challengeQuestions] = useState<Question[]>(questions)
+    const [challengeQuestions] = useState<Question[]>(dailyChallange.cityDetails.questions)
 
     // Get the active question based on the current index
+    console.log(challengeQuestions)
+    console.log(previousScore)
     const currentQuestion = challengeQuestions[currentQuestionIndex]
 
     const handleSelectOption = (optionText: string, isCorrect: boolean) => {
@@ -60,7 +64,7 @@ export default function QuestionDestination({ onComplete, questions }: QuestionD
                                 <CardHeader>
                                     <p className="question-card__eyebrow">
                                         {/*TO DO: Dynamically write city name instead of hardcoding "Stockholm"*/}
-                                        STOPP 0{currentQuestionIndex + 1} · {"Stockholm"}
+                                        STOPP 0{currentQuestionIndex + 1} · {dailyChallange.cityDetails.cityName}
                                     </p>
                                     <CardTitle className="question-card__title">
                                         {currentQuestion.questionText}
@@ -98,8 +102,8 @@ export default function QuestionDestination({ onComplete, questions }: QuestionD
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="info-card__stats-content">
-                                    <div className="info-card__score">{score} / 30</div>
-                                    <div className="info-card__remaining">{30 - score} p</div>
+                                    <div className="info-card__score">{score + previousScore} / 30</div>
+                                    <div className="info-card__remaining">{20 - (currentQuestionIndex * 10)} p</div>
                                 </CardContent>
                             </Card>
 
