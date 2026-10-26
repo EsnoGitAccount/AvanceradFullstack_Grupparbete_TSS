@@ -8,5 +8,7 @@ namespace Backend.Repositories.IRepositories
         Task<IEnumerable<Game>> GetAllGamesAsync();
         Task<Game?> GetGameByIdAsync(int gameId);
         Task<bool> DeleteGameAsync(Game game);
+        Task <IEnumerable<Game>> GetGamesForDateAsync(DateOnly date);
+        Task <IEnumerable<Game>> GetGamesForUserAsync(int userId);
     }
 }

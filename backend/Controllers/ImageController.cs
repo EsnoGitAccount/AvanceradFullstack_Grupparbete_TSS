@@ -1,6 +1,7 @@
 ﻿using Backend.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -27,8 +28,7 @@ namespace Backend.Controllers
 		}
 
 		[HttpGet("{blobName}")]
-		public async Task<IActionResult> GetImage(
-		string blobName)
+		public async Task<IActionResult> GetImage(string blobName)
 		{
 			var image = await _blobStorageService.DownloadAsync(blobName);
 

@@ -8,18 +8,28 @@ using Backend.Model;
 using Backend.Services;
 using Backend.Services.IServices;
 using Microsoft.Extensions.Logging;
+using Backend.Dto;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.Tests.Services
 {
 	public class CityServiceTests
 	{
-		[Fact]
+		private readonly Mock<ICityRepository> _mockRepo;
+		private readonly Mock<IBlobStorageService> _mockBlobStorage;
+		private readonly Mock<ILogger<CityService>> _mockLogger;
+		
+		public CityServiceTests()
+		{
+			_mockRepo = new Mock<ICityRepository>();
+			_mockBlobStorage = new Mock<IBlobStorageService>();
+			_mockLogger = new Mock<ILogger<CityService>>();
+		}
+
+        [Fact]
 		public async Task GivenGetAllCities_ReturnsListOfCities()
 		{
 			// Arrange
-			var mockRepo = new Mock<ICityRepository>();
-			var mockBlobStorage = new Mock<IBlobStorageService>();
-			var mockLogger = new Mock<ILogger<CityService>>();
 
 			var expectedCities = new List<City>
 			{
@@ -27,9 +37,9 @@ namespace Backend.Tests.Services
 				new City { CityId = 2, Name = "City2", CityPicture = "blob2" }
 			};
 
-			mockRepo.Setup(repo => repo.GetAllCitiesAsync()).ReturnsAsync(expectedCities);
+			_mockRepo.Setup(repo => repo.GetAllCitiesAsync()).ReturnsAsync(expectedCities);
 
-			var cityService = new CityService(mockRepo.Object, mockBlobStorage.Object, mockLogger.Object);
+			var cityService = new CityService(_mockRepo.Object, _mockBlobStorage.Object, _mockLogger.Object);
 
 			// Act
 			var result = await cityService.GetAllCitiesAsync();
@@ -39,7 +49,103 @@ namespace Backend.Tests.Services
 			Assert.Equal(expectedCities.Count, resultList.Count);
 			Assert.Equal(expectedCities[0].CityId, resultList[0].CityId);
 			Assert.Equal(expectedCities[0].Name, resultList[0].Name);
-			mockRepo.Verify(repo => repo.GetAllCitiesAsync(), Times.Once);
+			_mockRepo.Verify(repo => repo.GetAllCitiesAsync(), Times.Once);
+		}
+
+
+		[Fact]
+		public async Task GivenCreateCity_WhenCityDoesNotExist_CreatesCity()
+		{
+			// Arrange
+			var content = Encoding.UTF8.GetBytes("test image");
+			var stream = new MemoryStream(content);
+
+			var file = new FormFile(
+				stream,
+				0,
+				stream.Length,
+				"file",
+				"test.jpg"
+			);
+			// Set the headers and content type for the FormFile
+			file.Headers = new HeaderDictionary();
+			file.ContentType = "image/jpeg";
+
+
+			var cityDto = new CityCreateDto
+			{
+				Name = "NewCity",
+				CityPicture = file
+			};
+
+			_mockRepo.Setup(repo=>repo.GetCityByNameAsync(cityDto.Name)).ReturnsAsync(false);
+			_mockBlobStorage.Setup(blob => blob.UploadFileAsync(It.IsAny<IFormFile>())).ReturnsAsync("blobName");
+			_mockRepo.Setup(repo => repo.CreateCityAsync(It.IsAny<City>())).Returns(Task.CompletedTask);
+			_mockRepo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
+
+			var cityService = new CityService(_mockRepo.Object, _mockBlobStorage.Object, _mockLogger.Object);
+
+			// Act
+			var result = await cityService.CreateCityAsync(cityDto);
+		
+			// Assert
+			Assert.NotNull(result);
+			Assert.Equal(cityDto.Name, result.Name);
+			Assert.Equal("blobName", result.CityPicture);
+			_mockRepo.Verify(repo => repo.GetCityByNameAsync(cityDto.Name), Times.Once);
+			_mockRepo.Verify(repo => repo.CreateCityAsync(It.IsAny<City>()), Times.Once);
+		}
+
+		[Fact]
+		public async Task GivenGetCityById_WhenCityExists_ReturnsCity()
+		{
+			// Arrange
+			var cityId = 1;
+			var expectedCity = new City { CityId = cityId, Name = "City1", CityPicture = "blob1" };
+
+			_mockRepo.Setup(repo => repo.GetCityByIdAsync(cityId)).ReturnsAsync(expectedCity);
+			var cityService = new CityService(_mockRepo.Object, _mockBlobStorage.Object, _mockLogger.Object);
+			// Act
+			var result = await cityService.GetCityByIdAsync(cityId);
+			// Assert
+			Assert.NotNull(result);
+			Assert.Equal(expectedCity.CityId, result.CityId);
+			Assert.Equal(expectedCity.CityPicture, result.CityPicture);
+			Assert.Equal(expectedCity.Name, result.Name);
+			_mockRepo.Verify(repo => repo.GetCityByIdAsync(cityId), Times.Once);
+		}
+
+		[Fact]
+		public async Task GivenUpdateCity_WhenNameChanges_UpdatesCity()
+		{
+
+			// Arrange
+			var cityId = 1;
+			var expectedCity = new City { CityId = cityId, Name = "City1", CityPicture = "blob1" };
+
+			var cityUpdateDto = new CityUpdateDto
+			{
+				Name = "UpdatedCity",
+				CityPicture = null // No picture update
+			};
+
+			_mockRepo.Setup(repo => repo.GetCityByIdAsync(cityId)).ReturnsAsync(expectedCity);
+			_mockRepo.Setup(repo=>repo.GetCityByNameAsync(cityUpdateDto.Name)).ReturnsAsync(false);
+			_mockRepo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
+			var cityService = new CityService(_mockRepo.Object, _mockBlobStorage.Object, _mockLogger.Object);
+
+			//Act
+			var result = await cityService.UpdateCityAsync(cityId, cityUpdateDto);
+
+			// Assert
+			Assert.NotNull(result);
+			Assert.Equal(cityUpdateDto.Name, result.Name);
+			Assert.Equal(expectedCity.CityId, result.CityId);
+
+			Assert.Equal("blob1", result.CityPicture);
+			_mockRepo.Verify(repo => repo.GetCityByIdAsync(cityId), Times.Once);
+			_mockRepo.Verify(repo => repo.GetCityByNameAsync(cityUpdateDto.Name), Times.Once);
+			_mockRepo.Verify(repo => repo.SaveChangesAsync(), Times.Once);
 		}
 	}	
 }

@@ -22,6 +22,7 @@ namespace Backend.Repositories
         {
             return await _context.Games
                 .AsNoTracking()
+                .Include(game => game.User)
                 .Include(game => game.DailyChallange)
                 .ThenInclude(challenge => challenge.City)
                 .OrderByDescending(game => game.CompletedAt)
@@ -38,6 +39,18 @@ namespace Backend.Repositories
             _context.Games.Remove(game);
 
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<IEnumerable<Game>> GetGamesForDateAsync(DateOnly date)
+        {
+            return await _context.Games.Where(g => g.CompletedAt == date).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Game>> GetGamesForUserAsync(int userId)
+        {
+            return await _context.Games
+                .Where(g => g.UserId == userId)
+                .ToListAsync();
         }
     }
 }
