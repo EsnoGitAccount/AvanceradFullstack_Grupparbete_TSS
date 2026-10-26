@@ -82,7 +82,7 @@ namespace Backend.Controllers
 		{
 			await _cityService.UpdateCityQuestionsAsync(cityId, updateDto);
 
-			return NoContent();
+			return Ok();
 		}
 		
 		[HttpGet("{cityId:int}/questions")]

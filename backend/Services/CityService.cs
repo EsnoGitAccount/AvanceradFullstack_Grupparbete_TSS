@@ -256,7 +256,12 @@ namespace Backend.Services
 
     			ApplyQuestionUpdates(city, updateDto);
 
-    			await _cityRepository.SaveChangesAsync();
+	    		var saved = await _cityRepository.SaveChangesAsync();
+
+			if (!saved)
+			{
+				throw new InvalidOperationException("Failed to update city questions");
+			}
 		}
 
 		private static void ApplyQuestionUpdates(City city,	CityQuestionsUpdateDto updateDto)
@@ -358,6 +363,11 @@ namespace Backend.Services
 			var city = await _cityRepository.GetCityWithQuestionsAsync(cityId) ??
 				throw new NotFoundException("City not found");
 
+			return MapToCityQuestionsUpdateDto(city);
+		}
+
+		private static CityQuestionsUpdateDto MapToCityQuestionsUpdateDto(City city)
+		{
 			return new CityQuestionsUpdateDto
 			{
 				Questions = city.Questions
