@@ -33,7 +33,7 @@ namespace Backend.Controllers
         {
             await _userService.ArchiveUserAsync(userId);
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpPost("admin/{userId:int}/restore")]
@@ -43,7 +43,7 @@ namespace Backend.Controllers
         {
             await _userService.RestoreUserAsync(userId);
 
-            return NoContent();
+            return Ok();
         }
 
     }
