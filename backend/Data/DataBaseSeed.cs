@@ -10,16 +10,16 @@ namespace Backend.Data
             // STÄDER
 
             modelBuilder.Entity<City>().HasData(
-                new City { CityId = 1, Name = "Stockholm" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
-                new City { CityId = 2, Name = "Göteborg" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
-                new City { CityId = 3, Name = "Malmö" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
-                new City { CityId = 4, Name = "Uppsala" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
-                new City { CityId = 5, Name = "Västerås" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
-                new City { CityId = 6, Name = "Örebro" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
-                new City { CityId = 7, Name = "Linköping" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
-                new City { CityId = 8, Name = "Helsingborg" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
-                new City { CityId = 9, Name = "Umeå" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" },
-                new City { CityId = 10, Name = "Lund" , CityPicture= "f9909f24fbcd664a0418738594ec3ef2" }
+                new City { CityId = 1, Name = "Stockholm" , CityPicture= "41129676e3fb41ae9f287989c6904000" },
+                new City { CityId = 2, Name = "Göteborg" , CityPicture= "3b6542dbf1804eee8f520f46184d87e1" },
+                new City { CityId = 3, Name = "Malmö" , CityPicture= "7212fad885c543a5a0af470f7b78dd3e" },
+                new City { CityId = 4, Name = "Uppsala" , CityPicture= "1c48e9c49fc3400faf75c46913027233" },
+                new City { CityId = 5, Name = "Västerås" , CityPicture= "a6f7bb4bb7e7441d8c52bdb470d3a1b2" },
+                new City { CityId = 6, Name = "Örebro" , CityPicture= "e54618d05ef54921b854f73084da9849" },
+                new City { CityId = 7, Name = "Linköping" , CityPicture= "91ccf98d23fa4cdea0d068436ab53fb2" },
+                new City { CityId = 8, Name = "Helsingborg" , CityPicture= "07c12c24dbe44af0871863e52d76b97a" },
+                new City { CityId = 9, Name = "Umeå" , CityPicture= "9bba3fbbc73c49998de534f2c9191505" },
+                new City { CityId = 10, Name = "Lund" , CityPicture= "1e1ecf1082394d5e91b59c5ca38dcb4b" }
             );
  
 
@@ -347,36 +347,36 @@ namespace Backend.Data
             );
 
                 modelBuilder.Entity<City>().HasData(
-                    new City { CityId = 11, Name = "Karlstad", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 12, Name = "Östersund", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 13, Name = "Sundsvall", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 14, Name = "Luleå", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 15, Name = "Kiruna", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 16, Name = "Gävle", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 17, Name = "Falun", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 18, Name = "Borlänge", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 19, Name = "Mora", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 20, Name = "Visby", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 21, Name = "Kalmar", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 22, Name = "Karlskrona", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 23, Name = "Växjö", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 24, Name = "Halmstad", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 25, Name = "Borås", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 26, Name = "Trollhättan", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 27, Name = "Uddevalla", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 28, Name = "Skövde", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 29, Name = "Eskilstuna", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 30, Name = "Nyköping", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 31, Name = "Norrköping", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 32, Name = "Jönköping", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 33, Name = "Kristianstad", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 34, Name = "Ystad", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 35, Name = "Trelleborg", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 36, Name = "Landskrona", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 37, Name = "Varberg",CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 38, Name = "Falkenberg", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 39, Name = "Örnsköldsvik", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" },
-                    new City { CityId = 40, Name = "Skellefteå", CityPicture = "f9909f24fbcd664a0418738594ec3ef2" }
+                    new City { CityId = 11, Name = "Karlstad", CityPicture = "ef7ad527345a436ab0074e50f2467262" },
+                    new City { CityId = 12, Name = "Östersund", CityPicture = "f6b74ed4d8e54cc8bed5e1048d1f41f2" },
+                    new City { CityId = 13, Name = "Sundsvall", CityPicture = "29ed87ccb7214cfd96db0991eafa7e6a" },
+                    new City { CityId = 14, Name = "Luleå", CityPicture = "c9104aade1be4cf98ef7d7ad335f8a8c" },
+                    new City { CityId = 15, Name = "Kiruna", CityPicture = "eb8c51d163eb4f5eb5a8131c7822860b" },
+                    new City { CityId = 16, Name = "Gävle", CityPicture = "b8531fc4114b40f2b38cb9de426168b3" },
+                    new City { CityId = 17, Name = "Falun", CityPicture = "c775c43beb10482e8764522ccfa5d0e6" },
+                    new City { CityId = 18, Name = "Borlänge", CityPicture = "5a96bb6ab3f144ce8125684e738055b1" },
+                    new City { CityId = 19, Name = "Mora", CityPicture = "38dc7ea7913d45e6bd272aced8de72bc" },
+                    new City { CityId = 20, Name = "Visby", CityPicture = "683a42cd701d4916b1af4859a4141dda" },
+                    new City { CityId = 21, Name = "Kalmar", CityPicture = "f1123269ba81429993953a54e14beca1" },
+                    new City { CityId = 22, Name = "Karlskrona", CityPicture = "a51b7da93e1b4a7099e1778e3e8c2da0" },
+                    new City { CityId = 23, Name = "Växjö", CityPicture = "8f6aa14c666f4340a131b4b6de9dbd57" },
+                    new City { CityId = 24, Name = "Halmstad", CityPicture = "d9f0186187aa4bd7befcfbfc33c6b07a" },
+                    new City { CityId = 25, Name = "Borås", CityPicture = "bb50eba8343b403e9cfaabb207640c86" },
+                    new City { CityId = 26, Name = "Trollhättan", CityPicture = "66013b45f450453fbfdbe0a2e462f3df" },
+                    new City { CityId = 27, Name = "Uddevalla", CityPicture = "d33cc860c2274573adc81448021b497f" },
+                    new City { CityId = 28, Name = "Skövde", CityPicture = "1e231efb9a8a4769b742a0b2aaa3f200" },
+                    new City { CityId = 29, Name = "Eskilstuna", CityPicture = "be520cd1ba3d42168f81a76b3db5960e" },
+                    new City { CityId = 30, Name = "Nyköping", CityPicture = "e0a6d72ab0e94937994574a761d09291" },
+                    new City { CityId = 31, Name = "Norrköping", CityPicture = "7cc28bdafb154050a93e542a23815b60" },
+                    new City { CityId = 32, Name = "Jönköping", CityPicture = "f26b39f34ce148b08a6cf0b8cca07ae4" },
+                    new City { CityId = 33, Name = "Kristianstad", CityPicture = "cb97185072bd4c0f976e3f74abf6d671" },
+                    new City { CityId = 34, Name = "Ystad", CityPicture = "d0a6c80414a84854bde949025c453c61" },
+                    new City { CityId = 35, Name = "Trelleborg", CityPicture = "3e9bcc7658b44c498c3cc1b4f3a4fac7" },
+                    new City { CityId = 36, Name = "Landskrona", CityPicture = "0fdae2802ba34aeeaa4064a9f86189cc" },
+                    new City { CityId = 37, Name = "Varberg",CityPicture = "c3c507d7952f4d2d833c3944eb138bab" },
+                    new City { CityId = 38, Name = "Falkenberg", CityPicture = "13a0d5c7252342ceb5fef50703330c65" },
+                    new City { CityId = 39, Name = "Örnsköldsvik", CityPicture = "0e8a82b234e245578b53ac8fa4b51a3e" },
+                    new City { CityId = 40, Name = "Skellefteå", CityPicture = "cae60760b3384fe88a6c9761aa474511" }
                 );
 
                 modelBuilder.Entity<Question>().HasData(

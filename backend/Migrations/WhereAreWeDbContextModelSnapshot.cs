@@ -50,280 +50,280 @@ namespace Backend.Migrations
                         new
                         {
                             CityId = 1,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "41129676e3fb41ae9f287989c6904000",
                             IsArchived = false,
                             Name = "Stockholm"
                         },
                         new
                         {
                             CityId = 2,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "3b6542dbf1804eee8f520f46184d87e1",
                             IsArchived = false,
                             Name = "Göteborg"
                         },
                         new
                         {
                             CityId = 3,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "7212fad885c543a5a0af470f7b78dd3e",
                             IsArchived = false,
                             Name = "Malmö"
                         },
                         new
                         {
                             CityId = 4,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "1c48e9c49fc3400faf75c46913027233",
                             IsArchived = false,
                             Name = "Uppsala"
                         },
                         new
                         {
                             CityId = 5,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "a6f7bb4bb7e7441d8c52bdb470d3a1b2",
                             IsArchived = false,
                             Name = "Västerås"
                         },
                         new
                         {
                             CityId = 6,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "e54618d05ef54921b854f73084da9849",
                             IsArchived = false,
                             Name = "Örebro"
                         },
                         new
                         {
                             CityId = 7,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "91ccf98d23fa4cdea0d068436ab53fb2",
                             IsArchived = false,
                             Name = "Linköping"
                         },
                         new
                         {
                             CityId = 8,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "07c12c24dbe44af0871863e52d76b97a",
                             IsArchived = false,
                             Name = "Helsingborg"
                         },
                         new
                         {
                             CityId = 9,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "9bba3fbbc73c49998de534f2c9191505",
                             IsArchived = false,
                             Name = "Umeå"
                         },
                         new
                         {
                             CityId = 10,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "1e1ecf1082394d5e91b59c5ca38dcb4b",
                             IsArchived = false,
                             Name = "Lund"
                         },
                         new
                         {
                             CityId = 11,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "ef7ad527345a436ab0074e50f2467262",
                             IsArchived = false,
                             Name = "Karlstad"
                         },
                         new
                         {
                             CityId = 12,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "f6b74ed4d8e54cc8bed5e1048d1f41f2",
                             IsArchived = false,
                             Name = "Östersund"
                         },
                         new
                         {
                             CityId = 13,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "29ed87ccb7214cfd96db0991eafa7e6a",
                             IsArchived = false,
                             Name = "Sundsvall"
                         },
                         new
                         {
                             CityId = 14,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "c9104aade1be4cf98ef7d7ad335f8a8c",
                             IsArchived = false,
                             Name = "Luleå"
                         },
                         new
                         {
                             CityId = 15,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "eb8c51d163eb4f5eb5a8131c7822860b",
                             IsArchived = false,
                             Name = "Kiruna"
                         },
                         new
                         {
                             CityId = 16,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "b8531fc4114b40f2b38cb9de426168b3",
                             IsArchived = false,
                             Name = "Gävle"
                         },
                         new
                         {
                             CityId = 17,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "c775c43beb10482e8764522ccfa5d0e6",
                             IsArchived = false,
                             Name = "Falun"
                         },
                         new
                         {
                             CityId = 18,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "5a96bb6ab3f144ce8125684e738055b1",
                             IsArchived = false,
                             Name = "Borlänge"
                         },
                         new
                         {
                             CityId = 19,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "38dc7ea7913d45e6bd272aced8de72bc",
                             IsArchived = false,
                             Name = "Mora"
                         },
                         new
                         {
                             CityId = 20,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "683a42cd701d4916b1af4859a4141dda",
                             IsArchived = false,
                             Name = "Visby"
                         },
                         new
                         {
                             CityId = 21,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "f1123269ba81429993953a54e14beca1",
                             IsArchived = false,
                             Name = "Kalmar"
                         },
                         new
                         {
                             CityId = 22,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "a51b7da93e1b4a7099e1778e3e8c2da0",
                             IsArchived = false,
                             Name = "Karlskrona"
                         },
                         new
                         {
                             CityId = 23,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "8f6aa14c666f4340a131b4b6de9dbd57",
                             IsArchived = false,
                             Name = "Växjö"
                         },
                         new
                         {
                             CityId = 24,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "d9f0186187aa4bd7befcfbfc33c6b07a",
                             IsArchived = false,
                             Name = "Halmstad"
                         },
                         new
                         {
                             CityId = 25,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "bb50eba8343b403e9cfaabb207640c86",
                             IsArchived = false,
                             Name = "Borås"
                         },
                         new
                         {
                             CityId = 26,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "66013b45f450453fbfdbe0a2e462f3df",
                             IsArchived = false,
                             Name = "Trollhättan"
                         },
                         new
                         {
                             CityId = 27,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "d33cc860c2274573adc81448021b497f",
                             IsArchived = false,
                             Name = "Uddevalla"
                         },
                         new
                         {
                             CityId = 28,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "1e231efb9a8a4769b742a0b2aaa3f200",
                             IsArchived = false,
                             Name = "Skövde"
                         },
                         new
                         {
                             CityId = 29,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "be520cd1ba3d42168f81a76b3db5960e",
                             IsArchived = false,
                             Name = "Eskilstuna"
                         },
                         new
                         {
                             CityId = 30,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "e0a6d72ab0e94937994574a761d09291",
                             IsArchived = false,
                             Name = "Nyköping"
                         },
                         new
                         {
                             CityId = 31,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "7cc28bdafb154050a93e542a23815b60",
                             IsArchived = false,
                             Name = "Norrköping"
                         },
                         new
                         {
                             CityId = 32,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "f26b39f34ce148b08a6cf0b8cca07ae4",
                             IsArchived = false,
                             Name = "Jönköping"
                         },
                         new
                         {
                             CityId = 33,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "cb97185072bd4c0f976e3f74abf6d671",
                             IsArchived = false,
                             Name = "Kristianstad"
                         },
                         new
                         {
                             CityId = 34,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "d0a6c80414a84854bde949025c453c61",
                             IsArchived = false,
                             Name = "Ystad"
                         },
                         new
                         {
                             CityId = 35,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "3e9bcc7658b44c498c3cc1b4f3a4fac7",
                             IsArchived = false,
                             Name = "Trelleborg"
                         },
                         new
                         {
                             CityId = 36,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "0fdae2802ba34aeeaa4064a9f86189cc",
                             IsArchived = false,
                             Name = "Landskrona"
                         },
                         new
                         {
                             CityId = 37,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "c3c507d7952f4d2d833c3944eb138bab",
                             IsArchived = false,
                             Name = "Varberg"
                         },
                         new
                         {
                             CityId = 38,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "13a0d5c7252342ceb5fef50703330c65",
                             IsArchived = false,
                             Name = "Falkenberg"
                         },
                         new
                         {
                             CityId = 39,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "0e8a82b234e245578b53ac8fa4b51a3e",
                             IsArchived = false,
                             Name = "Örnsköldsvik"
                         },
                         new
                         {
                             CityId = 40,
-                            CityPicture = "f9909f24fbcd664a0418738594ec3ef2",
+                            CityPicture = "cae60760b3384fe88a6c9761aa474511",
                             IsArchived = false,
                             Name = "Skellefteå"
                         });
