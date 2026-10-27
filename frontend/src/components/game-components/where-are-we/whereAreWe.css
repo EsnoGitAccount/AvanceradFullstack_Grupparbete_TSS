@@ -3,7 +3,6 @@
     min-height: calc(100dvh - 4.5rem);
     padding-top: 2rem;
     padding-bottom: 2rem;
-    background-color: var(--page);
 }
 
 .where-are-we__main {

@@ -1,6 +1,5 @@
 .site-header {
   border-bottom: 1px solid var(--page-border);
-  background: var(--page);
 }
 
 .site-header__inner {
