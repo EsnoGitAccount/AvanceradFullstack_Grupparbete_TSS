@@ -20,6 +20,7 @@ export type LeaderboardData = {
     dailyTop10: LeaderboardEntry[];
     allTimeTop10: LeaderboardEntry[];
     currentUser: PlayerStatistics | null;
+    currentGuestResult: LeaderboardEntry | null;
     dailyCount: number;
     allTimeCount: number;
 };

@@ -9,7 +9,7 @@ public class LeaderboardService(
     IGameRepository gameRepository,
     IUserRepository userRepository) : ILeaderboardService
 {
-    public async Task<LeaderboardDto> GetAsync(int? currentUserId)
+    public async Task<LeaderboardDto> GetAsync(int? currentUserId, int? gameId)
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         var games = await gameRepository.GetAllGamesAsync();
@@ -43,11 +43,29 @@ public class LeaderboardService(
         var dailyResults = Rank(
             dailyBest
                 .Where(g => g.CompletedAt == today)
-                .Select(g => CreateResult(
+                .Select(g =>
+                {
+                var result = CreateResult(
                     g,
                     g.TotalScore,
                     currentUserId,
-                    streaks)));
+                    streaks);
+
+                    if (!currentUserId.HasValue && 
+                    g.UserId == null &&
+                    gameId.HasValue && 
+                    g.GameId == gameId.Value)
+                    
+                    {
+                        result.IsCurrentUser = true;
+                    }
+                    
+                    return result;
+                }));
+
+        ResultDto? currentGuestResult = !currentUserId.HasValue
+            ? dailyResults.FirstOrDefault(r => r.IsCurrentUser)
+            : null;
 
         // Guests are not included in the all-time leaderboard, only registered players.
         var allTimeResults = Rank(
@@ -56,7 +74,7 @@ public class LeaderboardService(
                 .GroupBy(g => g.UserId!.Value)
                 .Select(group => CreateResult(
                     group.First(),
-                    group.Sum(g => (decimal)g.TotalScore),
+                    group.Sum(g => (decimal)g.TotalScore),  
                     currentUserId,
                     streaks)));
 
@@ -97,7 +115,9 @@ public class LeaderboardService(
 
             DailyTop10 = dailyResults.Take(10).ToList(),
             AllTimeTop10 = allTimeResults.Take(10).ToList(),
-            CurrentUser = currentUser
+            CurrentUser = currentUser,
+
+            CurrentGuestResult = currentGuestResult
         };
     }
 

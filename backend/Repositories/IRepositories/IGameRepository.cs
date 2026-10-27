@@ -4,7 +4,8 @@ namespace Backend.Repositories.IRepositories
 {
     public interface IGameRepository
     {
-        Task<bool> CreateGameAsync(Game game);
+        Task<Game> CreateGameAsync(Game game);
+        Task<bool> SaveChangesAsync();
         Task<IEnumerable<Game>> GetAllGamesAsync();
         Task<Game?> GetGameByIdAsync(int gameId);
         Task<bool> DeleteGameAsync(Game game);

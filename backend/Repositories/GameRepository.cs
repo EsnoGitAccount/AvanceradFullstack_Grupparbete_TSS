@@ -13,10 +13,15 @@ namespace Backend.Repositories
         {
             _context = context;
         }
-        public async Task<bool> CreateGameAsync(Game game)
+        public async Task<Game> CreateGameAsync(Game game)
         {
             await _context.Games.AddAsync(game);
-            return await _context.SaveChangesAsync() > 0;
+            return game;
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;            
         }
         public async Task<IEnumerable<Game>> GetAllGamesAsync()
         {

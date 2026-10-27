@@ -4,5 +4,5 @@ namespace Backend.Services.IServices;
 
 public interface ILeaderboardService
 {
-    Task<LeaderboardDto> GetAsync(int? currentUserId);
+    Task<LeaderboardDto> GetAsync(int? currentUserId, int? gameId);
 }

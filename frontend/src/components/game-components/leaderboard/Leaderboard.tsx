@@ -14,7 +14,7 @@ export default function Leaderboard() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [reload, setReload] = useState(0);
-  
+
     useEffect(() => {
         const Controller = new AbortController();
 
@@ -25,7 +25,7 @@ export default function Leaderboard() {
                 if (!Controller.signal.aborted) {
                     setData(result);
                 }
-            } catch  {
+            } catch {
                 if (!Controller.signal.aborted) {
                     setError('Kunde inte hämta topplistan. Försök igen senare.');
                 }
@@ -51,7 +51,7 @@ export default function Leaderboard() {
     }
 
     const isDaily = period === 'daily';
-    
+
     const entries = (isDaily ? data?.dailyTop10 : data?.allTimeTop10) ?? [];
 
     const player = data?.currentUser;
@@ -60,6 +60,21 @@ export default function Leaderboard() {
 
     const playerScore = isDaily ? player?.dailyScore : player?.allTimeScore;
 
+    const ownResult = player
+        ? {
+            userName: player.userName,
+            rank: playerRank,
+            finalScore: playerScore,
+            streak: player.streak,
+        }
+        : isDaily
+            ? data?.currentGuestResult
+            : null;
+
+    const showOwnRow =
+        ownResult != null &&
+        ownResult.rank != null &&
+        !entries.some(entry => entry.isCurrentUser);
 
     return (
         <section className="leaderboard-page__hero">
@@ -73,24 +88,24 @@ export default function Leaderboard() {
                     </p>
                 </div>
                 {data && (
-                <div className="leaderboard-page__date-badge">
-                    {period === 'daily' ? data.dailyCount : data.allTimeCount} resenärer
-                </div>
+                    <div className="leaderboard-page__date-badge">
+                        {period === 'daily' ? data.dailyCount : data.allTimeCount} resenärer
+                    </div>
                 )}
             </div>
 
             {/* Tab buttons */}
             <div className="leaderboard-page__tabs">
-                <Button variant={isDaily ? "secondary" : "ghost"} 
-                className={isDaily ? "leaderboard-page__tab--active" : ""}
-                aria-pressed={!isDaily}
-                onClick={() => setPeriod('daily')}>
+                <Button variant={isDaily ? "secondary" : "ghost"}
+                    className={isDaily ? "leaderboard-page__tab--active" : ""}
+                    aria-pressed={!isDaily}
+                    onClick={() => setPeriod('daily')}>
                     I dag
                 </Button>
-                <Button variant={isDaily ? "ghost" : "secondary"} 
-                className={isDaily ? "" : "leaderboard-page__tab--active"}
-                aria-pressed={isDaily}
-                onClick={() => setPeriod('allTime')}>
+                <Button variant={isDaily ? "ghost" : "secondary"}
+                    className={isDaily ? "" : "leaderboard-page__tab--active"}
+                    aria-pressed={isDaily}
+                    onClick={() => setPeriod('allTime')}>
                     Genom tiderna
                 </Button>
             </div>
@@ -108,32 +123,32 @@ export default function Leaderboard() {
             ) : data ? (
                 <div className="leaderboard-page__grid">
 
-                {/* Left column: Leaderboard */}
-                <div className="leaderboard-page__left-column">
+                    {/* Left column: Leaderboard */}
+                    <div className="leaderboard-page__left-column">
 
-                    {/* Leaderboard card */}
-                    <Card className="leaderboard-page__leaderboard-card">
-                        <CardHeader className="leaderboard-page__card-header">
-                            <CardTitle style={{ fontWeight: 800 }}>
-                                {isDaily ? 
-                                'Dagens top 10 topplista' :
-                                'Topplista top 10 genom tiderna'} </CardTitle>
-                            <TrophyIcon color="var(--destructive)" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="leaderboard-page__table-header">
-                                <span>PLATS / RESENÄR</span>
-                                <span>SVIT / POÄNG</span>
-                            </div>
+                        {/* Leaderboard card */}
+                        <Card className="leaderboard-page__leaderboard-card">
+                            <CardHeader className="leaderboard-page__card-header">
+                                <CardTitle style={{ fontWeight: 800 }}>
+                                    {isDaily ?
+                                        'Dagens top 10 topplista' :
+                                        'Topplista top 10 genom tiderna'} </CardTitle>
+                                <TrophyIcon color="var(--destructive)" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="leaderboard-page__table-header">
+                                    <span>PLATS / RESENÄR</span>
+                                    <span>SVIT / POÄNG</span>
+                                </div>
 
-                            {/* Placeholder for leaderboard rows */}
-                            <div className="leaderboard-page__table">
-                                {entries.map ((entry, index) => (
+                                {/* Placeholder for leaderboard rows */}
+                                <div className="leaderboard-page__table">
+                                    {entries.map((entry, index) => (
                                         <div
                                             key={`${period}-${index}`}
                                             className={`leaderboard-page__row ${entry.isCurrentUser
-                                                    ? 'leaderboard-page__row--active'
-                                                    : ''
+                                                ? 'leaderboard-page__row--active'
+                                                : ''
                                                 }`}
                                         >
                                             <span>
@@ -149,78 +164,90 @@ export default function Leaderboard() {
                                                 <strong>{entry.finalScore} p</strong>
                                             </span>
                                         </div>
-                                ))}
-                                {entries.length === 0 && (
-                                    <div className="leaderboard-page__row">
-                                        <span>Ingen data tillgänglig</span>
-                                    </div>
-                                )}
-                            </div>
+                                    ))}
+                                    {showOwnRow && ownResult && (
+                                        <div className="leaderboard-page__row leaderboard-page__row--active">
+                                            <span>
+                                                <strong className="leaderboard-page__rank">
+                                                    {String(ownResult.rank).padStart(2, '0')}
+                                                </strong>{' '}
+                                                {ownResult.userName} (du)
+                                            </span>
 
-                            <p className="leaderboard-page__footnote">
-                                Listan uppdateras när en resa slutförs.
-                            </p>
-                        </CardContent>
-                    </Card>
-                </div>
+                                            <span>
+                                                {ownResult.streak != null &&
+                                                    `${ownResult.streak} dagar · `}
 
-                {/* Right column: Statistics cards */}
-                <div className="leaderboard-page__right-column">
+                                                <strong>{ownResult.finalScore} p</strong>
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
 
-                    {/* Card 1: Your placement */}
-                    <Card className="leaderboard-page__stat-card1">
-                        <CardContent className="leaderboard-page__stat-card-content">
-                            {player ? (
-                                <>
-                            <div className="leaderboard-page__avatar">{player.userName.charAt(0).toUpperCase()}</div>
-                                
-                            <p className="leaderboard-page__stat-sub">
-                                {player.userName} · DIN PLACERING</p>
-                            <h2 className="leaderboard-page__stat-title">
-                                {playerRank ? `#${playerRank}` : 'Ingen placering ännu'}
-                            </h2>
-                            <p className="leaderboard-page__stat-score">
-                                {playerScore !== null ? `${playerScore} poäng` : 'Du har inte spelat än'}
-                            </p>
-                            <p className="leaderboard-page__stat-desc">
-                                {isDaily ?
-                                'Din placering i dagens topplista. Listan uppdateras när en resa slutförs.' :
-                                'Din placering i topplistan genom tiderna. Listan uppdateras när en resa slutförs.'}
-                            </p>
-                            </>
-                            ) : (
-                                <p>
-                                    Logga in för att se din placering och statistik.
+                                <p className="leaderboard-page__footnote">
+                                    Listan uppdateras när en resa slutförs.
                                 </p>
-                            )}
-                        </CardContent>
-                    </Card>
+                            </CardContent>
+                        </Card>
+                    </div>
 
-                    {/* Card 2: Through the years */}
-                    <Card className="leaderboard-page__stat-card2">
-                        <CardContent>
-                            <p className="leaderboard-page__stat-sub">Genom tiderna</p>
-                            <h2 className="leaderboard-page__stat-title">
-                                {player?.allTimeScore ? `${player.allTimeScore} poäng` : 'Ingen poäng ännu'}
-                            </h2>
-                            <p className="leaderboard-page__stat-desc">Dina samlade poäng från alla resor</p>
-                        </CardContent>
-                    </Card>
+                    {/* Right column: Statistics cards */}
+                    <div className="leaderboard-page__right-column">
 
-                    {/* Card 3: New opportunity tomorrow */}
-                    <Card className="leaderboard-page__stat-card">
-                        <CardHeader>
-                            <CardTitle>Ny chans i morgon</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="leaderboard-page__stat-desc">
-                                Dagens poäng är låst. En ny topplista öppnar med morgondagens spel.
-                            </p>
-                        </CardContent>
-                    </Card>
-                            
+                        {/* Card 1: Your placement */}
+                        <Card className="leaderboard-page__stat-card1">
+                            <CardContent className="leaderboard-page__stat-card-content">
+                                {player ? (
+                                    <>
+                                        <div className="leaderboard-page__avatar">{player.userName.charAt(0).toUpperCase()}</div>
+
+                                        <p className="leaderboard-page__stat-sub">
+                                            {player.userName} · DIN PLACERING</p>
+                                        <h2 className="leaderboard-page__stat-title">
+                                            {playerRank ? `#${playerRank}` : 'Ingen placering ännu'}
+                                        </h2>
+                                        <p className="leaderboard-page__stat-score">
+                                            {playerScore !== null ? `${playerScore} poäng` : 'Du har inte spelat än'}
+                                        </p>
+                                        <p className="leaderboard-page__stat-desc">
+                                            {isDaily ?
+                                                'Din placering i dagens topplista. Listan uppdateras när en resa slutförs.' :
+                                                'Din placering i topplistan genom tiderna. Listan uppdateras när en resa slutförs.'}
+                                        </p>
+                                    </>
+                                ) : (
+                                    <p>
+                                        Logga in för att se din placering och statistik.
+                                    </p>
+                                )}
+                            </CardContent>
+                        </Card>
+
+                        {/* Card 2: Through the years */}
+                        <Card className="leaderboard-page__stat-card2">
+                            <CardContent>
+                                <p className="leaderboard-page__stat-sub">Genom tiderna</p>
+                                <h2 className="leaderboard-page__stat-title">
+                                    {player?.allTimeScore ? `${player.allTimeScore} poäng` : 'Ingen poäng ännu'}
+                                </h2>
+                                <p className="leaderboard-page__stat-desc">Dina samlade poäng från alla resor</p>
+                            </CardContent>
+                        </Card>
+
+                        {/* Card 3: New opportunity tomorrow */}
+                        <Card className="leaderboard-page__stat-card">
+                            <CardHeader>
+                                <CardTitle>Ny chans i morgon</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="leaderboard-page__stat-desc">
+                                    Dagens poäng är låst. En ny topplista öppnar med morgondagens spel.
+                                </p>
+                            </CardContent>
+                        </Card>
+
+                    </div>
                 </div>
-            </div>
             ) : null}
         </section>
     );

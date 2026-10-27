@@ -44,12 +44,18 @@ namespace Backend.Tests.Services
 
             _userMockRepo.Setup(r => r.GetUserByIdAsync(It.IsAny<int>())).ReturnsAsync(new User { UserName = "player1" });
 
-            _mockRepo.Setup(r => r.CreateGameAsync(It.IsAny<Game>())).ReturnsAsync(true);
+            _mockRepo.Setup(r => r.CreateGameAsync(It.IsAny<Game>())).ReturnsAsync((Game game) =>
+            {
+                game.GameId = 1;
+                return game;
+            });
+
+            _mockRepo.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
 
             var service = new GameService(_mockRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object);
 
             // Act
-            await service.CreateGameAsync(gameDto);
+            var gameId = await service.CreateGameAsync(gameDto);
 
             // Assert - verify mapping and that repo was called once
             _mockRepo.Verify(r => r.CreateGameAsync(It.Is<Game>(g =>
