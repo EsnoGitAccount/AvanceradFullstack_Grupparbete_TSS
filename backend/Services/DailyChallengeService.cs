@@ -74,6 +74,7 @@ namespace Backend.Services
                 CityDetails = new CityDetailsDto
                 {
                     CityName = challenge.City.Name,
+                    CityPicture=challenge.City.CityPicture,
                     Clues = challenge.City.Clues.Select(c => new ClueDto
                     {
                         ClueText = c.ClueText,

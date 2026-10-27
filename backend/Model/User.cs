@@ -5,5 +5,6 @@ namespace Backend.Model
 {
     public class User : IdentityUser<int>
     {
+        public bool IsArchived { get; set; }
     }
 }
