@@ -67,17 +67,6 @@ public class LeaderboardService(
             ? dailyResults.FirstOrDefault(r => r.IsCurrentUser)
             : null;
 
-        if (currentUserId == null && gameId.HasValue)
-        {
-            var guestGame = dailyBest
-                .FirstOrDefault(g => g.GameId == gameId.Value);
-            if (guestGame != null)
-            {
-                var guestRank = 1 + dailyResults
-                    .Count(r => r.FinalScore > guestGame.TotalScore);
-            }
-        }
-
         // Guests are not included in the all-time leaderboard, only registered players.
         var allTimeResults = Rank(
             dailyBest
