@@ -1,17 +1,16 @@
 import { ArrowRightIcon } from '@/assets/icons/Icons'
 import SiteFooter from '@/components/site-footer/SiteFooter'
 import SiteHeader from '@/components/site-header/SiteHeader'
-// import TrainIllustration from '@/assets/illustrations/trainillustration'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 
-// import {getTimeOfDay, type TimeOfDay} from '@/models/TimeOfDay'
+import { useNavigate } from 'react-router'
+
 import './HomePage.css'
 
 
 function HomePage() {
-
-  // const timeOfDay: TimeOfDay = getTimeOfDay();
+  const navigate = useNavigate()
 
   return (
     <div className="home-page">
@@ -30,7 +29,7 @@ function HomePage() {
                 Kliv ombord på dagens kluriga Sverigeresa. Läs ledtrådarna, skriv ditt svar och samla poäng - en ny resa väntar imorgon.
               </p>
               <div className="home-page__hero-actions">
-                <Button className="home-page__primary-button">
+                <Button onClick={() => navigate('/game')} className="home-page__primary-button">
                   Börja din resa
                   <ArrowRightIcon data-icon="inline-end" />
                 </Button>
@@ -49,9 +48,6 @@ function HomePage() {
               className="home-page__journey-card"
               aria-label="Dagens Sverigeresa"
             >
-              {/* // <TrainIllustration */}
-              {/* className={`train-illustration train-illustration--${timeOfDay}`} */}
-              {/* /> */}
             </Card>
           </div>
         </section>
