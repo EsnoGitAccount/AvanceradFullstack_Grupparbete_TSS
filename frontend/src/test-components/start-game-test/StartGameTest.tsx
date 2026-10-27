@@ -127,7 +127,7 @@ function StartGameTest({
               <img
                 src={
                   dailyChallenge.cityDetails.cityPicture
-                    ? `/api/Image/${dailyChallenge.cityDetails.cityPicture}.jpg`
+                    ? `/api/Image/${dailyChallenge.cityDetails.cityPicture}`
                     : photoExample
                 }
                 alt="Swedish train station"
