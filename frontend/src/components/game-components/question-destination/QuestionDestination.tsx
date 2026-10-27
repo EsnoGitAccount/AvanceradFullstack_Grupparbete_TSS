@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import './QuestionDestination.css'
-import { ProgressStepper } from '@/components/ui/Progressbar'
 
 import type { Question } from '@/models/City'
 import type { DailyChallenge } from '@/models/DailyChallenge'
@@ -54,7 +53,6 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
 
     return (
         <div className="question-page">
-            <ProgressStepper currentStep={currentQuestionIndex} totalSteps={4} />
             <div className="question-page__main">
                 <section className="question-page__hero">
                     <div className="question-page__grid">

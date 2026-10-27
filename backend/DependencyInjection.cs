@@ -74,6 +74,7 @@ namespace Backend
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICookieService, CookieService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILeaderboardService, LeaderboardService>();
 
             // JWT

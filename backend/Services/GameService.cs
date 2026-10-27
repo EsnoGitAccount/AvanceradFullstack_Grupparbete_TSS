@@ -2,7 +2,6 @@
 using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Backend.Services.IServices;
-using Microsoft.EntityFrameworkCore;
 using Backend.Exceptions;
 
 namespace Backend.Services
@@ -20,11 +19,12 @@ namespace Backend.Services
             _dailyChallengeRepository = dailyChallengeRepository;
             _userRepository = userRepository;
         }
+
         public async Task CreateGameAsync(GameDto gameDto)
         {
             var todaysChallenge = await _dailyChallengeRepository.GetChallengeForDate(DateOnly.FromDateTime(DateTime.UtcNow));
 
-            if(todaysChallenge == null)
+            if (todaysChallenge == null)
             {
                 throw new InvalidOperationException("No daily challenge found for today.");
             }
@@ -48,6 +48,34 @@ namespace Backend.Services
             }
         }
 
+        public async Task<IEnumerable<GameResultDto>> GetGameResultsAsync()
+        {
+            var games = await _gameRepository.GetAllGamesAsync();
+
+            return games.Select(game => new GameResultDto
+            {
+                GameId = game.GameId,
+                UserId = game.UserId,
+                UserName = game.UserName ?? "Guest",
+                TotalScore = game.TotalScore,
+                CompletedAt = game.CompletedAt,
+                CityName = game.DailyChallange.City.Name
+            });
+        }
+
+        public async Task DeleteGameResultAsync(int gameId)
+        {
+            var game = await _gameRepository.GetGameByIdAsync(gameId) ??
+                throw new NotFoundException("Game result not found");
+
+            var deleted = await _gameRepository.DeleteGameAsync(game);
+
+            if (!deleted)
+            {
+                throw new InvalidOperationException("Failed to delete game result");
+            }
+        }
+
         public async Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date)
         {
             var dateToUse = date ?? DateOnly.FromDateTime(DateTime.UtcNow);
@@ -56,7 +84,7 @@ namespace Backend.Services
             var topList = gamesForDate
                 .OrderByDescending(g => g.TotalScore)
                 .ToList();
-            
+
             var results = new List<ResultDto>();
 
             //If we have 10 or less results for the date, we will check for streaks for each user
@@ -76,13 +104,13 @@ namespace Backend.Services
                         });
                         continue;
                     }
-           
+
                     var currentStreak = await GetStreakForUserAsync(result.UserId.Value);
                     var user = await _userRepository.GetUserByIdAsync(result.UserId.Value);
 
                     results.Add(new ResultDto
                     {
-                        UserName = user?.UserName ?? result.UserName, 
+                        UserName = user?.UserName ?? result.UserName,
                         FinalScore = result.TotalScore,
                         Streak = currentStreak,
                         Rank = 0,
@@ -184,7 +212,7 @@ namespace Backend.Services
                 .OrderByDescending(g => g.CompletedAt)
                 .ToList();
 
-            // TakeWhile grabs the current game, and the index of it in the List 
+            // TakeWhile grabs the current game, and the index of it in the List
             // which we ordered above, it then removes 1 day from the previous date and compares it to the current date,
             // if they are equal it will continue to add to the streak until it finds a date that is not equal to the previous date + 1 day
             var currentStreak = orderedGames.

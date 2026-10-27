@@ -11,7 +11,7 @@ import ProtectedRoute from './protected-route/ProtectedRoute';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<GamePage />} />
+      <Route path="/" element={<HomePage />} />
       <Route path="/homepage" element={<HomePage />} />
       <Route path="/leaderboard" element={<LeaderboardPage />} />
       <Route path="/errortesting" element={<ErrorTestPage />} />

@@ -1,13 +1,13 @@
 // React + Axios
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import axios from "axios";
 import { LoaderCircle } from "lucide-react"
 
 // Components
 import QuestionDestination from "../question-destination/QuestionDestination";
 import WhereAreWe from "../where-are-we/whereAreWe"
-import { Button } from "../../ui/Button"
 import StartGameTest from "@/test-components/start-game-test/StartGameTest";
+import Leaderboard from "../leaderboard/Leaderboard";
 import { ProgressStepper } from "@/components/ui/Progressbar"
 
 // Constants
@@ -22,13 +22,6 @@ import type { GameResult } from "@/models/GameResult";
 
 export default function Game() {
     const [dailyChallenge, setDailyChallenge] = useState<DailyChallenge | null>(null)
-    const [gameResult, setGameResult] = useState<GameResult>({
-        UserName: null,
-        UserID: null,
-        FinalScore: 0,
-        CompletedAt: "",
-        IsGuest: true
-    })
     const [currentScore, setCurrentScore] = useState<number>(0)
     const [gameState, setGameState] = useState<GameState>({
         phase: { type: "notStarted" },
@@ -37,18 +30,19 @@ export default function Game() {
     });
     const [isLoading, setIsloading] = useState<boolean>(true)
     const [loadingMessage, setLoadingMessage] = useState<string>("")
+    const [isSavingResult, setIsSavingResult] = useState<boolean>(false)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [fakeUser] = useState<FakeUser>({
         userName: "AdamTest",
         userId: 1
     })
     const [guestUserName, setGuestUserName] = useState<string>("")
+    const hasSubmittedResult = useRef(false)
 
     type GamePhase =
         | { type: 'notStarted' }
         | { type: 'whereAreWe' }
         | { type: 'destinationQuestion'; questionIndex: number }
-        | { type: 'gameCompleted' }
         | { type: 'leaderboard' }
 
     type GameState = {
@@ -69,7 +63,6 @@ export default function Game() {
                 return 0
             case "destinationQuestion":
                 return 1 + gameState.phase.questionIndex
-            case "gameCompleted":
             case "leaderboard":
                 return 3
             default:
@@ -138,63 +131,52 @@ export default function Game() {
         const finalScore = currentScore + score;
 
         setCurrentScore(finalScore)
+        setLoadingMessage("Sparar resultat...")
+        setIsSavingResult(true)
 
         setGameState((previousGameState) => ({
             ...previousGameState,
             score: finalScore,
             phase: {
-                type: "gameCompleted",
-                questionIndex: null
+                type: "leaderboard"
             }
         }))
     }
 
-    async function handleGoToLeaderBoard() {
-        setLoadingMessage("Sparar resultat...")
-        setIsloading(true)
+    useEffect(() => {
+        if (gameState.phase.type !== "leaderboard" || hasSubmittedResult.current) {
+            return
+        }
 
-        // Creates a gameresult. Uses userdata if authenticated, guest info if unauthenticated
-        // TO DO: Use authenticated user instead of fakeUser
-        if (isAuthenticated) {
-            setGameResult((previousGameResult => ({
-                ...previousGameResult,
-                UserID: fakeUser.userId,
-                UserName: fakeUser.userName,
-                FinalScore: gameState.score,
-                IsGuest: false
-            })))
-        }
-        else {
-            setGameResult((previousGameResult => ({
-                ...previousGameResult,
-                UserID: null,
-                UserName: gameState.playerName,
-                FinalScore: gameState.score,
-                IsGuest: true
-            })))
-        }
-        try {
-            await submitGameResult(gameResult)
-        }
-        catch (error) {
-            const message = axios.isAxiosError(error)
-                ? error.message
-                : "Något gick fel men meddelandet kunde inte läsas"
+        hasSubmittedResult.current = true
 
-            console.log(message)
-        }
-        finally {
-            setGameState((previousGameState) => ({
-                ...previousGameState,
-                phase: {
-                    type: "leaderboard",
-                    questionIndex: null
+        async function saveResult() {
+            // Save the result after the phase changes, rather than during render.
+            const result: GameResult = isAuthenticated
+                ? {
+                    UserID: fakeUser.userId,
+                    UserName: fakeUser.userName,
+                    FinalScore: gameState.score,
+                    IsGuest: false,
+                    CompletedAt: new Date().toISOString().slice(0, 10)
                 }
-            }))
+                : {
+                    UserID: null,
+                    UserName: gameState.playerName,
+                    FinalScore: gameState.score,
+                    CompletedAt: new Date().toISOString().slice(0, 10),
+                    IsGuest: true
+                }
 
-            setIsloading(false)
+            try {
+                await submitGameResult(result)
+            } finally {
+                setIsSavingResult(false)
+            }
         }
-    }
+
+        void saveResult()
+    }, [fakeUser.userId, fakeUser.userName, gameState.phase.type, gameState.playerName, gameState.score, isAuthenticated])
 
     if (isLoading) {
         return (
@@ -264,21 +246,25 @@ export default function Game() {
                             />
                         )
 
-                    case "gameCompleted":
-                        return (
-                            <>
-                                <p>Klar. Grattis {gameState.playerName}! Du fick {gameState.score} poäng</p>
-                                <Button onClick={handleGoToLeaderBoard}>Spara resultat</Button>
-                            </>
-                        )
-
                     case "leaderboard":
+                        if (isSavingResult) {
+                            return (
+                                <div className="question-page">
+                                    <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+                                        <LoaderCircle className="w-8 h-8 animate-spin text-[var(--primary)]" />
+                                        <p className="text-sm font-medium text-[var(--muted-foreground)]">
+                                            {loadingMessage}
+                                        </p>
+                                    </div>
+                                </div>
+                            )
+                        }
 
-                        // TO DO: Render leaderboard instead
                         return (
-                            <div>Leaderboard!</div>
+                            <Leaderboard />
                         )
                 }
+
             })()}
         </>
     )
