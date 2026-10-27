@@ -20,25 +20,24 @@ function HomePage() {
           <div className="home-page__hero-layout">
             <div className="home-page__hero-copy">
               <p className="home-page__eyebrow">
-                Vart fan är vi påväg?
+                EN LITEN RESA. VARJE DAG.
               </p>
               <h1 className="home-page__title">
-                Vi lovar att det inte är en "på spåret" kopia
+                Tre stopp. Hela Sverige. Hur långt kan du?
               </h1>
               <p className="home-page__description">
-                Tänk er GeoGuesser + vem vill bli miljonär + På spåret.
-                Kan inte bli annat än toppen!
+                Kliv ombord på dagens kluriga Sverigeresa. Läs ledtrådarna, skriv ditt svar och samla poäng - en ny resa väntar imorgon.
               </p>
               <div className="home-page__hero-actions">
                 <Button onClick={() => navigate('/game')} className="home-page__primary-button">
-                  Starta spelet
+                  Börja din resa
                   <ArrowRightIcon data-icon="inline-end" />
                 </Button>
                 <Button
                   variant="outline"
                   className="home-page__secondary-button"
                 >
-                  Hur gör vi?????
+                  Så spelar du
                 </Button>
               </div>
               <p className="home-page__details">
@@ -49,7 +48,6 @@ function HomePage() {
               className="home-page__journey-card"
               aria-label="Dagens Sverigeresa"
             >
-            
             </Card>
           </div>
         </section>

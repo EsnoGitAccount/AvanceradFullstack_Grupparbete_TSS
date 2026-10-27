@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { useNavigate } from "react-router"
 
 import logo from '@/assets/logos/logo-transparent.svg'
 import { Button } from '@/components/ui/Button'
@@ -6,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import './SiteHeader.css'
 
 function SiteHeader() {
+  const navigate = useNavigate();
   return (
     <header className="site-header">
       <div className="site-header__inner">
@@ -22,7 +24,9 @@ function SiteHeader() {
         </Link>
 
         <div className="site-header__actions">
-          <Button variant="ghost" className="site-header__login-button">
+          <Button variant="ghost" className="site-header__login-button"
+            onClick={() => navigate('/login')}
+          >
             Logga in
           </Button>
           <Button className="site-header__account-button">Skapa konto</Button>

@@ -40,7 +40,6 @@ function LoginPage() {
                                 Logga in och fortsätt din resa. Dagens 3 ledtrådar väntar på dig.
                             </p>
 
-                            {/* Train illustration, delete pic later */}
                             <div className={`login-page__illustration train-illustration--${time}`}>
                                 <TrainIllustration />
                             </div>
