@@ -7,7 +7,8 @@ import { LoaderCircle } from "lucide-react"
 import QuestionDestination from "../question-destination/QuestionDestination";
 import WhereAreWe from "../where-are-we/whereAreWe"
 import { Button } from "../../ui/Button"
-import StartGameTest  from "@/test-components/start-game-test/StartGameTest";   
+import StartGameTest from "@/test-components/start-game-test/StartGameTest";
+import { ProgressStepper } from "@/components/ui/Progressbar"
 
 // Constants
 import { GAME_RULES } from "@/constants/gameConstants";
@@ -30,7 +31,7 @@ export default function Game() {
     })
     const [currentScore, setCurrentScore] = useState<number>(0)
     const [gameState, setGameState] = useState<GameState>({
-        phase: {type: "notStarted"},
+        phase: { type: "notStarted" },
         score: 0,
         playerName: ""
     });
@@ -48,7 +49,7 @@ export default function Game() {
         | { type: 'whereAreWe' }
         | { type: 'destinationQuestion'; questionIndex: number }
         | { type: 'gameCompleted' }
-        | { type: 'leaderboard'}
+        | { type: 'leaderboard' }
 
     type GameState = {
         phase: GamePhase
@@ -61,31 +62,46 @@ export default function Game() {
         userId: number
     }
 
-    useEffect (() => {
-        async function loadChallenge(){
-            try{
+    // Helper for ProgressBar
+    const getCurrentStep = (): number => {
+        switch (gameState.phase.type) {
+            case "whereAreWe":
+                return 0
+            case "destinationQuestion":
+                return 1 + gameState.phase.questionIndex
+            case "gameCompleted":
+            case "leaderboard":
+                return 3
+            default:
+                return 0
+        }
+    }
+
+    useEffect(() => {
+        async function loadChallenge() {
+            try {
                 setLoadingMessage("Laddar dagsutmaningen...")
                 const responseData = await getDailyChallenge()
                 setDailyChallenge(responseData)
             }
-            catch(error: unknown){
+            catch (error: unknown) {
                 const message = axios.isAxiosError(error)
-                ? error.message
-                : "Något gick fel men meddelandet kunde inte läsas"
+                    ? error.message
+                    : "Något gick fel men meddelandet kunde inte läsas"
 
                 console.log(message)
             }
-            finally{
+            finally {
                 setIsloading(false)
             }
         }
-        
+
         // TO DO: Check if the user is authenticated
         // If authenticated change gameState.playerName to user
         loadChallenge();
     }, [])
 
-    function handleStart(userName: string){
+    function handleStart(userName: string) {
         setGameState((previousGameState) => ({
             ...previousGameState,
             phase: {
@@ -95,8 +111,9 @@ export default function Game() {
         }))
     }
 
-    function handleWhereAreWeComplete(score: number){
-        setCurrentScore((currentScore) => ( currentScore + (score * GAME_RULES.whereAreWeScoreMultiplier)))
+
+    function handleWhereAreWeComplete(score: number) {
+        setCurrentScore((currentScore) => (currentScore + (score * GAME_RULES.whereAreWeScoreMultiplier)))
         setGameState((previousGameState) => ({
             ...previousGameState,
             phase: {
@@ -106,12 +123,22 @@ export default function Game() {
         }))
     }
 
-    function handleQuestionDestinationComplete(score: number){
+    function handleQuestionStepChange(index: number) {
+        setGameState((prev) => ({
+            ...prev,
+            phase: {
+                type: "destinationQuestion",
+                questionIndex: index
+            }
+        }))
+    }
+
+    function handleQuestionDestinationComplete(score: number) {
         // Store final score in a variable to avoid set functions being async and giving not updating value in time
         const finalScore = currentScore + score;
-        
+
         setCurrentScore(finalScore)
-        
+
         setGameState((previousGameState) => ({
             ...previousGameState,
             score: finalScore,
@@ -122,14 +149,14 @@ export default function Game() {
         }))
     }
 
-    async function handleGoToLeaderBoard(){
+    async function handleGoToLeaderBoard() {
         setLoadingMessage("Sparar resultat...")
         setIsloading(true)
 
         // Creates a gameresult. Uses userdata if authenticated, guest info if unauthenticated
         // TO DO: Use authenticated user instead of fakeUser
-        if(isAuthenticated){
-            setGameResult((previousGameResult =>({
+        if (isAuthenticated) {
+            setGameResult((previousGameResult => ({
                 ...previousGameResult,
                 UserID: fakeUser.userId,
                 UserName: fakeUser.userName,
@@ -137,8 +164,8 @@ export default function Game() {
                 IsGuest: false
             })))
         }
-        else{
-            setGameResult((previousGameResult =>({
+        else {
+            setGameResult((previousGameResult => ({
                 ...previousGameResult,
                 UserID: null,
                 UserName: gameState.playerName,
@@ -146,17 +173,17 @@ export default function Game() {
                 IsGuest: true
             })))
         }
-        try{
+        try {
             await submitGameResult(gameResult)
         }
-        catch(error){
+        catch (error) {
             const message = axios.isAxiosError(error)
-            ? error.message
-            : "Något gick fel men meddelandet kunde inte läsas"
+                ? error.message
+                : "Något gick fel men meddelandet kunde inte läsas"
 
             console.log(message)
         }
-        finally{
+        finally {
             setGameState((previousGameState) => ({
                 ...previousGameState,
                 phase: {
@@ -169,7 +196,7 @@ export default function Game() {
         }
     }
 
-    if(isLoading){
+    if (isLoading) {
         return (
             <div className="question-page">
                 <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
@@ -182,64 +209,77 @@ export default function Game() {
         )
     }
 
-    if(dailyChallenge === null){
-        return(
+    if (dailyChallenge === null) {
+        return (
             <div>Kunde inte ladda spelet. Vänligen prova igen senare</div>
         )
     }
 
-    switch(gameState.phase.type){
-        case "notStarted":
-            return (
-                <>
-                    <StartGameTest handleStart={handleStart} 
-                    isAuthenticated={isAuthenticated}
-                     guestUserName={guestUserName} 
-                     setGuestUserName={setGuestUserName}
-                     authenticatedUserName={fakeUser.userName}
-                     dailyChallenge={dailyChallenge}
-                     />
+    const showProgress = gameState.phase.type !== "notStarted";
 
-                    <label>
-                        <input type="checkbox" checked={isAuthenticated} onChange={(e) => setIsAuthenticated(e.target.checked)}/>
-                        Authenticated
-                    </label>
+    return (
+        <>
+            {showProgress && (
+                <ProgressStepper currentStep={getCurrentStep()} totalSteps={4} />
+            )}
 
-                </>
-            )
-        
-        case "whereAreWe":
-            return(
-                <WhereAreWe
-                    onComplete={handleWhereAreWeComplete}
-                    clues={dailyChallenge.cityDetails.clues}
-                    correctCity={dailyChallenge.cityDetails.cityName}
-                    // imageUrl={dailyChallenge.cityDetails.imageUrl}
-                />
-            )
-        
-        case "destinationQuestion":
-            return(
-                <QuestionDestination
-                    onComplete={handleQuestionDestinationComplete}
-                    dailyChallange={dailyChallenge}
-                    previousScore={currentScore}
-                />
-            )
+            {(() => {
+                switch (gameState.phase.type) {
+                    case "notStarted":
+                        return (
+                            <>
+                                <StartGameTest handleStart={handleStart}
+                                    isAuthenticated={isAuthenticated}
+                                    guestUserName={guestUserName}
+                                    setGuestUserName={setGuestUserName}
+                                    authenticatedUserName={fakeUser.userName}
+                                    dailyChallenge={dailyChallenge}
+                                />
 
-        case "gameCompleted":
-            return(
-                <>
-                    <p>Klar. Grattis {gameState.playerName}! Du fick {gameState.score} poäng</p>
-                    <Button onClick={handleGoToLeaderBoard}>Spara resultat</Button>
-                </>
-            )
-        
-        case "leaderboard":
+                                <label>
+                                    <input type="checkbox" checked={isAuthenticated} onChange={(e) => setIsAuthenticated(e.target.checked)} />
+                                    Authenticated
+                                </label>
 
-            // TO DO: Render leaderboard instead
-            return(
-                <div>Leaderboard!</div>
-            )
-        }
+                            </>
+                        )
+
+                    case "whereAreWe":
+                        return (
+                            <WhereAreWe
+                                onComplete={handleWhereAreWeComplete}
+                                clues={dailyChallenge.cityDetails.clues}
+                                correctCity={dailyChallenge.cityDetails.cityName}
+                            // imageUrl={dailyChallenge.cityDetails.imageUrl}
+                            />
+                        )
+
+                    case "destinationQuestion":
+                        return (
+                            <QuestionDestination
+                                onComplete={handleQuestionDestinationComplete}
+                                dailyChallange={dailyChallenge}
+                                previousScore={currentScore}
+                                onStepChange={handleQuestionStepChange}
+                            />
+                        )
+
+                    case "gameCompleted":
+                        return (
+                            <>
+                                <p>Klar. Grattis {gameState.playerName}! Du fick {gameState.score} poäng</p>
+                                <Button onClick={handleGoToLeaderBoard}>Spara resultat</Button>
+                            </>
+                        )
+
+                    case "leaderboard":
+
+                        // TO DO: Render leaderboard instead
+                        return (
+                            <div>Leaderboard!</div>
+                        )
+                }
+            })()}
+        </>
+    )
 }

@@ -12,9 +12,10 @@ type QuestionDestinationProps = {
     onComplete: (score: number) => void
     dailyChallange: DailyChallenge
     previousScore: number
+    onStepChange?: (index: number) => void
 }
 
-export default function QuestionDestination({ onComplete, dailyChallange, previousScore }: QuestionDestinationProps) {
+export default function QuestionDestination({ onComplete, dailyChallange, previousScore, onStepChange }: QuestionDestinationProps) {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
     const [selectedOption, setSelectedOption] = useState<string | null>(null)
     const [score, setScore] = useState<number>(0)
@@ -37,8 +38,13 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
 
         setTimeout(() => {
             if (currentQuestionIndex < challengeQuestions.length - 1) {
-                setCurrentQuestionIndex((prev) => prev + 1)
+                const nextIndex = currentQuestionIndex + 1
+                setCurrentQuestionIndex(nextIndex)
                 setSelectedOption(null)
+
+                if (onStepChange) {
+                    onStepChange(nextIndex)
+                }
             } else {
                 console.log("Alla frågor besvarade! Slutgiltig poäng:", newScore)
                 onComplete(newScore);
