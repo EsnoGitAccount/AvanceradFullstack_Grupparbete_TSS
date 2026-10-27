@@ -4,7 +4,7 @@ namespace Backend.Repositories.IRepositories
 {
     public interface IGameRepository
     {
-        Task<int> CreateGameAsync(Game game);
+        Task<(bool Success, int GameId)> CreateGameAsync(Game game);
 
         Task <IEnumerable<Game>> GetGamesForDateAsync(DateOnly date);
 

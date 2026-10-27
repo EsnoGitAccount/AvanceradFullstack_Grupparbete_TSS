@@ -13,12 +13,12 @@ namespace Backend.Repositories
         {
             _context = context;
         }
-        public async Task<int> CreateGameAsync(Game game)
+        public async Task<(bool Success, int GameId)> CreateGameAsync(Game game)
         {
             await _context.Games.AddAsync(game);
-            await _context.SaveChangesAsync();
+            var savedResult = await _context.SaveChangesAsync();
 
-            return game.GameId;
+            return (savedResult > 0, game.GameId);
         }
 
         public async Task<IEnumerable<Game>> GetGamesForDateAsync(DateOnly date)
