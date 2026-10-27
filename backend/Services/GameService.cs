@@ -36,13 +36,13 @@ namespace Backend.Services
 
             var game = MapDtoToGame(gameDto, todaysChallenge.DailyChallangeId);
 
-            var result = await _gameRepository.CreateGameAsync(game);
-            if (!result.Success)
+            var createdGame = await _gameRepository.CreateGameAsync(game);
+            if (!await _gameRepository.SaveChangesAsync())
             {
                 throw new InvalidOperationException("Failed to create game.");
             }
 
-            return result.GameId;
+            return createdGame.GameId;
         }
 
         public async Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date)

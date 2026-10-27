@@ -44,7 +44,13 @@ namespace Backend.Tests.Services
 
             _userMockRepo.Setup(r => r.GetUserByIdAsync(It.IsAny<int>())).ReturnsAsync(new User { UserName = "player1" });
 
-            _mockRepo.Setup(r => r.CreateGameAsync(It.IsAny<Game>())).ReturnsAsync((true, 1));
+            _mockRepo.Setup(r => r.CreateGameAsync(It.IsAny<Game>())).ReturnsAsync((Game game) =>
+            {
+                game.GameId = 1;
+                return game;
+            });
+
+            _mockRepo.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
 
             var service = new GameService(_mockRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object);
 
