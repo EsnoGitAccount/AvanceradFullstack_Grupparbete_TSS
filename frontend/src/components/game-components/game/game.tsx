@@ -6,8 +6,9 @@ import { LoaderCircle } from "lucide-react"
 // Components
 import QuestionDestination from "../question-destination/QuestionDestination";
 import WhereAreWe from "../where-are-we/whereAreWe"
-import StartGameTest  from "@/test-components/start-game-test/StartGameTest";
-import Leaderboard from "../leaderboard/Leaderboard";   
+import StartGameTest from "@/test-components/start-game-test/StartGameTest";
+import Leaderboard from "../leaderboard/Leaderboard";
+import { ProgressStepper } from "@/components/ui/Progressbar"
 
 // Constants
 import { GAME_RULES } from "@/constants/gameConstants";
@@ -23,7 +24,7 @@ export default function Game() {
     const [dailyChallenge, setDailyChallenge] = useState<DailyChallenge | null>(null)
     const [currentScore, setCurrentScore] = useState<number>(0)
     const [gameState, setGameState] = useState<GameState>({
-        phase: {type: "notStarted"},
+        phase: { type: "notStarted" },
         score: 0,
         playerName: ""
     });
@@ -42,7 +43,7 @@ export default function Game() {
         | { type: 'notStarted' }
         | { type: 'whereAreWe' }
         | { type: 'destinationQuestion'; questionIndex: number }
-        | { type: 'leaderboard'}
+        | { type: 'leaderboard' }
 
     type GameState = {
         phase: GamePhase
@@ -55,31 +56,45 @@ export default function Game() {
         userId: number
     }
 
-    useEffect (() => {
-        async function loadChallenge(){
-            try{
+    // Helper for ProgressBar
+    const getCurrentStep = (): number => {
+        switch (gameState.phase.type) {
+            case "whereAreWe":
+                return 0
+            case "destinationQuestion":
+                return 1 + gameState.phase.questionIndex
+            case "leaderboard":
+                return 3
+            default:
+                return 0
+        }
+    }
+
+    useEffect(() => {
+        async function loadChallenge() {
+            try {
                 setLoadingMessage("Laddar dagsutmaningen...")
                 const responseData = await getDailyChallenge()
                 setDailyChallenge(responseData)
             }
-            catch(error: unknown){
+            catch (error: unknown) {
                 const message = axios.isAxiosError(error)
-                ? error.message
-                : "Något gick fel men meddelandet kunde inte läsas"
+                    ? error.message
+                    : "Något gick fel men meddelandet kunde inte läsas"
 
                 console.log(message)
             }
-            finally{
+            finally {
                 setIsloading(false)
             }
         }
-        
+
         // TO DO: Check if the user is authenticated
         // If authenticated change gameState.playerName to user
         loadChallenge();
     }, [])
 
-    function handleStart(userName: string){
+    function handleStart(userName: string) {
         setGameState((previousGameState) => ({
             ...previousGameState,
             phase: {
@@ -89,8 +104,9 @@ export default function Game() {
         }))
     }
 
-    function handleWhereAreWeComplete(score: number){
-        setCurrentScore((currentScore) => ( currentScore + (score * GAME_RULES.whereAreWeScoreMultiplier)))
+
+    function handleWhereAreWeComplete(score: number) {
+        setCurrentScore((currentScore) => (currentScore + (score * GAME_RULES.whereAreWeScoreMultiplier)))
         setGameState((previousGameState) => ({
             ...previousGameState,
             phase: {
@@ -100,14 +116,24 @@ export default function Game() {
         }))
     }
 
-    function handleQuestionDestinationComplete(score: number){
+    function handleQuestionStepChange(index: number) {
+        setGameState((prev) => ({
+            ...prev,
+            phase: {
+                type: "destinationQuestion",
+                questionIndex: index
+            }
+        }))
+    }
+
+    function handleQuestionDestinationComplete(score: number) {
         // Store final score in a variable to avoid set functions being async and giving not updating value in time
         const finalScore = currentScore + score;
-        
+
         setCurrentScore(finalScore)
         setLoadingMessage("Sparar resultat...")
         setIsSavingResult(true)
-        
+
         setGameState((previousGameState) => ({
             ...previousGameState,
             score: finalScore,
@@ -152,7 +178,7 @@ export default function Game() {
         void saveResult()
     }, [fakeUser.userId, fakeUser.userName, gameState.phase.type, gameState.playerName, gameState.score, isAuthenticated])
 
-    if(isLoading){
+    if (isLoading) {
         return (
             <div className="question-page">
                 <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
@@ -165,67 +191,81 @@ export default function Game() {
         )
     }
 
-    if(dailyChallenge === null){
-        return(
+    if (dailyChallenge === null) {
+        return (
             <div>Kunde inte ladda spelet. Vänligen prova igen senare</div>
         )
     }
 
-    switch(gameState.phase.type){
-        case "notStarted":
-            return (
-                <>
-                    <StartGameTest handleStart={handleStart} 
-                    isAuthenticated={isAuthenticated}
-                     guestUserName={guestUserName} 
-                     setGuestUserName={setGuestUserName}
-                     authenticatedUserName={fakeUser.userName}
-                     dailyChallenge={dailyChallenge}
-                     />
+    const showProgress = gameState.phase.type !== "notStarted";
 
-                    <label>
-                        <input type="checkbox" checked={isAuthenticated} onChange={(e) => setIsAuthenticated(e.target.checked)}/>
-                        Authenticated
-                    </label>
+    return (
+        <>
+            {showProgress && (
+                <ProgressStepper currentStep={getCurrentStep()} totalSteps={4} />
+            )}
 
-                </>
-            )
-        
-        case "whereAreWe":
-            return(
-                <WhereAreWe
-                    onComplete={handleWhereAreWeComplete}
-                    clues={dailyChallenge.cityDetails.clues}
-                    correctCity={dailyChallenge.cityDetails.cityName}
-                    // imageUrl={dailyChallenge.cityDetails.imageUrl}
-                />
-            )
-        
-        case "destinationQuestion":
-            return(
-                <QuestionDestination
-                    onComplete={handleQuestionDestinationComplete}
-                    dailyChallange={dailyChallenge}
-                    previousScore={currentScore}
-                />
-            )
+            {(() => {
+                switch (gameState.phase.type) {
+                    case "notStarted":
+                        return (
+                            <>
+                                <StartGameTest handleStart={handleStart}
+                                    isAuthenticated={isAuthenticated}
+                                    guestUserName={guestUserName}
+                                    setGuestUserName={setGuestUserName}
+                                    authenticatedUserName={fakeUser.userName}
+                                    dailyChallenge={dailyChallenge}
+                                />
 
-        case "leaderboard":
-            if (isSavingResult) {
-                return (
-                    <div className="question-page">
-                        <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
-                            <LoaderCircle className="w-8 h-8 animate-spin text-[var(--primary)]" />
-                            <p className="text-sm font-medium text-[var(--muted-foreground)]">
-                                {loadingMessage}
-                            </p>
-                        </div>
-                    </div>
-                )
-            }
+                                <label>
+                                    <input type="checkbox" checked={isAuthenticated} onChange={(e) => setIsAuthenticated(e.target.checked)} />
+                                    Authenticated
+                                </label>
 
-            return(
-                <Leaderboard />
-            )
-        }
+                            </>
+                        )
+
+                    case "whereAreWe":
+                        return (
+                            <WhereAreWe
+                                onComplete={handleWhereAreWeComplete}
+                                clues={dailyChallenge.cityDetails.clues}
+                                correctCity={dailyChallenge.cityDetails.cityName}
+                            // imageUrl={dailyChallenge.cityDetails.imageUrl}
+                            />
+                        )
+
+                    case "destinationQuestion":
+                        return (
+                            <QuestionDestination
+                                onComplete={handleQuestionDestinationComplete}
+                                dailyChallange={dailyChallenge}
+                                previousScore={currentScore}
+                                onStepChange={handleQuestionStepChange}
+                            />
+                        )
+
+                    case "leaderboard":
+                        if (isSavingResult) {
+                            return (
+                                <div className="question-page">
+                                    <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+                                        <LoaderCircle className="w-8 h-8 animate-spin text-[var(--primary)]" />
+                                        <p className="text-sm font-medium text-[var(--muted-foreground)]">
+                                            {loadingMessage}
+                                        </p>
+                                    </div>
+                                </div>
+                            )
+                        }
+
+                        return (
+                            <Leaderboard />
+                        )
+                }
+
+            })()}
+        </>
+    )
 }
