@@ -1,7 +1,7 @@
 ﻿namespace Backend.Dto
 {
     public class LeaderboardDto
-    {        
+    {
         public DateOnly Date { get; set; }
         public int DailyCount { get; set; }
         public int AllTimeCount { get; set; }

@@ -35,10 +35,10 @@ namespace Backend.Repositories
                 CityId = cityId
             };
 
-           await _context.DailyChallanges.AddAsync(newChallenge);
-           await _context.SaveChangesAsync();
+            await _context.DailyChallanges.AddAsync(newChallenge);
+            await _context.SaveChangesAsync();
 
-           return true;
+            return true;
         }
 
         public async Task<DailyChallange?> GetLastChallenge()

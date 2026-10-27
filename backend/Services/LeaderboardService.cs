@@ -45,21 +45,21 @@ public class LeaderboardService(
                 .Where(g => g.CompletedAt == today)
                 .Select(g =>
                 {
-                var result = CreateResult(
-                    g,
-                    g.TotalScore,
-                    currentUserId,
-                    streaks);
+                    var result = CreateResult(
+                        g,
+                        g.TotalScore,
+                        currentUserId,
+                        streaks);
 
-                    if (!currentUserId.HasValue && 
+                    if (!currentUserId.HasValue &&
                     g.UserId == null &&
-                    gameId.HasValue && 
+                    gameId.HasValue &&
                     g.GameId == gameId.Value)
-                    
+
                     {
                         result.IsCurrentUser = true;
                     }
-                    
+
                     return result;
                 }));
 
@@ -74,7 +74,7 @@ public class LeaderboardService(
                 .GroupBy(g => g.UserId!.Value)
                 .Select(group => CreateResult(
                     group.First(),
-                    group.Sum(g => (decimal)g.TotalScore),  
+                    group.Sum(g => (decimal)g.TotalScore),
                     currentUserId,
                     streaks)));
 
@@ -163,7 +163,7 @@ public class LeaderboardService(
             }
 
             sorted[i].Rank = rank;
-            previousScore = sorted[i].FinalScore;            
+            previousScore = sorted[i].FinalScore;
         }
 
         return sorted;

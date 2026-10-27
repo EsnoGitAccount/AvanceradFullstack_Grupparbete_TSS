@@ -21,7 +21,7 @@ namespace Backend.Repositories
 
         public async Task<bool> SaveChangesAsync()
         {
-            return await _context.SaveChangesAsync() > 0;            
+            return await _context.SaveChangesAsync() > 0;
         }
         public async Task<IEnumerable<Game>> GetAllGamesAsync()
         {

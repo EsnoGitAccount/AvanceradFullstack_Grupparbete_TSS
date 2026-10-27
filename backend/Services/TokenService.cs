@@ -20,10 +20,10 @@ namespace Backend.Services
 
         public string CreateAccessToken(User user, IEnumerable<string> roles, DateTimeOffset expiresAt)
         {
-            var signingKey = _configuration["Jwt:SigningKey"] ?? 
+            var signingKey = _configuration["Jwt:SigningKey"] ??
                 throw new InvalidOperationException("Jwt:SigningKey is missing.");
 
-            List<Claim> claims = 
+            List<Claim> claims =
             [
                 new(ClaimTypes.NameIdentifier, user.Id.ToString(CultureInfo.InvariantCulture)),
                 new(ClaimTypes.Name, user.UserName ?? string.Empty),
