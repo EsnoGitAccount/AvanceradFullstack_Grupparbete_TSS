@@ -32,7 +32,7 @@ namespace Backend.Controllers
             }
 
             gameDto.IsGuest = !gameDto.UserId.HasValue;
-            
+
             var gameId = await _gameService.CreateGameAsync(gameDto);
 
             return Ok(new

@@ -5,44 +5,44 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers
 {
 
-	[ApiController]
-	[Route("api/[controller]")]
-	public class ImageController : ControllerBase
-	{
-		private readonly IBlobStorageService _blobStorageService;
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ImageController : ControllerBase
+    {
+        private readonly IBlobStorageService _blobStorageService;
 
-		public ImageController(IBlobStorageService blobStorageService)
-		{
-			_blobStorageService = blobStorageService;
-		}
+        public ImageController(IBlobStorageService blobStorageService)
+        {
+            _blobStorageService = blobStorageService;
+        }
 
-		[HttpPost]
-		[Authorize(Roles = "Admin")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> UploadImage(IFormFile file)
-		{
-			var blobName = await _blobStorageService.UploadFileAsync(file);
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            var blobName = await _blobStorageService.UploadFileAsync(file);
 
-			return Ok(new { blobName });
-		}
+            return Ok(new { blobName });
+        }
 
-		[HttpGet("{blobName}")]
-		public async Task<IActionResult> GetImage(string blobName)
-		{
-			var image = await _blobStorageService.DownloadAsync(blobName);
+        [HttpGet("{blobName}")]
+        public async Task<IActionResult> GetImage(string blobName)
+        {
+            var image = await _blobStorageService.DownloadAsync(blobName);
 
-		    return File(image.Content, image.Details.ContentType);	
-			
-		}
+            return File(image.Content, image.Details.ContentType);
 
-		[HttpDelete("{blobName}")]
-		[Authorize(Roles = "Admin")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteImage(string blobName)
-		{
-			await _blobStorageService.DeleteBlobAsync(blobName);
-			return NoContent();
-		}
+        }
 
-	}
+        [HttpDelete("{blobName}")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteImage(string blobName)
+        {
+            await _blobStorageService.DeleteBlobAsync(blobName);
+            return NoContent();
+        }
+
+    }
 }

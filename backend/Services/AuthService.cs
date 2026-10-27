@@ -18,9 +18,9 @@ namespace Backend.Services
         private readonly int _refreshTokenDays;
 
         public AuthService(
-            UserManager<User> userManager, SignInManager<User> signInManager, 
-            ITokenService tokenService, 
-            IRefreshTokenRepository refreshTokenRepository, 
+            UserManager<User> userManager, SignInManager<User> signInManager,
+            ITokenService tokenService,
+            IRefreshTokenRepository refreshTokenRepository,
             IConfiguration configuration)
 
         {
@@ -41,7 +41,7 @@ namespace Backend.Services
 
         public async Task<AuthSessionDto> LoginAsync(LoginDto loginDto)
         {
-            var user = await _userManager.FindByNameAsync(loginDto.Username) ?? 
+            var user = await _userManager.FindByNameAsync(loginDto.Username) ??
                 throw new UnauthorizedException("Invalid username or password.");
 
             if (user.IsArchived)
@@ -83,7 +83,7 @@ namespace Backend.Services
 
             var tokenHash = _tokenService.HashRefreshToken(refreshToken);
 
-            var currentToken = await _refreshTokenRepository.GetRefreshTokenByHashAsync(tokenHash) ?? 
+            var currentToken = await _refreshTokenRepository.GetRefreshTokenByHashAsync(tokenHash) ??
                 throw new UnauthorizedException("Invalid refresh token.");
 
             if (currentToken.RevokedAt != null)
@@ -148,7 +148,7 @@ namespace Backend.Services
 
         public async Task<UserDto> GetCurrentUserAsync(int userId)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString(CultureInfo.InvariantCulture)) ?? 
+            var user = await _userManager.FindByIdAsync(userId.ToString(CultureInfo.InvariantCulture)) ??
                 throw new UnauthorizedException("User was not found.");
 
             if (user.IsArchived)

@@ -3,20 +3,20 @@
 
 namespace Backend.Services.IServices
 {
-	public interface ICityService
-	{
-		Task<IEnumerable<CityDto>> GetAllCitiesAsync();
-		Task<List<int>> GetActiveCityIdsAsync();
+    public interface ICityService
+    {
+        Task<IEnumerable<CityDto>> GetAllCitiesAsync();
+        Task<List<int>> GetActiveCityIdsAsync();
         Task<IEnumerable<CityDto>> GetActiveCitiesAsync();
         Task<CityDto> GetCityByIdAsync(int cityId);
-		Task<CityDto> CreateCityAsync(CityCreateDto cityDto);
-		Task<bool> DeleteCityAsync(int cityId);
-		Task ArchiveCityAsync(int cityId);
+        Task<CityDto> CreateCityAsync(CityCreateDto cityDto);
+        Task<bool> DeleteCityAsync(int cityId);
+        Task ArchiveCityAsync(int cityId);
         Task RestoreCityAsync(int cityId);
         Task<CityDto> UpdateCityAsync(int cityId, CityUpdateDto cityDto);
-		Task UpdateCityQuestionsAsync(int cityId, CityQuestionsUpdateDto updateDto);
-		Task<CityQuestionsUpdateDto> GetCityQuestionsForEditAsync(int cityId);
-		Task<int> GetCityCountAsync();
-		//Task<int> GetRandomCityIdAsync(int? excludeCityId);
+        Task UpdateCityQuestionsAsync(int cityId, CityQuestionsUpdateDto updateDto);
+        Task<CityQuestionsUpdateDto> GetCityQuestionsForEditAsync(int cityId);
+        Task<int> GetCityCountAsync();
+        //Task<int> GetRandomCityIdAsync(int? excludeCityId);
     }
 }

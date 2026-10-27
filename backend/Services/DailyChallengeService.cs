@@ -46,7 +46,7 @@ namespace Backend.Services
             }
 
             int? selectedCityId = _cityRandomizer.SelectNextCityId(recentCityIds, activeCityIds);
-            
+
             // SCRAPPED CODE USED FOR RANDOMIZATION
             // int? selectedCityId = _cityRandomizer.SelectNextCityId(recentCityIds, amountCities);
 
@@ -74,7 +74,7 @@ namespace Backend.Services
                 CityDetails = new CityDetailsDto
                 {
                     CityName = challenge.City.Name,
-                    CityPicture=challenge.City.CityPicture,
+                    CityPicture = challenge.City.CityPicture,
                     Clues = challenge.City.Clues.Select(c => new ClueDto
                     {
                         ClueText = c.ClueText,

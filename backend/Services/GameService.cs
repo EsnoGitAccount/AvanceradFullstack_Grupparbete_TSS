@@ -227,7 +227,7 @@ namespace Backend.Services
             return currentStreak;
         }
 
-        private GameDto MapGameToDto (Game game)
+        private GameDto MapGameToDto(Game game)
         {
             return new GameDto
             {
@@ -239,7 +239,7 @@ namespace Backend.Services
             };
         }
 
-        private Game MapDtoToGame (GameDto gameDto, int dailyChallengeId)
+        private Game MapDtoToGame(GameDto gameDto, int dailyChallengeId)
         {
             return new Game
             {
