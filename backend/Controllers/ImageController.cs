@@ -1,6 +1,6 @@
 ﻿using Backend.Services.IServices;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
 {
@@ -18,6 +18,7 @@ namespace Backend.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = "Admin")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> UploadImage(IFormFile file)
 		{
 			var blobName = await _blobStorageService.UploadFileAsync(file);
@@ -36,6 +37,7 @@ namespace Backend.Controllers
 
 		[HttpDelete("{blobName}")]
 		[Authorize(Roles = "Admin")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteImage(string blobName)
 		{
 			await _blobStorageService.DeleteBlobAsync(blobName);

@@ -396,7 +396,8 @@ namespace Backend.Services
 			{
 				CityId = city.CityId,
 				Name = city.Name,
-				CityPicture = city.CityPicture
+				CityPicture = city.CityPicture,
+				IsArchived = city.IsArchived
 			};
 		}
 	}

@@ -9,6 +9,6 @@ namespace Backend.Dto
 		public string Name { get; set; } = null!;
 		[Required]
 		public string CityPicture { get; set; } = null!;
-
+		public bool IsArchived { get; set; }
 	}
 }
