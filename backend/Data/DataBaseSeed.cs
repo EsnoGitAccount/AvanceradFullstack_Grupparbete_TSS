@@ -897,6 +897,25 @@ namespace Backend.Data
                 new Clue { ClueId = 199, CityId = 40, Point = 4m, ClueText = "Skellefteälven rinner genom staden." },
                 new Clue { ClueId = 200, CityId = 40, Point = 2m, ClueText = "Vi söker den västerbottniska stad som har gett namn åt Skellefteå AIK." }
             );
+
+            modelBuilder.Entity<Achievement>().HasData(
+                new Achievement { AchievementId = 1, Name = "Nyfiken resenär", Description = "Uppnå en streak av minst 3 dagar."},
+                new Achievement { AchievementId = 2, Name = "Veckopendlare", Description = "Uppnå en streak av minst 7 dagar."},
+                new Achievement { AchievementId = 3, Name = "Stadsälskare", Description = "Uppnå en streak av minst 14 dagar."},
+                new Achievement { AchievementId = 4, Name = "Månadskort", Description = "uppnå en streak av minst 31 dagar."},
+                new Achievement { AchievementId = 5, Name = "Rutinerad resenär", Description = "Uppnå en streak av minst 50 dagar." },
+                new Achievement { AchievementId = 6, Name = "Sverige runt på 80 dagar", Description = "Uppnå en streak av minst 80 dagar." },
+                new Achievement { AchievementId = 7, Name = "100% resglädje", Description = "Uppnå en streak av minst 100 dagar." },
+                new Achievement { AchievementId = 8, Name = "Lokföraraspirant", Description = "Uppnå en streak av minst 140 dagar." },
+                new Achievement { AchievementId = 9, Name = "Halvårskort", Description = "Uppnå en streak av minst 180 dagar." },
+                new Achievement { AchievementId = 10, Name = "Går som tåget", Description = "Uppnå en streak av minst 250 dagar." },
+                new Achievement { AchievementId = 11, Name = "Årskort", Description = "Uppnå en streak av minst 365 dagar." },
+                new Achievement { AchievementId = 13, Name = "Biljettkontroll", Description = "Registrera ett konto." },
+                new Achievement { AchievementId = 14, Name = "Resvana 1", Description = "Tjäna minst 100 poäng totalt." },
+                new Achievement { AchievementId = 15, Name = "Resvana 2", Description = "Tjäna minst 500 poäng totalt." },
+                new Achievement { AchievementId = 16, Name = "ResVasa 3", Description = "Tjäna minst 1000 poäng totalt." },
+                new Achievement { AchievementId = 17, Name = "Mora Träsk och Vasaloppet", Description = "Besök Mora" }
+            );
         }
     }
 }
