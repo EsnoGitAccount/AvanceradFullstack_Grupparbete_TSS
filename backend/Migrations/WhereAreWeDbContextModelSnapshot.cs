@@ -22,6 +22,140 @@ namespace Backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AchievementUser", b =>
+                {
+                    b.Property<int>("AchievementsAchievementId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AchievementsAchievementId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("AchievementUser");
+                });
+
+            modelBuilder.Entity("Backend.Model.Achievement", b =>
+                {
+                    b.Property<int>("AchievementId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AchievementId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AchievementId");
+
+                    b.ToTable("Achievements");
+
+                    b.HasData(
+                        new
+                        {
+                            AchievementId = 1,
+                            Description = "Uppnå en streak av minst 3 dagar.",
+                            Name = "Nyfiken resenär"
+                        },
+                        new
+                        {
+                            AchievementId = 2,
+                            Description = "Uppnå en streak av minst 7 dagar.",
+                            Name = "Veckopendlare"
+                        },
+                        new
+                        {
+                            AchievementId = 3,
+                            Description = "Uppnå en streak av minst 14 dagar.",
+                            Name = "Stadsälskare"
+                        },
+                        new
+                        {
+                            AchievementId = 4,
+                            Description = "uppnå en streak av minst 31 dagar.",
+                            Name = "Månadskort"
+                        },
+                        new
+                        {
+                            AchievementId = 5,
+                            Description = "Uppnå en streak av minst 50 dagar.",
+                            Name = "Rutinerad resenär"
+                        },
+                        new
+                        {
+                            AchievementId = 6,
+                            Description = "Uppnå en streak av minst 80 dagar.",
+                            Name = "Sverige runt på 80 dagar"
+                        },
+                        new
+                        {
+                            AchievementId = 7,
+                            Description = "Uppnå en streak av minst 100 dagar.",
+                            Name = "100% resglädje"
+                        },
+                        new
+                        {
+                            AchievementId = 8,
+                            Description = "Uppnå en streak av minst 140 dagar.",
+                            Name = "Lokföraraspirant"
+                        },
+                        new
+                        {
+                            AchievementId = 9,
+                            Description = "Uppnå en streak av minst 180 dagar.",
+                            Name = "Halvårskort"
+                        },
+                        new
+                        {
+                            AchievementId = 10,
+                            Description = "Uppnå en streak av minst 250 dagar.",
+                            Name = "Går som tåget"
+                        },
+                        new
+                        {
+                            AchievementId = 11,
+                            Description = "Uppnå en streak av minst 365 dagar.",
+                            Name = "Årskort"
+                        },
+                        new
+                        {
+                            AchievementId = 13,
+                            Description = "Registrera ett konto.",
+                            Name = "Biljettkontroll"
+                        },
+                        new
+                        {
+                            AchievementId = 14,
+                            Description = "Tjäna minst 100 poäng totalt.",
+                            Name = "Resvana 1"
+                        },
+                        new
+                        {
+                            AchievementId = 15,
+                            Description = "Tjäna minst 500 poäng totalt.",
+                            Name = "Resvana 2"
+                        },
+                        new
+                        {
+                            AchievementId = 16,
+                            Description = "Tjäna minst 1000 poäng totalt.",
+                            Name = "ResVasa 3"
+                        },
+                        new
+                        {
+                            AchievementId = 17,
+                            Description = "Besök Mora",
+                            Name = "Mora Träsk och Vasaloppet"
+                        });
+                });
+
             modelBuilder.Entity("Backend.Model.City", b =>
                 {
                     b.Property<int>("CityId")
@@ -4633,6 +4767,9 @@ namespace Backend.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CurrentStreak")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -4648,6 +4785,9 @@ namespace Backend.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("LongestStreak")
+                        .HasColumnType("int");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -4668,6 +4808,10 @@ namespace Backend.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalScore")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -4820,6 +4964,21 @@ namespace Backend.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AchievementUser", b =>
+                {
+                    b.HasOne("Backend.Model.Achievement", null)
+                        .WithMany()
+                        .HasForeignKey("AchievementsAchievementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Backend.Model.Clue", b =>

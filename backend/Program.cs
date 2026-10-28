@@ -24,6 +24,10 @@ namespace Backend
                     .GetAwaiter()
                     .GetResult();
 
+                AchievementSeed.SeedAsync(scope.ServiceProvider)
+                    .GetAwaiter()
+                    .GetResult();
+
                 app.MapOpenApi();
                 app.MapScalarApiReference();
                 app.MapGet("/", () => Results.Redirect("/scalar"));

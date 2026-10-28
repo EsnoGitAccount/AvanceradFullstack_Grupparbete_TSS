@@ -19,6 +19,8 @@ namespace Backend.Data
         public DbSet<Option> Options { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
+        public DbSet<Achievement> Achievements { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -62,6 +64,10 @@ namespace Backend.Data
             modelBuilder.Entity<Clue>()
                 .Property(c => c.Point)
                 .HasPrecision(5, 2);
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.TotalScore)
+                .HasPrecision(10, 2);
 
             // Configure RefreshToken entity
             var refreshToken = modelBuilder.Entity<RefreshToken>();
