@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { AuthContext, type LoginCredentials } from './AuthContext';
+import { AuthContext, type LoginCredentials, type UserDto } from './AuthContext';
 import { authService } from "../../services/AuthService";
-
+import type { RegisterDto } from '@/models/RegisterDto';
 // AuthProvider component that provides authentication context to its children
 // It manages user state, loading state, and provides login and logout methods.
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<UserDto | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -37,8 +37,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+   const register=async( registerData:RegisterDto)=>{
+    const registeredUser=await authService.register(registerData);
+    setUser(registeredUser);
+   }
+
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, logout, register }}>
             {children}
         </AuthContext.Provider>
     );
