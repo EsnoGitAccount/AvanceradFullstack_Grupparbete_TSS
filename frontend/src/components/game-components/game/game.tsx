@@ -232,7 +232,7 @@ export default function Game() {
                                 onComplete={handleWhereAreWeComplete}
                                 clues={dailyChallenge.cityDetails.clues}
                                 correctCity={dailyChallenge.cityDetails.cityName}
-                            // imageUrl={dailyChallenge.cityDetails.imageUrl}
+                                imageUrl={dailyChallenge.cityDetails.cityPicture}
                             />
                         )
 

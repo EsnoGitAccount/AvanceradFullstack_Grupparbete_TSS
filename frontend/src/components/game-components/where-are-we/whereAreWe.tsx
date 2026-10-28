@@ -12,7 +12,7 @@ type WhereAreWeProps = {
   onComplete: (score: number) => void
   clues: Clue[]
   correctCity: string
-  imageUrl?: string
+  imageUrl: string | undefined
 }
 
 export default function WhereAreWe({
@@ -59,7 +59,11 @@ export default function WhereAreWe({
       <section className="where-are-we__main">
         <div className="where-are-we__left-side">
           <h1 className="where-are-we__title">Vart är vi?</h1>
-          <img className="where-are-we__image" src={imageUrl} alt="Bild från destinationen" />
+          <img className="where-are-we__image" src={
+                  imageUrl
+                    ? `/api/Image/${imageUrl}`
+                    : placeholderImg
+                } alt="Bild från destinationen" />
         </div>
         <div className="where-are-we__right-side">
 
