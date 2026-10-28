@@ -53,7 +53,7 @@ namespace Backend.Tests.Services
 
             _mockRepo.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
 
-            var service = new GameService(_mockRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider);
+            var service = new GameService(_mockRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider());
 
             // Act
             var gameId = await service.CreateGameAsync(gameDto);
