@@ -205,7 +205,7 @@ namespace Backend.Services
             return displayResults;
         }
 
-        public bool GuestUserHasPlayedToday(string? cookie)
+        public async Task<int> GetStreakForUserAsync(int userId)
         {
             if (string.IsNullOrEmpty(cookie))
             {
