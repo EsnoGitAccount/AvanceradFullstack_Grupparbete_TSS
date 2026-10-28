@@ -195,15 +195,6 @@ namespace Backend.Services
 				throw new AppValidationException(errors);
 			}
 
-            var roleResult= await _userManager.AddToRoleAsync(user, "User");
-
-            if (!roleResult.Succeeded)
-			{
-				var errors = string.Join("; ",roleResult.Errors.Select(error => error.Description));
-
-				throw new AppValidationException(errors);
-			}
-
 			var session = await CreateSessionAsync(
 			  user,
 			  DateTimeOffset.UtcNow.AddDays(_refreshTokenDays));
@@ -219,6 +210,8 @@ namespace Backend.Services
             return session;
 
 		}
+
+
 
 		private async Task<AuthSessionDto> CreateSessionAsync(User user, DateTimeOffset refreshTokenExpiresAt)
         {
