@@ -8,7 +8,7 @@ export interface City {
 // TO DO: This is to match the object type used in cityDetailDto. Either this or City type should probably be removed
 export interface CityDetail {
   cityName: string;
-  cityPicture:string | null;
+  cityPicture:string | undefined;
   questions: Question[];
   clues: Clue[];
 }
