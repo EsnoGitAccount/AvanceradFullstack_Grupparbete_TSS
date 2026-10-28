@@ -8,12 +8,14 @@ import {
   CardFooter,
 } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
+import { Label } from "@/components/ui/label";
 import { validateEmail } from "@/lib/validateEmail";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import type { RegisterDto } from "@/models/RegisterDto";
-import { useAuth } from "@/context/auth/UseAuth";
+import { authService } from "@/services/AuthService";
+
+
 
 type RegisterError = {
   userName?: string;
@@ -31,7 +33,6 @@ function RegisterPage() {
     confirmPassword: "",
   });
 
-  const { register } = useAuth();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<RegisterError>({});
 
@@ -65,10 +66,6 @@ function RegisterPage() {
     /*Check number*/
     if (!/\d/.test(password)) {
       return "Lösenordet måste innehålla minst en siffra.";
-    }
-
-    if (!/[^A-Za-z0-9\s]/.test(password)) {
-      return "Lösenordet måste innehålla minst ett specialtecken.";
     }
 
     return "";
@@ -128,31 +125,22 @@ function RegisterPage() {
       return;
     }
     /*Prepare register data*/
-    const registerData: RegisterDto = {
+    const registerData :RegisterDto= {
       userName: user.userName,
       email: user.userEmail,
       password: user.password,
     };
     /*Send register request*/
     try {
-      await register(registerData);
+      await authService.register(registerData);
       navigate("/", { replace: true });
     } catch (error) {
-      /* Handle existing user conflicts */
+      /*Handle existing email*/
       if (axios.isAxiosError(error) && error.response?.status === 409) {
-        const detail = error.response.data?.detail;
-        if (detail === "Username already exists.") {
-          setErrors((prev) => ({
-            ...prev,
-
-            userName: "Det här användarnamnet är redan upptaget.",
-          }));
-        } else if (detail === "User already exists.") {
-          setErrors((prev) => ({
-            ...prev,
-            userEmail: "Det finns redan ett konto med den här e-postadressen.",
-          }));
-        }
+        setErrors((prev) => ({
+          ...prev,
+          userEmail: "Det finns redan ett konto med den här e-postadressen.",
+        }));
         return;
       }
       console.error("Register error:", error);
