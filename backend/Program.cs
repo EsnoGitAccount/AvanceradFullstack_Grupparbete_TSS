@@ -14,6 +14,8 @@ namespace Backend
 
             builder.Services.AddMemoryCache();
 
+            builder.Services.AddDataProtection();
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())

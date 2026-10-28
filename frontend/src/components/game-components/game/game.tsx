@@ -31,6 +31,7 @@ export default function Game() {
     const [isLoading, setIsloading] = useState<boolean>(true)
     const [loadingMessage, setLoadingMessage] = useState<string>("")
     const [isSavingResult, setIsSavingResult] = useState<boolean>(false)
+    const [hasPlayedToday, setHasPlayedToday] = useState<boolean>(false)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [fakeUser] = useState<FakeUser>({
         userName: "AdamTest",
@@ -78,11 +79,12 @@ export default function Game() {
                 setDailyChallenge(responseData)
             }
             catch (error: unknown) {
-                const message = axios.isAxiosError(error)
-                    ? error.message
-                    : "Något gick fel men meddelandet kunde inte läsas"
-
-                console.log(message)
+                if (axios.isAxiosError(error) && error.response?.status === 409) 
+                {
+                    setHasPlayedToday(true);
+                    return;
+                }
+                console.log(error)
             }
             finally {
                 setIsloading(false)
@@ -191,6 +193,10 @@ export default function Game() {
         )
     }
 
+    if (hasPlayedToday) {
+    return <AlreadyPlayedDialog />;
+    }
+
     if (dailyChallenge === null) {
         return (
             <div>Kunde inte ladda spelet. Vänligen prova igen senare</div>
@@ -268,4 +274,60 @@ export default function Game() {
             })()}
         </>
     )
+    function AlreadyPlayedDialog() {
+    const dialogRef = useRef<HTMLDialogElement>(null);
+
+    useEffect(() => {
+        const dialog = dialogRef.current;
+
+        dialog?.showModal();
+
+        return () => dialog?.close();
+    }, []);
+
+    return (
+        <div className="question-page">
+            <p>Dagens destination är avklarad. Välkommen åter imorgon!</p>
+
+            <dialog
+                ref={dialogRef}
+                aria-labelledby="already-played-title"
+                aria-describedby="already-played-description"
+                className="
+                    m-auto w-[calc(100%-2rem)] max-w-md
+                    rounded-xl border border-[var(--border)]
+                    bg-[var(--background)] p-6
+                    text-[var(--foreground)] shadow-xl
+                    backdrop:bg-black/50
+                "
+            >
+                <h2
+                    id="already-played-title"
+                    className="text-xl font-semibold"
+                >
+                    Du har redan spelat idag
+                </h2>
+
+                <p
+                    id="already-played-description"
+                    className="mt-3"
+                >
+                    Välkommen åter imorgon för en ny destination!
+                </p>
+
+                <form method="dialog" className="mt-6">
+                    <button
+                        autoFocus
+                        className="
+                            rounded-md bg-[var(--primary)]
+                            px-4 py-2 text-[var(--primary-foreground)]
+                        "
+                    >
+                        Stäng
+                    </button>
+                </form>
+            </dialog>
+        </div>
+    );
+}
 }
