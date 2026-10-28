@@ -1,4 +1,5 @@
 import api from "./api"
+import type { RegisterDto } from "@/models/RegisterDto";
 
 // AuthService provides methods for user authentication
 export const authService = {
@@ -27,4 +28,9 @@ export const authService = {
         await api.post('/api/auth/logout');
     },
 
+
+    async register(registerData:RegisterDto):Promise<void>{
+        await this.fetchCsrfToken();
+        await api.post('/api/auth/register', registerData)
+    }
 }
