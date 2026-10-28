@@ -13,8 +13,7 @@ import { validateEmail } from "@/lib/validateEmail";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import type { RegisterDto } from "@/models/RegisterDto";
-import { authService } from "@/services/AuthService";
-
+import { useAuth } from "@/context/auth/UseAuth";
 
 
 type RegisterError = {
@@ -33,6 +32,7 @@ function RegisterPage() {
     confirmPassword: "",
   });
 
+  const {register}= useAuth();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<RegisterError>({});
 
@@ -125,22 +125,31 @@ function RegisterPage() {
       return;
     }
     /*Prepare register data*/
-    const registerData :RegisterDto= {
+    const registerData: RegisterDto = {
       userName: user.userName,
       email: user.userEmail,
       password: user.password,
     };
     /*Send register request*/
     try {
-      await authService.register(registerData);
+      await register(registerData);
       navigate("/", { replace: true });
     } catch (error) {
-      /*Handle existing email*/
+      /* Handle existing user conflicts */
       if (axios.isAxiosError(error) && error.response?.status === 409) {
-        setErrors((prev) => ({
-          ...prev,
-          userEmail: "Det finns redan ett konto med den här e-postadressen.",
-        }));
+        const detail = error.response.data?.detail;
+        if (detail === "Username already exists.") {
+          setErrors((prev) => ({
+            ...prev,
+
+            userName: "Det här användarnamnet är redan upptaget.",
+          }));
+        } else if (detail === "User already exists.") {
+          setErrors((prev) => ({
+            ...prev,
+            userEmail: "Det finns redan ett konto med den här e-postadressen.",
+          }));
+        }
         return;
       }
       console.error("Register error:", error);
