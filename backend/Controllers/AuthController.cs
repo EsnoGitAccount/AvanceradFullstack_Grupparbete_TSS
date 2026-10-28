@@ -112,5 +112,18 @@ namespace Backend.Controllers
 
             return NoContent();
         }
-    }
+
+
+        [HttpPost("register")]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        {
+            var sessiion = await _authService.RegisterAsync(registerDto);
+
+            _cookieService.SetAuthenticationCookie(Response, sessiion);
+            return Ok(sessiion.User);
+        }
+
+	}
 }

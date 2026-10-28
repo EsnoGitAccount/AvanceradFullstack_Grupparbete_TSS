@@ -160,7 +160,57 @@ namespace Backend.Services
             return new UserDto(user, userRoles);
         }
 
-        private async Task<AuthSessionDto> CreateSessionAsync(User user, DateTimeOffset refreshTokenExpiresAt)
+		public async Task<AuthSessionDto> RegisterAsync(RegisterDto registerDto)
+		{
+			var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
+
+			if (existingUser is not null)
+			{
+				throw new ConflictException("User already exists.");
+			}
+
+            var existingUserName = await _userManager.FindByNameAsync(registerDto.UserName);
+
+
+			if (existingUserName is not null)
+			{
+				throw new ConflictException("Username already exists.");
+			}
+
+			var user = new User
+			{
+				UserName = registerDto.UserName,
+				Email = registerDto.Email
+			};
+
+			var result = await _userManager.CreateAsync(user, registerDto.Password);
+
+			if (!result.Succeeded)
+			{
+				var errors = string.Join("; ", result.Errors.Select(error => error.Description));
+
+				throw new AppValidationException(errors);
+			}
+
+			var session = await CreateSessionAsync(
+			  user,
+			  DateTimeOffset.UtcNow.AddDays(_refreshTokenDays));
+
+			await _refreshTokenRepository.AddRefreshTokenAsync(new RefreshToken
+			{
+				UserId = user.Id,
+				SessionId = Guid.NewGuid(),
+				TokenHash = _tokenService.HashRefreshToken(session.RefreshToken),
+				ExpiresAt = session.RefreshTokenExpiresAt
+			});
+
+            return session;
+
+		}
+
+
+
+		private async Task<AuthSessionDto> CreateSessionAsync(User user, DateTimeOffset refreshTokenExpiresAt)
         {
             var userRoles = await _userManager.GetRolesAsync(user);
             var userDto = new UserDto(user, userRoles);
@@ -176,5 +226,7 @@ namespace Backend.Services
                 RefreshTokenExpiresAt = refreshTokenExpiresAt
             };
         }
-    }
+
+		
+	}
 }
