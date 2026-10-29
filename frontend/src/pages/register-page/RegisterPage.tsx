@@ -8,13 +8,12 @@ import {
   CardFooter,
 } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/Label";
 import { validateEmail } from "@/lib/validateEmail";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import type { RegisterDto } from "@/models/RegisterDto";
 import { useAuth } from "@/context/auth/UseAuth";
-
 
 type RegisterError = {
   userName?: string;
@@ -32,7 +31,7 @@ function RegisterPage() {
     confirmPassword: "",
   });
 
-  const {register}= useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<RegisterError>({});
 
@@ -66,6 +65,10 @@ function RegisterPage() {
     /*Check number*/
     if (!/\d/.test(password)) {
       return "Lösenordet måste innehålla minst en siffra.";
+    }
+
+    if (!/[^A-Za-z0-9\s]/.test(password)) {
+      return "Lösenordet måste innehålla minst ett specialtecken.";
     }
 
     return "";
