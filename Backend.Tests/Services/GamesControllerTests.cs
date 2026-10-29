@@ -77,7 +77,7 @@ namespace Backend.Tests.Services
             Assert.True(cookie.HttpOnly);
             Assert.True(cookie.Secure);
             Assert.Equal(
-                Microsoft.Net.Http.Headers.SameSiteMode.None,
+                Microsoft.Net.Http.Headers.SameSiteMode.Lax,
                 cookie.SameSite);
             Assert.Equal("/", cookie.Path.ToString());
         }
