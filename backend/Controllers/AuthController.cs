@@ -56,7 +56,7 @@ namespace Backend.Controllers
         // Authenticate a user and create an authenticated session
         [HttpPost("login")]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var session = await _authService.LoginAsync(loginDto);
@@ -101,7 +101,7 @@ namespace Backend.Controllers
         // Log out the user and remove authentication cookies
         [HttpPost("logout")]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             Request.Cookies.TryGetValue(RefreshTokenCookieName, out var refreshToken);
