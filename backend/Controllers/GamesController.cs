@@ -52,7 +52,7 @@ namespace Backend.Controllers
                 {
                     HttpOnly = true,
                     Secure = true,
-                    SameSite = SameSiteMode.None,
+                    SameSite = SameSiteMode.Lax,
                     Path = "/",
                     Expires = new DateTimeOffset(now.UtcDateTime.Date.AddDays(1), TimeSpan.Zero)
                 });
