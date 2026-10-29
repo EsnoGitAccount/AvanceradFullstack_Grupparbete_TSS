@@ -1,4 +1,5 @@
-﻿using Backend.Dto;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Backend.Dto;
 using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Backend.Services;
@@ -52,7 +53,7 @@ namespace Backend.Tests.Services
 
             _mockRepo.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
 
-            var service = new GameService(_mockRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object);
+            var service = new GameService(_mockRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider());
 
             // Act
             var gameId = await service.CreateGameAsync(gameDto);

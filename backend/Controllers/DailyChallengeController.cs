@@ -13,15 +13,23 @@ namespace Backend.Controllers
     {
         private readonly IMemoryCache _cache;
         private readonly IDailyChallengeService _dailyChallengeService;
-        public DailyChallengeController(IDailyChallengeService dailyChallengeService, IMemoryCache cache)
+        private readonly IGameService _gameService;
+
+        public DailyChallengeController(IDailyChallengeService dailyChallengeService, IMemoryCache cache, IGameService gameService)
         {
             _dailyChallengeService = dailyChallengeService;
             _cache = cache;
+            _gameService = gameService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetDailyCity([FromQuery] DateOnly? date)
         {
+            if (User.Identity?.IsAuthenticated != true && _gameService.GuestUserHasPlayedToday(Request.Cookies["GuestDailyGameLimit"]))
+            {
+                return Problem(statusCode: StatusCodes.Status409Conflict, detail: "Guest users can only play once per day.");
+            }
+
             var now = DateTime.UtcNow;
             var challengeDate = date ?? DateOnly.FromDateTime(now);
 

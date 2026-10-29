@@ -3,6 +3,7 @@ using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Backend.Services.IServices;
 using Backend.Exceptions;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace Backend.Services
 {
@@ -10,14 +11,15 @@ namespace Backend.Services
     {
         private readonly IGameRepository _gameRepository;
         private readonly IDailyChallengeRepository _dailyChallengeRepository;
-
         private readonly IUserRepository _userRepository;
+        private readonly IDataProtector _guestCookieProtector;
 
-        public GameService(IGameRepository gameRepository, IDailyChallengeRepository dailyChallengeRepository, IUserRepository userRepository)
+        public GameService(IGameRepository gameRepository, IDailyChallengeRepository dailyChallengeRepository, IUserRepository userRepository, IDataProtectionProvider protectionProvider)
         {
             _gameRepository = gameRepository;
             _dailyChallengeRepository = dailyChallengeRepository;
             _userRepository = userRepository;
+            _guestCookieProtector = protectionProvider.CreateProtector("GuestDailyGameLimit");
         }
         public async Task<int> CreateGameAsync(GameDto gameDto)
         {
@@ -199,6 +201,32 @@ namespace Backend.Services
             }
 
             return displayResults;
+        }
+
+        public bool GuestUserHasPlayedToday(string? cookie)
+        {
+            if (string.IsNullOrEmpty(cookie))
+            {
+                return false;
+            }
+            try
+            {
+                var today = DateTimeOffset.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+
+                return _guestCookieProtector.Unprotect(cookie) == today;
+            }
+            catch
+            {
+                // If unprotecting or parsing fails, we assume the guest has played today.
+                return true;
+            }
+        }
+
+        public string CreatedGuestPlayedCookie()
+        {
+            var today = DateTimeOffset.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+            
+            return _guestCookieProtector.Protect(today);
         }
 
         private async Task<int> GetStreakForUserAsync(int userId)

@@ -24,6 +24,11 @@ api.interceptors.response.use(
                 detail || "Resursen kunde inte hittas."
         }
 
+        if (status === 409) {
+            error.message =
+                detail || "Du har redan spelat idag."
+        }
+
         if (status === 500) {
             error.message =
                 detail || "Ett oväntat serverfel inträffade."
