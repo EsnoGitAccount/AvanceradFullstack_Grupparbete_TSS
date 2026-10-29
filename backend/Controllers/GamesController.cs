@@ -16,9 +16,12 @@ namespace Backend.Controllers
         private readonly IGameService _gameService;
         private readonly IDataProtector _guestCookieProtector;
 
-        public GamesController(IGameService gameService, IDataProtectionProvider protectionProvider)
+        private readonly IWebHostEnvironment _environment;
+
+        public GamesController(IGameService gameService, IDataProtectionProvider protectionProvider, IWebHostEnvironment environment)
         {
             _gameService = gameService;
+            _environment = environment;
             _guestCookieProtector = protectionProvider.CreateProtector("GuestDailyGameLimit");
         }
 
@@ -52,7 +55,9 @@ namespace Backend.Controllers
                 {
                     HttpOnly = true,
                     Secure = true,
-                    SameSite = SameSiteMode.Lax,
+                    SameSite = _environment.IsDevelopment()
+                    ? SameSiteMode.None
+                    : SameSiteMode.Lax,
                     Path = "/",
                     Expires = new DateTimeOffset(now.UtcDateTime.Date.AddDays(1), TimeSpan.Zero)
                 });
