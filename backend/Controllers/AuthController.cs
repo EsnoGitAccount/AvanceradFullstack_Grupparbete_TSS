@@ -121,8 +121,8 @@ namespace Backend.Controllers
         {
             var session = await _authService.RegisterAsync(registerDto);
 
-            _cookieService.SetAuthenticationCookie(Response, sessiion);
-            return Ok(sessiion.User);
+            _cookieService.SetAuthenticationCookie(Response, session);
+            return Ok(session.User);
         }
 
 	}
