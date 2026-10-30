@@ -17,5 +17,23 @@ namespace Backend.Repositories
         {
             return await _context.Users.FindAsync(userId);
         }
+
+        public async Task<bool> UpdateUserStreakAsync(User user, int streak)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            user.CurrentStreak = streak;
+
+            if (streak > user.LongestStreak)
+            {
+                user.LongestStreak = streak;
+            }
+
+            _context.Users.Update(user);
+            
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

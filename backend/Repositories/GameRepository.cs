@@ -57,5 +57,14 @@ namespace Backend.Repositories
                 .Where(g => g.UserId == userId)
                 .ToListAsync();
         }
+
+        public async Task<bool> GetUserPlayedYesterdayAsync(int userId)
+        {
+            var yesterdaysGame = await _context.Games
+                .Where(g => g.UserId == userId && g.CompletedAt == DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1)))
+                .FirstOrDefaultAsync();
+
+            return yesterdaysGame != null;
+        }
     }
 }

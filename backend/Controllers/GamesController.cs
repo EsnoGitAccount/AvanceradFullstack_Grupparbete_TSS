@@ -74,7 +74,13 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetGamesForDate([FromQuery] DateOnly? date)
         {
-            var games = await _gameService.GetResultsForDateAsync(date);
+            int? userId = null;
+            if (int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var parsedUserId))
+            {
+                userId = parsedUserId;
+            }
+
+            var games = await _gameService.GetResultsForDateAsync(date, userId);
 
             return Ok(games);
         }

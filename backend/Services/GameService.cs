@@ -43,6 +43,15 @@ namespace Backend.Services
                 throw new InvalidOperationException("Failed to create game.");
             }
 
+            if (game.UserId.HasValue)
+            {
+                var user = await _userRepository.GetUserByIdAsync(game.UserId.Value);
+                if (user != null)
+                {
+                    await SetStreakForUserAsync(user);
+                }
+            }
+
             return createdGame.GameId;
         }
 
@@ -74,7 +83,7 @@ namespace Backend.Services
             }
         }
 
-        public async Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date)
+        public async Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date, int? currentUserId)
         {
             var dateToUse = date ?? DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -103,16 +112,15 @@ namespace Backend.Services
                         continue;
                     }
 
-                    var currentStreak = await GetStreakForUserAsync(result.UserId.Value);
                     var user = await _userRepository.GetUserByIdAsync(result.UserId.Value);
 
                     results.Add(new ResultDto
                     {
                         UserName = user?.UserName ?? result.UserName,
                         FinalScore = result.TotalScore,
-                        Streak = currentStreak,
+                        Streak = user.CurrentStreak,
                         Rank = 0,
-                        IsCurrentUser = user?.UserName == "user1", //replace with actual logic for checking if the user is the currently logged in user
+                        IsCurrentUser = user?.Id == currentUserId
                     });
                 }
             }
@@ -127,18 +135,13 @@ namespace Backend.Services
                     var result = topList[i];
 
                     User? user = null;
-                    var isCurrentUser = result.UserName == "user1";
 
                     if (result.UserId.HasValue)
                     {
                         user = await _userRepository.GetUserByIdAsync(result.UserId.Value);
-                        if (user != null)
-                        {
-                            isCurrentUser = isCurrentUser || user.UserName == "user1";
-                        }
                     }
 
-                    if (result.UserId == null || (i >= 10 && !isCurrentUser))
+                    if (result.UserId == null || (i >= 10 && result.UserId != currentUserId))
                     {
                         //create result with streak = null and add to results list
                         results.Add(new ResultDto
@@ -147,20 +150,19 @@ namespace Backend.Services
                             FinalScore = result.TotalScore,
                             Rank = 0,
                             Streak = null,
-                            IsCurrentUser = isCurrentUser
+                            IsCurrentUser = result.UserId == currentUserId
                         });
                         continue;
                     }
 
-                    var currentStreak = await GetStreakForUserAsync(result.UserId.Value);
 
                     results.Add(new ResultDto
                     {
                         UserName = user?.UserName ?? result.UserName,
                         FinalScore = result.TotalScore,
                         Rank = 0,
-                        Streak = currentStreak,
-                        IsCurrentUser = isCurrentUser,
+                        Streak = user.CurrentStreak,
+                        IsCurrentUser = result.UserId == currentUserId
                     });
                 }
             }
@@ -229,30 +231,24 @@ namespace Backend.Services
             return _guestCookieProtector.Protect(today);
         }
 
-        private async Task<int> GetStreakForUserAsync(int userId)
+        private async Task<int> GetStreakForUserAsync(User user)
         {
-            var games = await _gameRepository.GetGamesForUserAsync(userId);
-            var orderedGames = games
-                .OrderByDescending(g => g.CompletedAt)
-                .ToList();
+            var playedYesterday = await _gameRepository.GetUserPlayedYesterdayAsync(user.Id);
 
-            // TakeWhile grabs the current game, and the index of it in the List
-            // which we ordered above, it then removes 1 day from the previous date and compares it to the current date,
-            // if they are equal it will continue to add to the streak until it finds a date that is not equal to the previous date + 1 day
-            var currentStreak = orderedGames.
-                TakeWhile((game, index) =>
-                {
-                    if (index == 0)
-                    {
-                        return true;
-                    }
+            if (!playedYesterday)
+            {
+                return 1;
+            }
+            else
+            {
+                return user.CurrentStreak + 1;
+            }                                                                                                                                                                                              
+        }
 
-                    var expectedDate = orderedGames[index - 1].CompletedAt.AddDays(-1);
-                    return game.CompletedAt == expectedDate;
-                })
-                .Count();
-
-            return currentStreak;
+        private async Task SetStreakForUserAsync(User user)
+        {
+            var streak = await GetStreakForUserAsync(user);
+            await _userRepository.UpdateUserStreakAsync(user, streak);
         }
 
         private GameDto MapGameToDto(Game game)

@@ -67,5 +67,7 @@ namespace Backend.Tests.Services
                 g.DailyChallangeId == todaysChallenge.DailyChallangeId
             )), Times.Once);
         }
+
+        // @Esbjörn Please add tests for getting and setting streaks here using interrupted streaks/gaps and existing streaks
     }
 }
