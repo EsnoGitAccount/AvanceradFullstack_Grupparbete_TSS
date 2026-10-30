@@ -6,5 +6,8 @@
         public string Email { get; set; } = string.Empty;
         public List<string> Roles { get; set; } = [];
         public int CurrentStreak { get; set; }
+        public decimal? DailyScore { get; set; }
+        public decimal AllTimeScore { get; set; }
+        public List<AchievementDto> Achievements { get; set; } = [];
     }
 }

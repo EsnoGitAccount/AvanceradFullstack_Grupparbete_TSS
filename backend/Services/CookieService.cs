@@ -14,7 +14,7 @@ namespace Backend.Services
     {
         private const string AccessTokenCookieName = "accessToken";
         private const string RefreshTokenCookieName = "refreshToken";
-        private const string AccessTokenCookiePath = "/api";
+        private const string AccessTokenCookiePath = "/";
         private const string RefreshTokenCookiePath = "/api/auth";
 
         private readonly IWebHostEnvironment _environment;
@@ -51,11 +51,19 @@ namespace Backend.Services
 
             return new CookieOptions
             {
+                //HttpOnly = true,
+                //Secure = true,
+                //SameSite = SameSiteMode.Lax,
+                //Path = path,
+                //Expires = expiresAt
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Lax,
+                SameSite = isDevelopment
+            ? SameSiteMode.None
+            : SameSiteMode.Lax,
                 Path = path,
                 Expires = expiresAt
+
             };
         }
 
@@ -66,9 +74,16 @@ namespace Backend.Services
 
             return new CookieOptions
             {
+                //HttpOnly = true,
+                //Secure = true,
+                //SameSite = SameSiteMode.Lax,
+                //Path = path
+
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Lax,
+                SameSite = isDevelopment
+            ? SameSiteMode.None
+            : SameSiteMode.Lax,
                 Path = path
             };
         }
