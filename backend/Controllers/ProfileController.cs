@@ -35,8 +35,6 @@ namespace Backend.Controllers
             var profile = new UserProfileDto
             {
                 Username = user.Username,
-                Email = user.Email,
-                Roles = user.Roles,
                 CurrentStreak = stats?.Streak ?? 0,
                 DailyScore = stats?.DailyScore,
                 AllTimeScore = stats?.AllTimeScore ?? 0,

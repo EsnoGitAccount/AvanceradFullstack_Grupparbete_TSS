@@ -7,8 +7,6 @@ export type AchievementDto = {
 
 export type UserProfileDto = {
     username: string;
-    email: string;
-    roles: string[];
     currentStreak: number;
     dailyScore?: number;
     allTimeScore: number;

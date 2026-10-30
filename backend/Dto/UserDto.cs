@@ -13,7 +13,6 @@ namespace Backend.Dto
         {
             Username = user.UserName;
             Email = user.Email;
-            Roles = roles?.ToList() ?? [];
 
             Achievements = user.Achievements
                 .OrderBy(a => a.AchievementId)
