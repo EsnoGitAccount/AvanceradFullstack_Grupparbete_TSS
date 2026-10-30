@@ -207,6 +207,14 @@ namespace Backend.Services
 
         public async Task<int> GetStreakForUserAsync(int userId)
         {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+
+            return user?.CurrentStreak ?? 0;
+        }
+
+        public bool GuestUserHasPlayedToday(string? cookie)
+        {
+
             if (string.IsNullOrEmpty(cookie))
             {
                 return false;

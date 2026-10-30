@@ -7,7 +7,6 @@ namespace Backend.Services.IServices
         Task<int> CreateGameAsync(GameDto gameDto);
         Task<IEnumerable<GameResultDto>> GetGameResultsAsync();
         Task DeleteGameResultAsync(int gameId);
-        Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date);
         Task<int> GetStreakForUserAsync(int userId);
         Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date, int? currentUserId);
         bool GuestUserHasPlayedToday(string? cookie);

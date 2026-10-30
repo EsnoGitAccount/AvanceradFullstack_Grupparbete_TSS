@@ -22,8 +22,7 @@ namespace Backend.Controllers
         [Authorize]
         public async Task<ActionResult<UserProfileDto>> GetProfile()
         {
-            var userIdClaim = User.FindFirstValue("sub")
-               ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (!int.TryParse(userIdClaim, out var userId))
             {
@@ -37,6 +36,7 @@ namespace Backend.Controllers
             {
                 Username = user.Username,
                 Email = user.Email,
+                Roles = user.Roles,
                 CurrentStreak = stats?.Streak ?? 0,
                 DailyScore = stats?.DailyScore,
                 AllTimeScore = stats?.AllTimeScore ?? 0,
