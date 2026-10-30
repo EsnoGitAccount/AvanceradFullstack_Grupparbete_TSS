@@ -4,6 +4,7 @@ using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Backend.Services.IServices;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace Backend.Services
@@ -148,8 +149,10 @@ namespace Backend.Services
 
         public async Task<UserDto> GetCurrentUserAsync(int userId)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString(CultureInfo.InvariantCulture)) ??
-                throw new UnauthorizedException("User was not found.");
+            var user = await _userManager.Users
+                .Include(u => u.Achievements)
+                .FirstOrDefaultAsync(u => u.Id == userId)
+                ?? throw new UnauthorizedException("User was not found.");
 
             if (user.IsArchived)
             {

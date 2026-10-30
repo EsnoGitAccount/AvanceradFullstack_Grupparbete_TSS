@@ -121,6 +121,53 @@ public class LeaderboardService(
         };
     }
 
+    public async Task<PlayerStatisticsDto?> GetPlayerStatsAsync(int userId)
+    {
+        var user = await userRepository.GetUserByIdAsync(userId);
+        if (user == null)
+        {
+            return null;
+        }
+
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var games = await gameRepository.GetAllGamesAsync();
+
+        var dailyBest = games
+            .Where(g => g.CompletedAt <= today)
+            .GroupBy(g => new
+            {
+                Player = g.UserId.HasValue ? $"user:{g.UserId}" : $"guest:{g.GameId}",
+                Date = g.CompletedAt
+            })
+            .Select(group => group
+                .OrderByDescending(g => g.TotalScore)
+                .ThenBy(g => g.GameId)
+                .First())
+            .ToList();
+
+        var userDates = dailyBest
+            .Where(g => g.UserId == userId)
+            .Select(g => g.CompletedAt);
+
+        var streak = CalculateStreak(userDates, today);
+
+        var dailyScore = dailyBest
+            .FirstOrDefault(g => g.UserId == userId && g.CompletedAt == today)
+            ?.TotalScore;
+
+        var allTimeScore = dailyBest
+            .Where(g => g.UserId == userId)
+            .Sum(g => (decimal)g.TotalScore);
+
+        return new PlayerStatisticsDto
+        {
+            UserName = user.UserName ?? "",
+            Streak = streak,
+            DailyScore = dailyScore,
+            AllTimeScore = allTimeScore
+        };
+    }
+
     private static ResultDto CreateResult(
         Game game,
         decimal score,

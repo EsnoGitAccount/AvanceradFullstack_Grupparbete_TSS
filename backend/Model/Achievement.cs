@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Backend.Model
+﻿namespace Backend.Model
 {
     public class Achievement
     {

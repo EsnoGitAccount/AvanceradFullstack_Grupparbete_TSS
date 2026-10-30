@@ -73,6 +73,4 @@ namespace Backend.Services
             };
         }
     }
-
-
 }

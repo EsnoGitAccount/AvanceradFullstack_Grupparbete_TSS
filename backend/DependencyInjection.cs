@@ -101,9 +101,9 @@ namespace Backend
 
                     options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(options =>
+            .AddJwtBearer(options =>
                 {
-                    options.MapInboundClaims = false;
+                    options.MapInboundClaims = false; 
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
