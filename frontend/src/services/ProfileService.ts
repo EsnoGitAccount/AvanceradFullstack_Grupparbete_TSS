@@ -1,9 +1,18 @@
 import api from "./api";
 
+export type AchievementDto = {
+    name: string;
+    description: string;
+};
+
 export type UserProfileDto = {
     username: string;
     email: string;
+    roles: string[];
     currentStreak: number;
+    dailyScore?: number;
+    allTimeScore: number;
+    achievements: AchievementDto[];
 };
 
 export const getProfile = async (): Promise<UserProfileDto> => {
