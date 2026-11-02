@@ -100,7 +100,7 @@ export function LoginForm() {
                 Ny här? Skapa ett konto och kliv ombord.
             </p>
             <div className="login-card__signup">
-                <Button type="button" variant="outline" className="login-card__signup-btn">
+                <Button type="button" variant="outline" className="login-card__signup-btn" onClick={() => navigate('/register')}>
                     Skapa konto
                 </Button>
             </div>

@@ -29,7 +29,9 @@ function SiteHeader() {
           >
             Logga in
           </Button>
-          <Button className="site-header__account-button">Skapa konto</Button>
+          <Button className="site-header__account-button" onClick={() => navigate('/register')}>
+            Skapa konto
+          </Button>
         </div>
       </div>
     </header>
