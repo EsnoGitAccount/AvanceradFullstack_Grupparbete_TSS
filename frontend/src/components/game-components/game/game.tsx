@@ -10,7 +10,6 @@ import WhereAreWe from "../where-are-we/whereAreWe";
 import StartGameTest from "@/test-components/start-game-test/StartGameTest";
 import Leaderboard from "../leaderboard/Leaderboard";
 import { ProgressStepper } from "@/components/ui/Progressbar";
-import StaticMessage from "../message/StaticMessage";
 
 // Constants
 import { GAME_RULES } from "@/constants/gameConstants";
@@ -69,30 +68,42 @@ export default function Game() {
     }
   };
 
-    useEffect(() => {
-        async function loadChallenge() {
-            try {
-                setLoadingMessage("Laddar dagsutmaningen...")
-                const responseData = await getDailyChallenge()
-                setDailyChallenge(responseData)
-            }
-            catch (error: unknown) {
-                if (axios.isAxiosError(error) && error.response?.status === 409) 
-                {
-                    setHasPlayedToday(true);
-                    return;
-                }
-                console.log(error)
-            }
-            finally {
-                setIsloading(false)
-            }
+  useEffect(() => {
+    async function loadChallenge() {
+      try {
+        setLoadingMessage("Laddar dagsutmaningen...");
+        const responseData = await getDailyChallenge();
+        setDailyChallenge(responseData);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response?.status === 409) {
+          setHasPlayedToday(true);
+          return;
+        }
+        console.log(error);
+      } finally {
+        setIsloading(false);
+      }
+    }
+
+    loadChallenge();
+  }, []);
+
+  useEffect(() => {
+    if (loading || !user) {
+      return;
+    }
+
+    setGameState((prevState) => {
+        if(prevState.phase.type !== "notStarted") {
+            return prevState;
         }
 
-        // TO DO: Check if the user is authenticated
-        // If authenticated change gameState.playerName to user
-        loadChallenge();
-    }, [])
+        return {
+            ...prevState,
+            playerName: user.username ?? "",
+        };
+    });
+  }, [loading, user]);
 
   function handleStart(userName: string) {
     setGameState((previousGameState) => ({
@@ -193,9 +204,9 @@ export default function Game() {
     );
   }
 
-    if (hasPlayedToday) {
+  if (hasPlayedToday) {
     return <AlreadyPlayedDialog />;
-    }
+  }
 
   if (dailyChallenge === null) {
     return <div>Kunde inte ladda spelet. Vänligen prova igen senare</div>;
@@ -259,68 +270,59 @@ export default function Game() {
               );
             }
 
-                        return (
-                            <Leaderboard />
-                        )
-                }
-
-            })()}
-        </>
-    )
-    function AlreadyPlayedDialog() {
+            return <Leaderboard />;
+        }
+      })()}
+    </>
+  );
+  function AlreadyPlayedDialog() {
     const dialogRef = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {
-        const dialog = dialogRef.current;
+      const dialog = dialogRef.current;
 
-        dialog?.showModal();
+      dialog?.showModal();
 
-        return () => dialog?.close();
+      return () => dialog?.close();
     }, []);
 
     return (
-        <div className="question-page">
-            <p>Dagens destination är avklarad. Välkommen åter imorgon!</p>
+      <div className="question-page">
+        <p>Dagens destination är avklarad. Välkommen åter imorgon!</p>
 
-            <dialog
-                ref={dialogRef}
-                aria-labelledby="already-played-title"
-                aria-describedby="already-played-description"
-                className="
+        <dialog
+          ref={dialogRef}
+          aria-labelledby="already-played-title"
+          aria-describedby="already-played-description"
+          className="
                     m-auto w-[calc(100%-2rem)] max-w-md
                     rounded-xl border border-[var(--border)]
                     bg-[var(--background)] p-6
                     text-[var(--foreground)] shadow-xl
                     backdrop:bg-black/50
                 "
-            >
-                <h2
-                    id="already-played-title"
-                    className="text-xl font-semibold"
-                >
-                    Du har redan spelat idag
-                </h2>
+        >
+          <h2 id="already-played-title" className="text-xl font-semibold">
+            Du har redan spelat idag
+          </h2>
 
-                <p
-                    id="already-played-description"
-                    className="mt-3"
-                >
-                    Välkommen åter imorgon för en ny destination!
-                </p>
+          <p id="already-played-description" className="mt-3">
+            Välkommen åter imorgon för en ny destination!
+          </p>
 
-                <form method="dialog" className="mt-6">
-                    <button
-                        autoFocus
-                        className="
+          <form method="dialog" className="mt-6">
+            <button
+              autoFocus
+              className="
                             rounded-md bg-[var(--primary)]
                             px-4 py-2 text-[var(--primary-foreground)]
                         "
-                    >
-                        Stäng
-                    </button>
-                </form>
-            </dialog>
-        </div>
+            >
+              Stäng
+            </button>
+          </form>
+        </dialog>
+      </div>
     );
-}
+  }
 }
