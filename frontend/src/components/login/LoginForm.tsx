@@ -25,7 +25,7 @@ export function LoginForm() {
         setIsSubmitting(true);
 
         try {
-            await login({ username: userName.trim(), password });
+            await login({ username: userName, password });
             navigate('/profile');
         } catch (err) {
             if (err instanceof Error) {
