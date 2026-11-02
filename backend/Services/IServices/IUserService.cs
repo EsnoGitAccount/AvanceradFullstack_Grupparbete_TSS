@@ -8,6 +8,6 @@ namespace Backend.Services.IServices
         Task ArchiveUserAsync(int userId);
         Task RestoreUserAsync(int userId);
 
-        
+
     }
 }

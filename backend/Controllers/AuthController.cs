@@ -115,8 +115,8 @@ namespace Backend.Controllers
 
 
         [HttpPost("register")]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             var session = await _authService.RegisterAsync(registerDto);
@@ -125,5 +125,5 @@ namespace Backend.Controllers
             return Ok(session.User);
         }
 
-	}
+    }
 }

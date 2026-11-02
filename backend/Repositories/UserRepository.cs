@@ -32,7 +32,7 @@ namespace Backend.Repositories
             }
 
             _context.Users.Update(user);
-            
+
             return await _context.SaveChangesAsync() > 0;
         }
     }

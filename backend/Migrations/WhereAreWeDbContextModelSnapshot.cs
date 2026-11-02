@@ -121,6 +121,12 @@ namespace Backend.Migrations
                         new
                         {
                             AchievementId = 11,
+                            Description = "Uppnå en streak av minst 307 dagar.",
+                            Name = "Permanent Spårändrat"
+                        },
+                        new
+                        {
+                            AchievementId = 12,
                             Description = "Uppnå en streak av minst 365 dagar.",
                             Name = "Årskort"
                         },
