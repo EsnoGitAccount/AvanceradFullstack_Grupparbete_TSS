@@ -44,6 +44,7 @@ namespace Backend
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IDailyChallengeRepository, DailyChallengeRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 
             // Blob storage service
             services.AddSingleton<IBlobStorageService, BlobStorageService>();
