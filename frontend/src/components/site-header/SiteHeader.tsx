@@ -5,7 +5,6 @@ import { useState } from 'react'
 import logo from '@/assets/logos/logo-transparent.svg'
 import { Button } from '@/components/ui/Button'
 
-
 import './SiteHeader.css'
 
 function SiteHeader() {
