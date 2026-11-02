@@ -15,5 +15,7 @@ namespace Backend.Services.IServices
 
         // Load user information and roles.
         Task<UserDto> GetCurrentUserAsync(int userId);
+
+        Task<AuthSessionDto> RegisterAsync(RegisterDto registerDto);
     }
 }

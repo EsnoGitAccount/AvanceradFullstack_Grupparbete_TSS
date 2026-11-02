@@ -7,7 +7,7 @@ import LoginPage from './pages/login-page/LoginPage';
 import GamePage from './pages/game-page/gamePage';
 import ProfilePage from "./pages/profile-page/ProfilePage";
 import ProtectedRoute from './protected-route/ProtectedRoute';
-
+import RegisterPage from './pages/register-page/RegisterPage';
 function App() {
   return (
     <Routes>
@@ -18,7 +18,7 @@ function App() {
       <Route path="/game" element={<GamePage />} />
       <Route path='/*' element={<NotFoundPage />} />
       <Route path="/login" element={<LoginPage />} />
-
+      <Route path='/register' element ={<RegisterPage/>}/>
       <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
     </Routes>
   );
