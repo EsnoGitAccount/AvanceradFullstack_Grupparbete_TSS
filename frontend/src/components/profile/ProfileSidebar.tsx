@@ -1,5 +1,4 @@
 import { Card, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { type UserProfileDto } from '@/services/ProfileService';
 import { TrophyIcon } from "@/assets/icons/Icons"
 
@@ -9,7 +8,7 @@ interface ProfileSidebarProps {
     onOpenEditModal?: () => void;
 }
 
-export function ProfileSidebar({ profile, onLogout, onOpenEditModal }: ProfileSidebarProps) {
+export function ProfileSidebar({ profile, onOpenEditModal }: ProfileSidebarProps) {
     const avatarLetter = profile.username ? profile.username.charAt(0).toUpperCase() : '?';
 
     const latestAchievement = profile.achievements && profile.achievements.length > 0
@@ -56,15 +55,6 @@ export function ProfileSidebar({ profile, onLogout, onOpenEditModal }: ProfileSi
                     </p>
                 </CardContent>
             </Card>
-
-            <Button
-                type="button"
-                variant="outline"
-                onClick={onLogout}
-                className='mt-2 rounded-xl'
-            >
-                Logga ut
-            </Button>
         </div>
     );
 }
