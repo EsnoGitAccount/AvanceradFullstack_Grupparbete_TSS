@@ -8,7 +8,7 @@ export const authService = {
         await api.get('/api/auth/csrf');
     },
 
-    async login(credentials: { username: string; password: string }) {
+    async login(credentials: { email: string; username: string; password: string }) {
         await this.fetchCsrfToken();
 
         const response = await api.post('/api/auth/login', credentials);

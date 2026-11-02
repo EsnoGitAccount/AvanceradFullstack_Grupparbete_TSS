@@ -45,12 +45,15 @@ namespace Backend.Services
 
         public async Task<AuthSessionDto> LoginAsync(LoginDto loginDto)
         {
-            var user = await _userManager.FindByNameAsync(loginDto.Username) ??
-                throw new UnauthorizedException("Invalid username or password.");
+            var identifier = loginDto.Username;
+
+            var user = await _userManager.FindByNameAsync(identifier) ??
+                await _userManager.FindByEmailAsync(identifier) ??
+                throw new UnauthorizedException("Invalid username/email or password.");
 
             if (user.IsArchived)
             {
-                throw new UnauthorizedException("Invalid username or password.");
+                throw new UnauthorizedException("Invalid username/email or password.");
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(
