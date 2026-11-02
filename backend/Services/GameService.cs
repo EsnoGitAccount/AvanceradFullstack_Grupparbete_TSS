@@ -235,7 +235,7 @@ namespace Backend.Services
         public string CreatedGuestPlayedCookie()
         {
             var today = DateTimeOffset.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-            
+
             return _guestCookieProtector.Protect(today);
         }
 
@@ -250,7 +250,7 @@ namespace Backend.Services
             else
             {
                 return user.CurrentStreak + 1;
-            }                                                                                                                                                                                              
+            }
         }
 
         private async Task SetStreakForUserAsync(User user)
