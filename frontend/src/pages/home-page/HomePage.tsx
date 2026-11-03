@@ -30,14 +30,15 @@ function HomePage() {
               </p>
               <div className="home-page__hero-actions">
                 <Button onClick={() => navigate('/game')} className="home-page__primary-button">
-                  Börja din resa
+                  Kliv ombord
                   <ArrowRightIcon data-icon="inline-end" />
                 </Button>
                 <Button
                   variant="outline"
                   className="home-page__secondary-button"
+                  onClick={() => navigate('/login')}
                 >
-                  Så spelar du
+                  Logga in
                 </Button>
               </div>
               <p className="home-page__details">
