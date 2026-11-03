@@ -38,10 +38,8 @@
 
 .where-are-we__image {
     margin-top: 1rem;
-    width: auto;
-    max-width: 100%;
-    height: auto;
-    max-height: 20rem;
+    width: 100%;
+    max-width: 35.5rem;
     border-radius: var(--radius-lg);
     align-self: center;
     justify-self: center;
@@ -159,7 +157,7 @@
     }
 
     .where-are-we__image {
-        max-height: 15rem;
+        max-width: 26.5rem;
         margin-top: 0rem;
     }
 

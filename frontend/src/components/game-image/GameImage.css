@@ -1,0 +1,25 @@
+.game-image {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: grid;
+  place-items: center;
+}
+
+.game-image__photo {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-image__fallback {
+  width: min(16rem, 100%);
+  transform: scale(0.40);
+}

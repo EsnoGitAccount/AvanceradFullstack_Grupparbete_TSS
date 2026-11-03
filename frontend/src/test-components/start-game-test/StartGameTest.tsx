@@ -11,6 +11,7 @@ import photoExample from "@/assets/images/photo-example.jpg";
 import "./StartGameTest.css";
 import type { DailyChallenge } from "@/models/DailyChallenge";
 import { Input } from "@/components/ui/Input";
+import GameImage from '@/components/game-image/GameImage';
 
 const gameInstructions = [
   { id: 1, text: "Försök hitta dagens stad. Du har 5 försök." },
@@ -123,7 +124,7 @@ function StartGameTest({
 
           <div className="start-game-test__sidebar">
             <div className="w-full aspect-video overflow-hidden rounded-3xl">
-              <img
+              <GameImage
                 src={
                   dailyChallenge.cityDetails.cityPicture
                     ? `/api/Image/${dailyChallenge.cityDetails.cityPicture}`

@@ -1,0 +1,120 @@
+.train-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--primary);
+}
+
+.train-loading__scene {
+  position: relative;
+  width: 16rem;
+  max-width: 100%;
+  height: 7rem;
+  overflow: hidden;
+}
+
+.train-loading__train {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+}
+
+.train-loading__wagon,
+.train-loading__engine {
+  flex-shrink: 0;
+}
+
+.train-loading__wagon {
+  position: relative;
+  width: 80px;
+}
+
+.train-loading__cart,
+.train-loading__engine {
+  display: block;
+  width: 80px;
+  height: auto;
+}
+
+.train-loading__locomotive {
+  position: relative;
+  flex-shrink: 0;
+  width: 80px;
+}
+
+.train-loading__cart,
+.train-loading__locomotive {
+  animation: train-loading-bounce 2.4s ease-in-out infinite;
+}
+
+.train-loading__smoke {
+  position: absolute;
+  left: 51px;
+  top: -6px;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  pointer-events: none;
+  animation: train-loading-smoke 2.4s ease-out infinite;
+}
+
+.train-loading__smoke--2 {
+  animation-delay: -0.8s;
+}
+
+.train-loading__smoke--3 {
+  animation-delay: -1.6s;
+}
+
+@keyframes train-loading-smoke {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.35); }
+  15% { opacity: 0.85; }
+  75% { opacity: 0.85; }
+  100% { opacity: 0; transform: translate(-28px, -30px) scale(1.2); }
+}
+
+.train-loading__wagon:nth-child(1) .train-loading__cart {
+  animation-delay: -1.6s;
+}
+
+.train-loading__wagon:nth-child(2) .train-loading__cart {
+  animation-delay: -0.8s;
+}
+
+.train-loading__track {
+  color: #000;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0.5rem;
+  border-top: 1px solid currentColor;
+  background: repeating-linear-gradient(
+    to right,
+    currentColor 0 2px,
+    transparent 2px 16px
+  );
+  animation: train-loading-track 600ms linear infinite;
+}
+
+@keyframes train-loading-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes train-loading-track {
+  from { background-position-x: 0; }
+  to { background-position-x: -16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .train-loading__cart,
+  .train-loading__locomotive,
+  .train-loading__smoke,
+  .train-loading__track {
+    animation: none;
+  }
+}
