@@ -3,11 +3,10 @@ import SiteFooter from '@/components/site-footer/SiteFooter'
 import SiteHeader from '@/components/site-header/SiteHeader'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
-
+import { SwedenMap } from "@/assets/illustrations/SwedenMap"
 import { useNavigate } from 'react-router'
 
 import './HomePage.css'
-
 
 function HomePage() {
   const navigate = useNavigate()
@@ -45,9 +44,10 @@ function HomePage() {
               </p>
             </div>
             <Card
-              className="home-page__journey-card"
+              className="home-page__journey-card relative overflow-hidden"
               aria-label="Dagens Sverigeresa"
             >
+              <SwedenMap className="home-page__journey-card-map" />
             </Card>
           </div>
         </section>
