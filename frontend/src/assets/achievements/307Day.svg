@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="106.18096"
+   height="104.62984"
+   viewBox="0 0 106.18096 104.62984"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="g10"
+     style="display:inline"
+     transform="translate(-6.4864883,-8.0117531)">
+    <ellipse
+       style="fill:#1cf628;fill-opacity:1;stroke:none;stroke-width:2.89134;stroke-dasharray:8.67402, 2.89134;stroke-dashoffset:9.83055"
+       id="ellipse9"
+       cx="59.576969"
+       cy="60.326675"
+       rx="53.090481"
+       ry="52.314922" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.89134;stroke-dasharray:8.67402, 2.89134;stroke-dashoffset:9.83055"
+       x="8.1786137"
+       y="62.326675"
+       id="text10"><tspan
+         id="tspan10"
+         x="8.1786137"
+         y="62.326675"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none">307</tspan></text>
+    <g
+       id="g13"
+       style="display:inline">
+      <ellipse
+         style="fill:#d5eb27;fill-opacity:1;stroke:none;stroke-width:2.89134;stroke-dasharray:8.67402, 2.89134;stroke-dashoffset:9.83055"
+         id="ellipse12"
+         cx="59.576969"
+         cy="60.326675"
+         rx="53.090481"
+         ry="52.314922" />
+      <text
+         xml:space="preserve"
+         style="font-size:40px;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.89134;stroke-dasharray:8.67402, 2.89134;stroke-dashoffset:9.83055"
+         x="8.1786137"
+         y="62.326675"
+         id="text13"><tspan
+           id="tspan13"
+           x="8.1786137"
+           y="62.326675"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none">140</tspan></text>
+    </g>
+  </g>
+</svg>

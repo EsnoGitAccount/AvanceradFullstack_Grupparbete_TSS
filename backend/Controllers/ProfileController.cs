@@ -12,10 +12,13 @@ namespace Backend.Controllers
     {
         private readonly IAuthService _authService;
         private readonly ILeaderboardService _leaderboardService;
-        public ProfileController(IAuthService authService, ILeaderboardService leaderboardService)
+
+        private readonly IAchievementService _achievementService;
+        public ProfileController(IAuthService authService, ILeaderboardService leaderboardService, IAchievementService achievementService   )
         {
             _authService = authService;
             _leaderboardService = leaderboardService;
+            _achievementService = achievementService;
         }
 
         [HttpGet]
@@ -38,7 +41,8 @@ namespace Backend.Controllers
                 CurrentStreak = stats?.Streak ?? 0,
                 DailyScore = stats?.DailyScore,
                 AllTimeScore = stats?.AllTimeScore ?? 0,
-                Achievements = user.Achievements
+                Achievements = user.Achievements,
+                UnachievedAchievements = await _achievementService.GetUnachievedAchievementsAsync(user.Achievements)
             };
 
             return Ok(profile);

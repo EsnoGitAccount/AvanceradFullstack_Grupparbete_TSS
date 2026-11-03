@@ -899,23 +899,23 @@ namespace Backend.Data
             );
 
             modelBuilder.Entity<Achievement>().HasData(
-                new Achievement { AchievementId = 1, Name = "Nyfiken resenär", Description = "Uppnå en streak av minst 3 dagar." },
-                new Achievement { AchievementId = 2, Name = "Veckopendlare", Description = "Uppnå en streak av minst 7 dagar." },
-                new Achievement { AchievementId = 3, Name = "Stadsälskare", Description = "Uppnå en streak av minst 14 dagar." },
-                new Achievement { AchievementId = 4, Name = "Månadskort", Description = "uppnå en streak av minst 31 dagar." },
-                new Achievement { AchievementId = 5, Name = "Rutinerad resenär", Description = "Uppnå en streak av minst 50 dagar." },
-                new Achievement { AchievementId = 6, Name = "Sverige runt på 80 dagar", Description = "Uppnå en streak av minst 80 dagar." },
-                new Achievement { AchievementId = 7, Name = "100% resglädje", Description = "Uppnå en streak av minst 100 dagar." },
-                new Achievement { AchievementId = 8, Name = "Lokföraraspirant", Description = "Uppnå en streak av minst 140 dagar." },
-                new Achievement { AchievementId = 9, Name = "Halvårskort", Description = "Uppnå en streak av minst 180 dagar." },
-                new Achievement { AchievementId = 10, Name = "Går som tåget", Description = "Uppnå en streak av minst 250 dagar." },
-                new Achievement { AchievementId = 11, Name = "Permanent Spårändrat", Description = "Uppnå en streak av minst 307 dagar." },
-                new Achievement { AchievementId = 12, Name = "Årskort", Description = "Uppnå en streak av minst 365 dagar." },
-                new Achievement { AchievementId = 13, Name = "Biljettkontroll", Description = "Registrera ett konto." },
-                new Achievement { AchievementId = 14, Name = "Resvana 1", Description = "Tjäna minst 100 poäng totalt." },
-                new Achievement { AchievementId = 15, Name = "Resvana 2", Description = "Tjäna minst 500 poäng totalt." },
-                new Achievement { AchievementId = 16, Name = "ResVasa 3", Description = "Tjäna minst 1000 poäng totalt." },
-                new Achievement { AchievementId = 17, Name = "Mora Träsk och Vasaloppet", Description = "Besök Mora" }
+                new Achievement { AchievementId = 1, Name = "Nyfiken resenär", Description = "Uppnå en streak av minst 3 dagar.", ImageKey = "3Day"},
+                new Achievement { AchievementId = 2, Name = "Veckopendlare", Description = "Uppnå en streak av minst 7 dagar.", ImageKey = "7Day" },
+                new Achievement { AchievementId = 3, Name = "Stadsälskare", Description = "Uppnå en streak av minst 14 dagar.", ImageKey = "14Day" },
+                new Achievement { AchievementId = 4, Name = "Månadskort", Description = "Uppnå en streak av minst 31 dagar.", ImageKey = "31Day" },
+                new Achievement { AchievementId = 5, Name = "Rutinerad resenär", Description = "Uppnå en streak av minst 50 dagar.", ImageKey = "50Day" },
+                new Achievement { AchievementId = 6, Name = "Sverige runt på 80 dagar", Description = "Uppnå en streak av minst 80 dagar.", ImageKey = "80Day" },
+                new Achievement { AchievementId = 7, Name = "100% resglädje", Description = "Uppnå en streak av minst 100 dagar.", ImageKey = "100Day" },
+                new Achievement { AchievementId = 8, Name = "Lokföraraspirant", Description = "Uppnå en streak av minst 140 dagar.", ImageKey = "140Day" },
+                new Achievement { AchievementId = 9, Name = "Halvårskort", Description = "Uppnå en streak av minst 180 dagar.", ImageKey = "180Day" },
+                new Achievement { AchievementId = 10, Name = "Går som tåget", Description = "Uppnå en streak av minst 250 dagar.", ImageKey = "250Day" },
+                new Achievement { AchievementId = 11, Name = "Permanent Spårändrat", Description = "Uppnå en streak av minst 307 dagar.", ImageKey = "307Day" },
+                new Achievement { AchievementId = 12, Name = "Årskort", Description = "Uppnå en streak av minst 365 dagar.", ImageKey = "365Day" },
+                new Achievement { AchievementId = 13, Name = "Biljettkontroll", Description = "Registrera ett konto.", ImageKey = "Register" },
+                new Achievement { AchievementId = 14, Name = "Resvana 1", Description = "Tjäna minst 100 poäng totalt.", ImageKey = "100Points" },
+                new Achievement { AchievementId = 15, Name = "Resvana 2", Description = "Tjäna minst 500 poäng totalt.", ImageKey = "500Points" },
+                new Achievement { AchievementId = 16, Name = "ResVasa 3", Description = "Tjäna minst 1000 poäng totalt.", ImageKey = "1000Points" },
+                new Achievement { AchievementId = 17, Name = "Mora Träsk och Vasaloppet", Description = "Besök Mora", ImageKey = "Vasa" }
             );
         }
     }

@@ -8,11 +8,14 @@ namespace Backend.Dto
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public string ImageKey { get; set; }
+
         public AchievementDto(Achievement achievement)
         {
             AchievementId = achievement.AchievementId;
             Name = achievement.Name;
             Description = achievement.Description;
+            ImageKey = achievement.ImageKey;
         }
     }
 }

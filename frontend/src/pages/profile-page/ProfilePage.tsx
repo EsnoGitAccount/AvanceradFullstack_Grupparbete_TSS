@@ -70,8 +70,11 @@ function ProfilePage() {
                     <ProfileOverview profile={profile} />
                 </div>
 
-                <AchievementsSection achievements={profile.achievements} />
-            </div>
+                    <AchievementsSection
+                        achievements={profile.achievements}
+                        unachievedAchievements={profile.unachievedAchievements}
+                    />
+                </div>
         </div>
     );
 }
