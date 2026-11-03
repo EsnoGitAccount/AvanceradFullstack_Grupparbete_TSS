@@ -23,7 +23,6 @@ const gameInstructions = [
 type StartGameProps = {
   handleStart: (userName: string) => void;
   isAuthenticated: boolean;
-  onAuthenticatedChange: (authenticated: boolean) => void;
   guestUserName: string;
   setGuestUserName: (name: string) => void;
   authenticatedUserName: string;
@@ -32,7 +31,6 @@ type StartGameProps = {
 function StartGameTest({
   handleStart,
   isAuthenticated,
-  onAuthenticatedChange,
   guestUserName,
   setGuestUserName,
   authenticatedUserName,
@@ -121,14 +119,6 @@ function StartGameTest({
               </form>
             </CardFooter>
           </Card>
-          <label className="start-game-test__auth-toggle">
-            <input
-              type="checkbox"
-              checked={isAuthenticated}
-              onChange={(event) => onAuthenticatedChange(event.target.checked)}
-            />
-            Authenticated
-          </label>
           </div>
 
           <div className="start-game-test__sidebar">

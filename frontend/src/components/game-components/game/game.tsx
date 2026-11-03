@@ -1,15 +1,15 @@
 // React + Axios
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { LoaderCircle } from "lucide-react"
+import { LoaderCircle } from "lucide-react";
+import { useAuth } from "@/context/auth/UseAuth";
 
 // Components
 import QuestionDestination from "../question-destination/QuestionDestination";
-import WhereAreWe from "../where-are-we/whereAreWe"
+import WhereAreWe from "../where-are-we/whereAreWe";
 import StartGameTest from "@/test-components/start-game-test/StartGameTest";
 import Leaderboard from "../leaderboard/Leaderboard";
-import { ProgressStepper } from "@/components/ui/Progressbar"
-import StaticMessage from "../message/StaticMessage";
+import { ProgressStepper } from "@/components/ui/Progressbar";
 
 // Constants
 import { GAME_RULES } from "@/constants/gameConstants";
@@ -22,256 +22,307 @@ import type { DailyChallenge } from "@/models/DailyChallenge";
 import type { GameResult } from "@/models/GameResult";
 
 export default function Game() {
-    const [dailyChallenge, setDailyChallenge] = useState<DailyChallenge | null>(null)
-    const [currentScore, setCurrentScore] = useState<number>(0)
-    const [gameState, setGameState] = useState<GameState>({
-        phase: { type: "notStarted" },
-        score: 0,
-        playerName: ""
+  const [dailyChallenge, setDailyChallenge] = useState<DailyChallenge | null>(
+    null,
+  );
+  const [currentScore, setCurrentScore] = useState<number>(0);
+  const [gameState, setGameState] = useState<GameState>({
+    phase: { type: "notStarted" },
+    score: 0,
+    playerName: "",
+  });
+  const [isLoading, setIsloading] = useState<boolean>(true);
+  const [loadingMessage, setLoadingMessage] = useState<string>("");
+  const [isSavingResult, setIsSavingResult] = useState<boolean>(false);
+  const [hasPlayedToday, setHasPlayedToday] = useState<boolean>(false);
+
+  const { user, loading } = useAuth();
+  const isAuthenticated = !loading && user !== null;
+
+  const [guestUserName, setGuestUserName] = useState<string>("");
+  const hasSubmittedResult = useRef(false);
+
+  type GamePhase =
+    | { type: "notStarted" }
+    | { type: "whereAreWe" }
+    | { type: "destinationQuestion"; questionIndex: number }
+    | { type: "leaderboard" };
+
+  type GameState = {
+    phase: GamePhase;
+    score: number;
+    playerName: string;
+  };
+
+  // Helper for ProgressBar
+  const getCurrentStep = (): number => {
+    switch (gameState.phase.type) {
+      case "whereAreWe":
+        return 0;
+      case "destinationQuestion":
+        return 1 + gameState.phase.questionIndex;
+      case "leaderboard":
+        return 3;
+      default:
+        return 0;
+    }
+  };
+
+  useEffect(() => {
+    async function loadChallenge() {
+      try {
+        setLoadingMessage("Laddar dagsutmaningen...");
+        const responseData = await getDailyChallenge();
+        setDailyChallenge(responseData);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response?.status === 409) {
+          setHasPlayedToday(true);
+          return;
+        }
+        console.log(error);
+      } finally {
+        setIsloading(false);
+      }
+    }
+
+    loadChallenge();
+  }, []);
+
+  useEffect(() => {
+    if (loading || !user) {
+      return;
+    }
+
+    setGameState((prevState) => {
+        if(prevState.phase.type !== "notStarted") {
+            return prevState;
+        }
+
+        return {
+            ...prevState,
+            playerName: user.username ?? "",
+        };
     });
-    const [isLoading, setIsloading] = useState<boolean>(true)
-    const [loadingMessage, setLoadingMessage] = useState<string>("")
-    const [isSavingResult, setIsSavingResult] = useState<boolean>(false)
-    const [hasPlayedToday, setHasPlayedToday] = useState<boolean>(false)
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-    const [fakeUser] = useState<FakeUser>({
-        userName: "AdamTest",
-        userId: 1
-    })
-    const [guestUserName, setGuestUserName] = useState<string>("")
-    const hasSubmittedResult = useRef(false)
+  }, [loading, user]);
 
-    type GamePhase =
-        | { type: 'notStarted' }
-        | { type: 'whereAreWe' }
-        | { type: 'destinationQuestion'; questionIndex: number }
-        | { type: 'leaderboard' }
+  function handleStart(userName: string) {
+    setGameState((previousGameState) => ({
+      ...previousGameState,
+      phase: {
+        type: "whereAreWe",
+      },
+      playerName: userName,
+    }));
+  }
 
-    type GameState = {
-        phase: GamePhase
-        score: number
-        playerName: string
+  function handleWhereAreWeComplete(score: number) {
+    setCurrentScore(
+      (currentScore) =>
+        currentScore + score * GAME_RULES.whereAreWeScoreMultiplier,
+    );
+    setGameState((previousGameState) => ({
+      ...previousGameState,
+      phase: {
+        type: "destinationQuestion",
+        questionIndex: 0,
+      },
+    }));
+  }
+
+  function handleQuestionStepChange(index: number) {
+    setGameState((prev) => ({
+      ...prev,
+      phase: {
+        type: "destinationQuestion",
+        questionIndex: index,
+      },
+    }));
+  }
+
+  function handleQuestionDestinationComplete(score: number) {
+    // Store final score in a variable to avoid set functions being async and giving not updating value in time
+    const finalScore = currentScore + score;
+
+    setCurrentScore(finalScore);
+    setLoadingMessage("Sparar resultat...");
+    setIsSavingResult(true);
+
+    setGameState((previousGameState) => ({
+      ...previousGameState,
+      score: finalScore,
+      phase: {
+        type: "leaderboard",
+      },
+    }));
+  }
+
+  useEffect(() => {
+    if (loading || gameState.phase.type !== "leaderboard" || hasSubmittedResult.current) {
+      return;
     }
 
-    type FakeUser = {
-        userName: string
-        userId: number
+    hasSubmittedResult.current = true;
+ 
+    async function saveResult() {
+      // Save the result after the phase changes, rather than during render.
+      const result: GameResult = {
+       
+        UserName: isAuthenticated ? (user?.username ?? "") : guestUserName,
+        FinalScore: gameState.score,
+        IsGuest: !isAuthenticated,
+        CompletedAt: new Date().toISOString().slice(0, 10), // Format as YYYY-MM-DD
+      };
+
+      try {
+        await submitGameResult(result);
+      } finally {
+        setIsSavingResult(false);
+      }
     }
 
-    // Helper for ProgressBar
-    const getCurrentStep = (): number => {
+    void saveResult();
+  }, [
+    loading,
+    user,
+    guestUserName,
+    gameState.phase.type,
+    gameState.playerName,
+    gameState.score,
+    isAuthenticated,
+  ]);
+
+  if (isLoading || loading) {
+    return (
+      <div className="question-page">
+        <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+          <LoaderCircle className="w-8 h-8 animate-spin text-[var(--primary)]" />
+          <p className="text-sm font-medium text-[var(--muted-foreground)]">
+            {loadingMessage}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (hasPlayedToday) {
+    return <AlreadyPlayedDialog />;
+  }
+
+  if (dailyChallenge === null) {
+    return <div>Kunde inte ladda spelet. Vänligen prova igen senare</div>;
+  }
+
+  const showProgress = gameState.phase.type !== "notStarted";
+
+  return (
+    <>
+      {showProgress && (
+        <ProgressStepper currentStep={getCurrentStep()} totalSteps={4} />
+      )}
+
+      {(() => {
         switch (gameState.phase.type) {
-            case "whereAreWe":
-                return 0
-            case "destinationQuestion":
-                return 1 + gameState.phase.questionIndex
-            case "leaderboard":
-                return 3
-            default:
-                return 0
-        }
-    }
+          case "notStarted":
+            return (
+              <>
+                <StartGameTest
+                  handleStart={handleStart}
+                  isAuthenticated={isAuthenticated}
+                  guestUserName={guestUserName}
+                  setGuestUserName={setGuestUserName}
+                  authenticatedUserName={user?.username ?? ""}
+                  dailyChallenge={dailyChallenge}
+                />
+              </>
+            );
 
-    useEffect(() => {
-        async function loadChallenge() {
-            try {
-                setLoadingMessage("Laddar dagsutmaningen...")
-                const responseData = await getDailyChallenge()
-                setDailyChallenge(responseData)
-            }
-            catch (error: unknown) {
-                if (axios.isAxiosError(error) && error.response?.status === 409) {
-                    setHasPlayedToday(true);
-                    return;
-                }
-                console.log(error)
-            }
-            finally {
-                setIsloading(false)
-            }
-        }
+          case "whereAreWe":
+            return (
+              <WhereAreWe
+                onComplete={handleWhereAreWeComplete}
+                clues={dailyChallenge.cityDetails.clues}
+                correctCity={dailyChallenge.cityDetails.cityName}
+                imageUrl={dailyChallenge.cityDetails.cityPicture}
+              />
+            );
 
-        // TO DO: Check if the user is authenticated
-        // If authenticated change gameState.playerName to user
-        loadChallenge();
-    }, [])
+          case "destinationQuestion":
+            return (
+              <QuestionDestination
+                onComplete={handleQuestionDestinationComplete}
+                dailyChallange={dailyChallenge}
+                previousScore={currentScore}
+                onStepChange={handleQuestionStepChange}
+              />
+            );
 
-    function handleStart(userName: string) {
-        setGameState((previousGameState) => ({
-            ...previousGameState,
-            phase: {
-                type: "whereAreWe"
-            },
-            playerName: userName
-        }))
-    }
-
-
-    function handleWhereAreWeComplete(score: number) {
-        setCurrentScore((currentScore) => (currentScore + (score * GAME_RULES.whereAreWeScoreMultiplier)))
-        setGameState((previousGameState) => ({
-            ...previousGameState,
-            phase: {
-                type: "destinationQuestion",
-                questionIndex: 0
-            }
-        }))
-    }
-
-    function handleQuestionStepChange(index: number) {
-        setGameState((prev) => ({
-            ...prev,
-            phase: {
-                type: "destinationQuestion",
-                questionIndex: index
-            }
-        }))
-    }
-
-    function handleQuestionDestinationComplete(score: number) {
-        // Store final score in a variable to avoid set functions being async and giving not updating value in time
-        const finalScore = currentScore + score;
-
-        setCurrentScore(finalScore)
-        setLoadingMessage("Sparar resultat...")
-        setIsSavingResult(true)
-
-        setGameState((previousGameState) => ({
-            ...previousGameState,
-            score: finalScore,
-            phase: {
-                type: "leaderboard"
-            }
-        }))
-    }
-
-    useEffect(() => {
-        if (gameState.phase.type !== "leaderboard" || hasSubmittedResult.current) {
-            return
-        }
-
-        hasSubmittedResult.current = true
-
-        async function saveResult() {
-            // Save the result after the phase changes, rather than during render.
-            const result: GameResult = isAuthenticated
-                ? {
-                    UserID: fakeUser.userId,
-                    UserName: fakeUser.userName,
-                    FinalScore: gameState.score,
-                    IsGuest: false,
-                    CompletedAt: new Date().toISOString().slice(0, 10)
-                }
-                : {
-                    UserID: null,
-                    UserName: gameState.playerName,
-                    FinalScore: gameState.score,
-                    CompletedAt: new Date().toISOString().slice(0, 10),
-                    IsGuest: true
-                }
-
-            try {
-                await submitGameResult(result)
-            } finally {
-                setIsSavingResult(false)
-            }
-        }
-
-        void saveResult()
-    }, [fakeUser.userId, fakeUser.userName, gameState.phase.type, gameState.playerName, gameState.score, isAuthenticated])
-
-    if (isLoading) {
-        return (
-            <div className="question-page">
-                <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+          case "leaderboard":
+            if (isSavingResult) {
+              return (
+                <div className="question-page">
+                  <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
                     <LoaderCircle className="w-8 h-8 animate-spin text-[var(--primary)]" />
                     <p className="text-sm font-medium text-[var(--muted-foreground)]">
-                        {loadingMessage}
+                      {loadingMessage}
                     </p>
+                  </div>
                 </div>
-            </div>
-        )
-    }
+              );
+            }
 
-    if (hasPlayedToday) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
-            <StaticMessage type="info" message="Du har redan spelat dagens utmaning. Vänligen kom tillbaka imorgon!" />
-            </div>
-        );
-    }
+            return <Leaderboard />;
+        }
+      })()}
+    </>
+  );
+  function AlreadyPlayedDialog() {
+    const dialogRef = useRef<HTMLDialogElement>(null);
 
-    if (dailyChallenge === null) {
-        return (
-            <div>Kunde inte ladda spelet. Vänligen prova igen senare</div>
-        )
-    }
+    useEffect(() => {
+      const dialog = dialogRef.current;
 
-    const showProgress = gameState.phase.type !== "notStarted";
+      dialog?.showModal();
+
+      return () => dialog?.close();
+    }, []);
 
     return (
-        <>
-            {showProgress && (
-                <ProgressStepper currentStep={getCurrentStep()} totalSteps={4} />
-            )}
+      <div className="question-page">
+        <p>Dagens destination är avklarad. Välkommen åter imorgon!</p>
 
-            {(() => {
-                switch (gameState.phase.type) {
-                    case "notStarted":
-                        return (
-                            <>
-                                <StartGameTest handleStart={handleStart}
-                                    isAuthenticated={isAuthenticated}
-                                    onAuthenticatedChange={setIsAuthenticated}
-                                    guestUserName={guestUserName}
-                                    setGuestUserName={setGuestUserName}
-                                    authenticatedUserName={fakeUser.userName}
-                                    dailyChallenge={dailyChallenge}
-                                />
+        <dialog
+          ref={dialogRef}
+          aria-labelledby="already-played-title"
+          aria-describedby="already-played-description"
+          className="
+                    m-auto w-[calc(100%-2rem)] max-w-md
+                    rounded-xl border border-[var(--border)]
+                    bg-[var(--background)] p-6
+                    text-[var(--foreground)] shadow-xl
+                    backdrop:bg-black/50
+                "
+        >
+          <h2 id="already-played-title" className="text-xl font-semibold">
+            Du har redan spelat idag
+          </h2>
 
+          <p id="already-played-description" className="mt-3">
+            Välkommen åter imorgon för en ny destination!
+          </p>
 
-                            </>
-                        )
-
-                    case "whereAreWe":
-                        return (
-                            <WhereAreWe
-                                onComplete={handleWhereAreWeComplete}
-                                clues={dailyChallenge.cityDetails.clues}
-                                correctCity={dailyChallenge.cityDetails.cityName}
-                                imageUrl={dailyChallenge.cityDetails.cityPicture}
-                            />
-                        )
-
-                    case "destinationQuestion":
-                        return (
-                            <QuestionDestination
-                                onComplete={handleQuestionDestinationComplete}
-                                dailyChallange={dailyChallenge}
-                                previousScore={currentScore}
-                                onStepChange={handleQuestionStepChange}
-                            />
-                        )
-
-                    case "leaderboard":
-                        if (isSavingResult) {
-                            return (
-                                <div className="question-page">
-                                    <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
-                                        <LoaderCircle className="w-8 h-8 animate-spin text-[var(--primary)]" />
-                                        <p className="text-sm font-medium text-[var(--muted-foreground)]">
-                                            {loadingMessage}
-                                        </p>
-                                    </div>
-                                </div>
-                            )
-                        }
-
-                        return (
-                            <Leaderboard />
-                        )
-                }
-            })()}
-        </>
-    )
+          <form method="dialog" className="mt-6">
+            <button
+              autoFocus
+              className="
+                            rounded-md bg-[var(--primary)]
+                            px-4 py-2 text-[var(--primary-foreground)]
+                        "
+            >
+              Stäng
+            </button>
+          </form>
+        </dialog>
+      </div>
+    );
+  }
 }

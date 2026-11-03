@@ -27,13 +27,6 @@
     min-width: 0;
 }
 
-.start-game-test__auth-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-}
-
 .start-game-test__instruction{
     display: flex;
     align-items: center;
