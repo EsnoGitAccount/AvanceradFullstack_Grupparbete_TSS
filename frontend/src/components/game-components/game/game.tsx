@@ -59,13 +59,13 @@ export default function Game() {
   const getCurrentStep = (): number => {
     switch (gameState.phase.type) {
       case "whereAreWe":
-        return 0;
+        return 1;
       case "destinationQuestion":
-        return 1 + gameState.phase.questionIndex;
+        return 2 + gameState.phase.questionIndex;
       case "leaderboard":
-        return 3;
+        return 4;
       default:
-        return 0;
+        return 1;
     }
   };
 
@@ -146,11 +146,11 @@ export default function Game() {
     }
 
     hasSubmittedResult.current = true;
- 
+
     async function saveResult() {
       // Save the result after the phase changes, rather than during render.
       const result: GameResult = {
-       
+
         UserName: isAuthenticated ? (user?.username ?? "") : guestUserName,
         FinalScore: gameState.score,
         IsGuest: !isAuthenticated,
@@ -189,12 +189,12 @@ export default function Game() {
   }
 
   if (hasPlayedToday) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
-            <StaticMessage type="info" message="Du har redan spelat dagens utmaning. Vänligen kom tillbaka imorgon!" />
-            </div>
-        );
-    }
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+        <StaticMessage type="info" message="Du har redan spelat dagens utmaning. Vänligen kom tillbaka imorgon!" />
+      </div>
+    );
+  }
 
   if (dailyChallenge === null) {
     return <div>Kunde inte ladda spelet. Vänligen prova igen senare</div>;
