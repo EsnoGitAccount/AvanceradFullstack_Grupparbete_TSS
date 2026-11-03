@@ -18,7 +18,7 @@ namespace Backend.Tests.Services
 		private readonly Mock<ICityRepository> _mockRepo;
 		private readonly Mock<IBlobStorageService> _mockBlobStorage;
 		private readonly Mock<ILogger<CityService>> _mockLogger;
-		
+
 		public CityServiceTests()
 		{
 			_mockRepo = new Mock<ICityRepository>();
@@ -26,7 +26,7 @@ namespace Backend.Tests.Services
 			_mockLogger = new Mock<ILogger<CityService>>();
 		}
 
-        [Fact]
+		[Fact]
 		public async Task GivenGetAllCities_ReturnsListOfCities()
 		{
 			// Arrange
@@ -78,7 +78,7 @@ namespace Backend.Tests.Services
 				CityPicture = file
 			};
 
-			_mockRepo.Setup(repo=>repo.GetCityByNameAsync(cityDto.Name)).ReturnsAsync(false);
+			_mockRepo.Setup(repo => repo.GetCityByNameAsync(cityDto.Name)).ReturnsAsync(false);
 			_mockBlobStorage.Setup(blob => blob.UploadFileAsync(It.IsAny<IFormFile>())).ReturnsAsync("blobName");
 			_mockRepo.Setup(repo => repo.CreateCityAsync(It.IsAny<City>())).Returns(Task.CompletedTask);
 			_mockRepo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
@@ -87,7 +87,7 @@ namespace Backend.Tests.Services
 
 			// Act
 			var result = await cityService.CreateCityAsync(cityDto);
-		
+
 			// Assert
 			Assert.NotNull(result);
 			Assert.Equal(cityDto.Name, result.Name);
@@ -130,7 +130,7 @@ namespace Backend.Tests.Services
 			};
 
 			_mockRepo.Setup(repo => repo.GetCityByIdAsync(cityId)).ReturnsAsync(expectedCity);
-			_mockRepo.Setup(repo=>repo.GetCityByNameAsync(cityUpdateDto.Name)).ReturnsAsync(false);
+			_mockRepo.Setup(repo => repo.GetCityByNameAsync(cityUpdateDto.Name)).ReturnsAsync(false);
 			_mockRepo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
 			var cityService = new CityService(_mockRepo.Object, _mockBlobStorage.Object, _mockLogger.Object);
 
@@ -147,5 +147,73 @@ namespace Backend.Tests.Services
 			_mockRepo.Verify(repo => repo.GetCityByNameAsync(cityUpdateDto.Name), Times.Once);
 			_mockRepo.Verify(repo => repo.SaveChangesAsync(), Times.Once);
 		}
-	}	
+
+		[Fact]
+		public async Task GivenArchiveCity_WhenCityExists_ArchivesCity()
+		{
+			// Arrange
+			var cityId = 1;
+
+			var city = new City
+			{
+				CityId = cityId,
+				Name = "City1",
+				CityPicture = "blob1",
+				IsArchived = false
+			};
+
+			_mockRepo.Setup(repo => repo.GetCityByIdAsync(cityId)).ReturnsAsync(city);
+
+			_mockRepo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
+
+			var cityService = new CityService(
+				_mockRepo.Object,
+				_mockBlobStorage.Object,
+				_mockLogger.Object);
+
+			// Act
+			await cityService.ArchiveCityAsync(cityId);
+
+			// Assert
+			Assert.True(city.IsArchived);
+
+			_mockRepo.Verify(repo => repo.GetCityByIdAsync(cityId), Times.Once);
+
+			_mockRepo.Verify(repo => repo.SaveChangesAsync(), Times.Once);
+		}
+
+		[Fact]
+		public async Task GivenRestoreCity_WhenCityIsArchived_RestoresCity()
+		{
+			// Arrange
+			var cityId = 1;
+
+			var city = new City
+			{
+				CityId = cityId,
+				Name = "City1",
+				CityPicture = "blob1",
+				IsArchived = true
+			};
+
+			_mockRepo.Setup(repo => repo.GetCityByIdAsync(cityId)).ReturnsAsync(city);
+
+			_mockRepo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
+
+			var cityService = new CityService(
+				_mockRepo.Object,
+				_mockBlobStorage.Object,
+				_mockLogger.Object);
+
+			// Act
+			await cityService.RestoreCityAsync(cityId);
+
+			// Assert
+			Assert.False(city.IsArchived);
+
+			_mockRepo.Verify(repo => repo.GetCityByIdAsync(cityId), Times.Once);
+
+			_mockRepo.Verify(repo => repo.SaveChangesAsync(), Times.Once);
+		}
+	}
 }
