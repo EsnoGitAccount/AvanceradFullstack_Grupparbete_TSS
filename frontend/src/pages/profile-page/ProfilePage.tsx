@@ -5,6 +5,7 @@ import { type UserProfileDto, getProfile } from '@/services/ProfileService'
 import { ProfileSidebar } from '@/components/profile/ProfileSidebar';
 import { AchievementsSection } from '@/components/profile/AchievementsSection';
 import { ProfileOverview } from '@/components/profile/ProfileOverview';
+import SiteFooter from '@/components/site-footer/SiteFooter';
 
 import "./ProfilePage.css"
 
@@ -70,8 +71,13 @@ function ProfilePage() {
                     <ProfileOverview profile={profile} />
                 </div>
 
-                <AchievementsSection achievements={profile.achievements} />
-            </div>
+                    <AchievementsSection
+                        achievements={profile.achievements}
+                        unachievedAchievements={profile.unachievedAchievements}
+                    />
+                </div>
+
+            <SiteFooter />
         </div>
     );
 }

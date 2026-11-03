@@ -49,6 +49,10 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -62,102 +66,119 @@ namespace Backend.Migrations
                         {
                             AchievementId = 1,
                             Description = "Uppnå en streak av minst 3 dagar.",
+                            ImageKey = "3Day",
                             Name = "Nyfiken resenär"
                         },
                         new
                         {
                             AchievementId = 2,
                             Description = "Uppnå en streak av minst 7 dagar.",
+                            ImageKey = "7Day",
                             Name = "Veckopendlare"
                         },
                         new
                         {
                             AchievementId = 3,
                             Description = "Uppnå en streak av minst 14 dagar.",
+                            ImageKey = "14Day",
                             Name = "Stadsälskare"
                         },
                         new
                         {
                             AchievementId = 4,
-                            Description = "uppnå en streak av minst 31 dagar.",
+                            Description = "Uppnå en streak av minst 31 dagar.",
+                            ImageKey = "31Day",
                             Name = "Månadskort"
                         },
                         new
                         {
                             AchievementId = 5,
                             Description = "Uppnå en streak av minst 50 dagar.",
+                            ImageKey = "50Day",
                             Name = "Rutinerad resenär"
                         },
                         new
                         {
                             AchievementId = 6,
                             Description = "Uppnå en streak av minst 80 dagar.",
+                            ImageKey = "80Day",
                             Name = "Sverige runt på 80 dagar"
                         },
                         new
                         {
                             AchievementId = 7,
                             Description = "Uppnå en streak av minst 100 dagar.",
+                            ImageKey = "100Day",
                             Name = "100% resglädje"
                         },
                         new
                         {
                             AchievementId = 8,
                             Description = "Uppnå en streak av minst 140 dagar.",
+                            ImageKey = "140Day",
                             Name = "Lokföraraspirant"
                         },
                         new
                         {
                             AchievementId = 9,
                             Description = "Uppnå en streak av minst 180 dagar.",
+                            ImageKey = "180Day",
                             Name = "Halvårskort"
                         },
                         new
                         {
                             AchievementId = 10,
                             Description = "Uppnå en streak av minst 250 dagar.",
+                            ImageKey = "250Day",
                             Name = "Går som tåget"
                         },
                         new
                         {
                             AchievementId = 11,
                             Description = "Uppnå en streak av minst 307 dagar.",
+                            ImageKey = "307Day",
                             Name = "Permanent Spårändrat"
                         },
                         new
                         {
                             AchievementId = 12,
                             Description = "Uppnå en streak av minst 365 dagar.",
+                            ImageKey = "365Day",
                             Name = "Årskort"
                         },
                         new
                         {
                             AchievementId = 13,
                             Description = "Registrera ett konto.",
+                            ImageKey = "Register",
                             Name = "Biljettkontroll"
                         },
                         new
                         {
                             AchievementId = 14,
                             Description = "Tjäna minst 100 poäng totalt.",
+                            ImageKey = "100Points",
                             Name = "Resvana 1"
                         },
                         new
                         {
                             AchievementId = 15,
                             Description = "Tjäna minst 500 poäng totalt.",
+                            ImageKey = "500Points",
                             Name = "Resvana 2"
                         },
                         new
                         {
                             AchievementId = 16,
                             Description = "Tjäna minst 1000 poäng totalt.",
+                            ImageKey = "1000Points",
                             Name = "ResVasa 3"
                         },
                         new
                         {
                             AchievementId = 17,
                             Description = "Besök Mora",
+                            ImageKey = "Vasa",
                             Name = "Mora Träsk och Vasaloppet"
                         });
                 });
