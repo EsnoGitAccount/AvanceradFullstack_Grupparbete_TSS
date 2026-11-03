@@ -1,0 +1,36 @@
+.error-message.error {
+    background-color: var(--color-error-bg, #fee2e2);
+    color: var(--color-error, #b91c1c);
+    border: var(--border-width-thin, 3px) solid var(--color-error, #b91c1c);
+    border-radius: var(--radius-small, 0.5rem);
+    padding: var(--spacing-12, 0.75rem);
+}           
+
+.error-message.success {
+    background-color: var(--color-success-bg, #dcfce7);
+    color: #038f36;
+    border: var(--border-width-thin, 3px) solid var(--color-success, #15803d);
+    border-radius: var(--radius-small, 0.5rem);
+    padding: var(--spacing-12, 0.75rem);
+}
+
+.error-message.info {
+    background-color: var(--color-info-bg, #dbeafe);
+    color: var(--color-info, #1d4ed8);
+    border: var(--border-width-thin, 3px) solid var(--color-info, #1d4ed8);
+    border-radius: var(--radius-small, 0.5rem);
+    padding: var(--spacing-12, 0.75rem);
+}
+
+.error-message.warning {
+    background-color: var(--color-warning-bg, #fef3c7);
+    color: var(--color-warning, #92400e);
+    border: var(--border-width-thin, 3px) solid var(--color-warning, #92400e);
+    border-radius: var(--radius-small, 0.5rem);
+    padding: var(--spacing-12, 0.75rem);
+}
+
+.error-message p {
+    white-space: pre-line;
+    text-align: left;
+}
