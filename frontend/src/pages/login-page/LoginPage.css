@@ -1,8 +1,5 @@
 /* LoginPage Layout & Main Structure */
 .login-page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
     color: var(--foreground);
 }
 

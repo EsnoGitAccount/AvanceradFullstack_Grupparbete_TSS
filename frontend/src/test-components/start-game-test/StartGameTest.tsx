@@ -16,16 +16,14 @@ const gameInstructions = [
   { id: 1, text: "Försök hitta dagens stad. Du har 5 försök." },
   { id: 2, text: "Varje felaktig gissning visar en ny ledtråd." },
   { id: 3, text: "Du får poäng baserat på hur tidigt du hittar rätt stad." },
-  {
-    id: 4,
-    text: "Efter du har hittad staden får du svara på ett antal frågor om staden.",
-  },
+  { id: 4, text: "Efter du har hittad staden får du svara på ett antal frågor om staden.",},
   { id: 5, text: "När du spelat klart får du ett resultat och hur du rankade mot andra spelare." },
 ];
 
 type StartGameProps = {
   handleStart: (userName: string) => void;
   isAuthenticated: boolean;
+  onAuthenticatedChange: (authenticated: boolean) => void;
   guestUserName: string;
   setGuestUserName: (name: string) => void;
   authenticatedUserName: string;
@@ -34,6 +32,7 @@ type StartGameProps = {
 function StartGameTest({
   handleStart,
   isAuthenticated,
+  onAuthenticatedChange,
   guestUserName,
   setGuestUserName,
   authenticatedUserName,
@@ -60,6 +59,7 @@ function StartGameTest({
         </header>
 
         <div className="start-game-test__layout">
+          <div className="start-game-test__left-column">
           <Card className="start-game-test__card">
             <CardHeader>
               <div className="start-game-test__ticket">
@@ -121,6 +121,15 @@ function StartGameTest({
               </form>
             </CardFooter>
           </Card>
+          <label className="start-game-test__auth-toggle">
+            <input
+              type="checkbox"
+              checked={isAuthenticated}
+              onChange={(event) => onAuthenticatedChange(event.target.checked)}
+            />
+            Authenticated
+          </label>
+          </div>
 
           <div className="start-game-test__sidebar">
             <div className="w-full aspect-video overflow-hidden rounded-3xl">

@@ -222,16 +222,13 @@ export default function Game() {
                             <>
                                 <StartGameTest handleStart={handleStart}
                                     isAuthenticated={isAuthenticated}
+                                    onAuthenticatedChange={setIsAuthenticated}
                                     guestUserName={guestUserName}
                                     setGuestUserName={setGuestUserName}
                                     authenticatedUserName={fakeUser.userName}
                                     dailyChallenge={dailyChallenge}
                                 />
 
-                                <label>
-                                    <input type="checkbox" checked={isAuthenticated} onChange={(e) => setIsAuthenticated(e.target.checked)} />
-                                    Authenticated
-                                </label>
 
                             </>
                         )

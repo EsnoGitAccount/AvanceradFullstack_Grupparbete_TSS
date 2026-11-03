@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import SiteHeader from '@/components/site-header/SiteHeader'
-import SiteFooter from '@/components/site-footer/SiteFooter'
 import { useNavigate } from 'react-router'
 import { useAuth } from "../../context/auth/UseAuth"
 import { type UserProfileDto, getProfile } from '@/services/ProfileService'
@@ -49,37 +47,31 @@ function ProfilePage() {
     }
 
     return (
-        <div className='profile-page'>
-            <SiteHeader />
+        <div className='profile-page profile-main'>
+            <div className='profile-container'>
+                <header className='mb-10'>
+                    <span className='text-[0.75rem] font-bold tracking-widest text-[var(--primary)] uppercase'>
+                        DINA UPPGIFTER
+                    </span>
+                    <h1 className='text-4xl font-extrabold text-[var(--foreground)] mt-1 mb-2'>
+                        Din plats på resan.
+                    </h1>
+                    <p className='text-base text-[var(--muted-foreground)]'>
+                        Håll din reseprofil uppdaterad. Dina poäng och din svit följer med.
+                    </p>
+                </header>
 
-            <main className='profile-main'>
-                <div className='profile-container'>
-                    <header className='mb-10'>
-                        <span className='text-[0.75rem] font-bold tracking-widest text-[var(--primary)] uppercase'>
-                            DINA UPPGIFTER
-                        </span>
-                        <h1 className='text-4xl font-extrabold text-[var(--foreground)] mt-1 mb-2'>
-                            Din plats på resan.
-                        </h1>
-                        <p className='text-base text-[var(--muted-foreground)]'>
-                            Håll din reseprofil uppdaterad. Dina poäng och din svit följer med.
-                        </p>
-                    </header>
-
-                    <div className='profile-grid'>
-                        <ProfileSidebar
-                            profile={profile}
-                            onLogout={handleLogout}
-                            onOpenEditModal={() => console.log("Öppna redigera-popup")}
-                        />
-                        <ProfileOverview profile={profile} />
-                    </div>
-
-                    <AchievementsSection achievements={profile.achievements} />
+                <div className='profile-grid'>
+                    <ProfileSidebar
+                        profile={profile}
+                        onLogout={handleLogout}
+                        onOpenEditModal={() => console.log("Öppna redigera-popup")}
+                    />
+                    <ProfileOverview profile={profile} />
                 </div>
-            </main>
 
-            <SiteFooter />
+                <AchievementsSection achievements={profile.achievements} />
+            </div>
         </div>
     );
 }

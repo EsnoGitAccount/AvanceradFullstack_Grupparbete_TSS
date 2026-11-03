@@ -1,0 +1,12 @@
+.site-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.site-page__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}

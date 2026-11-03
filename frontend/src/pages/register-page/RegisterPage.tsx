@@ -14,8 +14,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import type { RegisterDto } from "@/models/RegisterDto";
 import { useAuth } from "@/context/auth/UseAuth";
-import SiteHeader from "@/components/site-header/SiteHeader";
-import SiteFooter from "@/components/site-footer/SiteFooter";
 import TrainIllustration from "@/assets/illustrations/trainillustration";
 import { getTimeOfDay } from "@/models/TimeOfDay";
 import "./RegisterPage.css";
@@ -166,150 +164,146 @@ function RegisterPage() {
   };
 
   return (
-    <div className="register-page">
-      <SiteHeader />
-      <main className="register-page__main">
-        <section className="register-page__hero">
-          <div className="register-page__grid">
-            {/*Left*/}
-            <div className="register-page__left-column">
-              <span className="register-page__eyebrow">
-                ETT SPEL FÖR HELA SVERIGE
-              </span>
-              <h1 className="register-page__title">
-               Ska vi upptäcka Sverige?
-              </h1>
-              <p className="register-page__subtitle">
-                Spara dina poäng, håll koll på din nivå och hitta din plats på
-                topplistan.
-              </p>
-              <div
-                className={`register-page__illustration train-illustration--${time}`}
-              >
-                <TrainIllustration />
-              </div>
-
-              <div className="register-page__badge">
-                Quiza. Upptäck. Ta dig vidare
-              </div>
+    <div className="register-page register-page__main">
+      <section className="register-page__hero">
+        <div className="register-page__grid">
+          {/*Left*/}
+          <div className="register-page__left-column">
+            <span className="register-page__eyebrow">
+              ETT SPEL FÖR HELA SVERIGE
+            </span>
+            <h1 className="register-page__title">
+             Ska vi upptäcka Sverige?
+            </h1>
+            <p className="register-page__subtitle">
+              Spara dina poäng, håll koll på din nivå och hitta din plats på
+              topplistan.
+            </p>
+            <div
+              className={`register-page__illustration train-illustration--${time}`}
+            >
+              <TrainIllustration />
             </div>
-            {/*Right*/}
-            <div className="register-page__right-column">
-              <Card className="w-full max-w-[26rem] rounded-3xl">
-                <CardHeader>
-                  <CardTitle>Skapa ditt konto</CardTitle>
-                </CardHeader>
 
-                <form
-                  onSubmit={handleSubmit}
-                  noValidate
-                  className="grid gap-6 pt-2"
-                >
-                  <CardContent className="grid gap-4">
-                    <div className="grid gap-2">
-                      {/* Username */}
-                      <Label htmlFor="userName">Användarnamn</Label>
-                      <Input
-                        id="userName"
-                        name="userName"
-                        type="text"
-                        placeholder="Ange ditt användarnamn"
-                        value={user.userName}
-                        onChange={handleInput}
-                        aria-invalid={!!errors.userName}
-                        required
-                      />
-                      {errors.userName && (
-                        <p className="text-sm text-destructive">
-                          {" "}
-                          {errors.userName}
-                        </p>
-                      )}
-                    </div>
-                    {/* Email */}
-                    <div className="grid gap-2">
-                      <Label htmlFor="userEmail">E-post</Label>
-                      <Input
-                        id="userEmail"
-                        name="userEmail"
-                        type="email"
-                        placeholder="Ange din e-post"
-                        value={user.userEmail}
-                        onChange={handleInput}
-                        aria-invalid={!!errors.userEmail}
-                        required
-                      />
-                      {errors.userEmail && (
-                        <p className="text-sm text-destructive">
-                          {" "}
-                          {errors.userEmail}
-                        </p>
-                      )}
-                    </div>
-                    {/* Password */}
-                    <div className="grid gap-2">
-                      <Label htmlFor="password">Lösenord</Label>
-                      <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="Lösenord"
-                        value={user.password}
-                        onChange={handleInput}
-                        aria-invalid={!!errors.password}
-                        required
-                      />
-                      {errors.password && (
-                        <p className="text-sm text-destructive">
-                          {errors.password}
-                        </p>
-                      )}
-                    </div>
-                    {/*Confirm password*/}
-
-                    <div className="grid gap-2">
-                      <Label htmlFor="confirmPassword">Bekräfta lösenord</Label>
-                      <Input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type="password"
-                        placeholder="Ange lösenordet igen"
-                        value={user.confirmPassword}
-                        onChange={handleInput}
-                        aria-invalid={!!errors.confirmPassword}
-                        required
-                      />
-                      {errors.confirmPassword && (
-                        <p className="text-sm text-destructive">
-                          {errors.confirmPassword}
-                        </p>
-                      )}
-                    </div>
-                  </CardContent>
-
-                  <CardFooter className="flex flex-col gap-4">
-                    {/* Skapa konto button */}
-                    <Button
-                      type="submit"
-                      className="w-full h-[2.625rem] text-base"
-                    >
-                      Skapa konto
-                    </Button>
-                    {/* Logga in link */}
-                    <p className="text-sm text-muted-foreground">
-                      Har du redan ett konto?{" "}
-                      <Link to="/login" className="text-primary">
-                        Logga in
-                      </Link>
-                    </p>
-                  </CardFooter>
-                </form>
-              </Card>
+            <div className="register-page__badge">
+              Quiza. Upptäck. Ta dig vidare
             </div>
           </div>
-        </section>
-      </main>
-      <SiteFooter />
+          {/*Right*/}
+          <div className="register-page__right-column">
+            <Card className="w-full max-w-[26rem] rounded-3xl">
+              <CardHeader>
+                <CardTitle>Skapa ditt konto</CardTitle>
+              </CardHeader>
+
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                className="grid gap-6 pt-2"
+              >
+                <CardContent className="grid gap-4">
+                  <div className="grid gap-2">
+                    {/* Username */}
+                    <Label htmlFor="userName">Användarnamn</Label>
+                    <Input
+                      id="userName"
+                      name="userName"
+                      type="text"
+                      placeholder="Ange ditt användarnamn"
+                      value={user.userName}
+                      onChange={handleInput}
+                      aria-invalid={!!errors.userName}
+                      required
+                    />
+                    {errors.userName && (
+                      <p className="text-sm text-destructive">
+                        {" "}
+                        {errors.userName}
+                      </p>
+                    )}
+                  </div>
+                  {/* Email */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="userEmail">E-post</Label>
+                    <Input
+                      id="userEmail"
+                      name="userEmail"
+                      type="email"
+                      placeholder="Ange din e-post"
+                      value={user.userEmail}
+                      onChange={handleInput}
+                      aria-invalid={!!errors.userEmail}
+                      required
+                    />
+                    {errors.userEmail && (
+                      <p className="text-sm text-destructive">
+                        {" "}
+                        {errors.userEmail}
+                      </p>
+                    )}
+                  </div>
+                  {/* Password */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="password">Lösenord</Label>
+                    <Input
+                      id="password"
+                      name="password"
+                      type="password"
+                      placeholder="Lösenord"
+                      value={user.password}
+                      onChange={handleInput}
+                      aria-invalid={!!errors.password}
+                      required
+                    />
+                    {errors.password && (
+                      <p className="text-sm text-destructive">
+                        {errors.password}
+                      </p>
+                    )}
+                  </div>
+                  {/*Confirm password*/}
+
+                  <div className="grid gap-2">
+                    <Label htmlFor="confirmPassword">Bekräfta lösenord</Label>
+                    <Input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type="password"
+                      placeholder="Ange lösenordet igen"
+                      value={user.confirmPassword}
+                      onChange={handleInput}
+                      aria-invalid={!!errors.confirmPassword}
+                      required
+                    />
+                    {errors.confirmPassword && (
+                      <p className="text-sm text-destructive">
+                        {errors.confirmPassword}
+                      </p>
+                    )}
+                  </div>
+                </CardContent>
+
+                <CardFooter className="flex flex-col gap-4">
+                  {/* Skapa konto button */}
+                  <Button
+                    type="submit"
+                    className="w-full h-[2.625rem] text-base"
+                  >
+                    Skapa konto
+                  </Button>
+                  {/* Logga in link */}
+                  <p className="text-sm text-muted-foreground">
+                    Har du redan ett konto?{" "}
+                    <Link to="/login" className="text-primary">
+                      Logga in
+                    </Link>
+                  </p>
+                </CardFooter>
+              </form>
+            </Card>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
