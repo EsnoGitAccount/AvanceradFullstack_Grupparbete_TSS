@@ -35,7 +35,17 @@ namespace Backend.Services
                 throw new ConflictException("This challenge is currently unavailable.");
             }
 
-            var game = MapDtoToGame(gameDto, todaysChallenge.DailyChallangeId);
+			if (gameDto.UserId.HasValue)
+			{
+				var hasPlayed = await _gameRepository.HasUserPlayedDailyChallengeAsync(gameDto.UserId.Value, todaysChallenge.DailyChallangeId);
+				if (hasPlayed)
+				{
+					throw new ConflictException("User has already played today's challenge.");
+				}
+			}
+
+
+			var game = MapDtoToGame(gameDto, todaysChallenge.DailyChallangeId);
 
             var createdGame = await _gameRepository.CreateGameAsync(game);
             if (!await _gameRepository.SaveChangesAsync())
