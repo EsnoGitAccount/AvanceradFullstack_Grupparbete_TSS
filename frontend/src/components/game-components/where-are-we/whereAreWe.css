@@ -1,6 +1,5 @@
 .where-are-we__page {
     box-sizing: border-box;
-    min-height: calc(100dvh - 4.5rem);
     padding-top: 2rem;
     padding-bottom: 2rem;
 }

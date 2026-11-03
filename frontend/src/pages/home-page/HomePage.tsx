@@ -1,6 +1,4 @@
 import { ArrowRightIcon } from '@/assets/icons/Icons'
-import SiteFooter from '@/components/site-footer/SiteFooter'
-import SiteHeader from '@/components/site-header/SiteHeader'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { SwedenMap } from "@/assets/illustrations/SwedenMap"
@@ -12,9 +10,7 @@ function HomePage() {
   const navigate = useNavigate()
 
   return (
-    <div className="home-page">
-      <SiteHeader />
-      <main className="home-page__main">
+    <div className="home-page home-page__main">
         <section className="home-page__hero">
           <div className="home-page__hero-layout">
             <div className="home-page__hero-copy">
@@ -52,8 +48,6 @@ function HomePage() {
             </Card>
           </div>
         </section>
-      </main>
-      <SiteFooter />
     </div>
   )
 }
