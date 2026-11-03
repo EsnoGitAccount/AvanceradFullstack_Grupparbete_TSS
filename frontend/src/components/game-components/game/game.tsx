@@ -10,6 +10,7 @@ import WhereAreWe from "../where-are-we/whereAreWe";
 import StartGameTest from "@/test-components/start-game-test/StartGameTest";
 import Leaderboard from "../leaderboard/Leaderboard";
 import { ProgressStepper } from "@/components/ui/Progressbar";
+import StaticMessage from "../message/StaticMessage";
 
 // Constants
 import { GAME_RULES } from "@/constants/gameConstants";
@@ -87,23 +88,6 @@ export default function Game() {
 
     loadChallenge();
   }, []);
-
-  useEffect(() => {
-    if (loading || !user) {
-      return;
-    }
-
-    setGameState((prevState) => {
-        if(prevState.phase.type !== "notStarted") {
-            return prevState;
-        }
-
-        return {
-            ...prevState,
-            playerName: user.username ?? "",
-        };
-    });
-  }, [loading, user]);
 
   function handleStart(userName: string) {
     setGameState((previousGameState) => ({
@@ -205,8 +189,12 @@ export default function Game() {
   }
 
   if (hasPlayedToday) {
-    return <AlreadyPlayedDialog />;
-  }
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+            <StaticMessage type="info" message="Du har redan spelat dagens utmaning. Vänligen kom tillbaka imorgon!" />
+            </div>
+        );
+    }
 
   if (dailyChallenge === null) {
     return <div>Kunde inte ladda spelet. Vänligen prova igen senare</div>;
@@ -275,54 +263,4 @@ export default function Game() {
       })()}
     </>
   );
-  function AlreadyPlayedDialog() {
-    const dialogRef = useRef<HTMLDialogElement>(null);
-
-    useEffect(() => {
-      const dialog = dialogRef.current;
-
-      dialog?.showModal();
-
-      return () => dialog?.close();
-    }, []);
-
-    return (
-      <div className="question-page">
-        <p>Dagens destination är avklarad. Välkommen åter imorgon!</p>
-
-        <dialog
-          ref={dialogRef}
-          aria-labelledby="already-played-title"
-          aria-describedby="already-played-description"
-          className="
-                    m-auto w-[calc(100%-2rem)] max-w-md
-                    rounded-xl border border-[var(--border)]
-                    bg-[var(--background)] p-6
-                    text-[var(--foreground)] shadow-xl
-                    backdrop:bg-black/50
-                "
-        >
-          <h2 id="already-played-title" className="text-xl font-semibold">
-            Du har redan spelat idag
-          </h2>
-
-          <p id="already-played-description" className="mt-3">
-            Välkommen åter imorgon för en ny destination!
-          </p>
-
-          <form method="dialog" className="mt-6">
-            <button
-              autoFocus
-              className="
-                            rounded-md bg-[var(--primary)]
-                            px-4 py-2 text-[var(--primary-foreground)]
-                        "
-            >
-              Stäng
-            </button>
-          </form>
-        </dialog>
-      </div>
-    );
-  }
 }
