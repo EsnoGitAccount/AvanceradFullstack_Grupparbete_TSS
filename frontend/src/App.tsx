@@ -10,6 +10,7 @@ import ProtectedRoute from './protected-route/ProtectedRoute';
 import RegisterPage from './pages/register-page/RegisterPage';
 import SiteHeader from './components/site-header/SiteHeader'
 import SiteFooter from './components/site-footer/SiteFooter'
+import TestTrainLoading from './pages/test-train-loading/TestTrainLoading'
 import './App.css'
 
 function SiteLayout() {
@@ -39,6 +40,7 @@ function App() {
       </Route>
 
       {/* Without header/footer */}
+      <Route path="/test-train-loading" element={<TestTrainLoading />} />
       <Route path="/errortesting" element={<ErrorTestPage />} />
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>

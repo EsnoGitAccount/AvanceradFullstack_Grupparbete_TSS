@@ -5,6 +5,7 @@ import { SWEDISH_CITIES } from '../../../constants/swedishCities'
 
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
+import GameImage from '@/components/game-image/GameImage'
 
 import './whereAreWe.css'
 
@@ -19,8 +20,8 @@ export default function WhereAreWe({
   onComplete,
   clues,
   correctCity,
-  imageUrl = placeholderImg,
-}: WhereAreWeProps) {
+  imageUrl,
+}: WhereAreWeProps){
 
   const [currentScore, setCurrentScore] = useState(10)
   const [cityGuess, setCityGuess] = useState("");
@@ -76,11 +77,11 @@ export default function WhereAreWe({
       <section className="where-are-we__main">
         <div className="where-are-we__left-side">
           <h1 className="where-are-we__title">Vart är vi?</h1>
-          <img className="where-are-we__image" src={
-            imageUrl
-              ? `/api/Image/${imageUrl}`
-              : placeholderImg
-          } alt="Bild från destinationen" />
+          <GameImage className="where-are-we__image" src={
+                  imageUrl
+                    ? `/api/Image/${imageUrl}`
+                    : placeholderImg
+                } alt="Bild från destinationen" />
         </div>
         <div className="where-are-we__right-side">
 
