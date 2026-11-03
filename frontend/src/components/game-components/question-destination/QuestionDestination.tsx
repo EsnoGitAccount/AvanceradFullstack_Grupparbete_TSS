@@ -27,28 +27,56 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
     const currentQuestion = challengeQuestions[currentQuestionIndex]
 
     const handleSelectOption = (optionText: string, isCorrect: boolean) => {
-        setSelectedOption(optionText)
+    if (selectedOption !== null) return;
 
-        // Calculate new score based on whether the selected option is correct
-        const newScore = isCorrect ? score + GAME_RULES.destinationQuestionScore : score
-        if (isCorrect) {
-            setScore(newScore)
+    setSelectedOption(optionText);
+
+    const newScore = isCorrect
+        ? score + GAME_RULES.destinationQuestionScore
+        : score;
+
+    setScore(newScore);
+
+    setTimeout(() => {
+        if (currentQuestionIndex < challengeQuestions.length - 1) {
+            const nextIndex = currentQuestionIndex + 1;
+
+            setCurrentQuestionIndex(nextIndex);
+            setSelectedOption(null);
+            onStepChange?.(nextIndex);
+        } else {
+            onComplete(newScore);
         }
+    }, 3000);
+};
 
-        setTimeout(() => {
-            if (currentQuestionIndex < challengeQuestions.length - 1) {
-                const nextIndex = currentQuestionIndex + 1
-                setCurrentQuestionIndex(nextIndex)
-                setSelectedOption(null)
+    {
+        currentQuestion.options.map((option, index) => {
+            const hasAnswered = selectedOption !== null
+            const isSelected = selectedOption === option.optionText
 
-                if (onStepChange) {
-                    onStepChange(nextIndex)
-                }
-            } else {
-                console.log("Alla frågor besvarade! Slutgiltig poäng:", newScore)
-                onComplete(newScore);
-            }
-        }, 400)
+            const feedbackClass = hasAnswered
+                ? option.isCorrect
+                    ? 'correct'
+                    : isSelected
+                        ? 'incorrect'
+                        : ''
+                : ''
+
+            return (
+                <Button
+                    key={index}
+                    variant="outline"
+                    className={`question-card__option-button ${feedbackClass}`}
+                    onClick={() => handleSelectOption(option.optionText, option.isCorrect)}
+                    disabled={selectedOption !== null}
+                >
+                    {option.optionText}
+                    {hasAnswered && option.isCorrect && "✔️"}
+                    {hasAnswered && isSelected && !option.isCorrect && "❌"}
+                </Button>
+            )
+        })
     }
 
     return (
@@ -73,17 +101,34 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
 
                                 <CardContent>
                                     <div className="question-card__options-grid">
-                                        {currentQuestion.options.map((option, index) => (
-                                            <Button
-                                                key={index}
-                                                variant={selectedOption === option.optionText ? "default" : "outline"}
-                                                className="question-card__option-button"
-                                                onClick={() => handleSelectOption(option.optionText, option.isCorrect)}
-                                                disabled={selectedOption !== null}
-                                            >
-                                                {option.optionText}
-                                            </Button>
-                                        ))}
+                                        {currentQuestion.options.map((option, index) => {
+                                            const hasAnswered = selectedOption !== null;
+                                            const isSelected = selectedOption === option.optionText;
+
+                                            let answerClass = "";
+
+                                            if (hasAnswered) {
+                                                if (option.isCorrect) {
+                                                    answerClass = "answer-correct";
+                                                } else if (isSelected) {
+                                                    answerClass = "answer-wrong";
+                                                }
+                                            }
+
+                                            return (
+                                                <Button
+                                                    key={index}
+                                                    variant="outline"
+                                                    className={`question-card__option-button ${answerClass}`}
+                                                    onClick={() =>
+                                                        handleSelectOption(option.optionText, option.isCorrect)
+                                                    }
+                                                    disabled={hasAnswered}
+                                                >
+                                                    {option.optionText}
+                                                </Button>
+                                            );
+                                        })}
                                     </div>
                                 </CardContent>
                             </Card>
