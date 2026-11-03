@@ -7,5 +7,7 @@
         public decimal? DailyScore { get; set; }
         public decimal AllTimeScore { get; set; }
         public List<AchievementDto> Achievements { get; set; } = [];
+
+        public List<AchievementDto> UnachievedAchievements { get; set; } = [];
     }
 }
