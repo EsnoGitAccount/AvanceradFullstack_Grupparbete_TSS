@@ -56,6 +56,13 @@ namespace Backend.Data
                 .WithMany()
                 .HasForeignKey(g => g.UserId);
 
+			// Configure the unique constraint for the combination of UserId and DailyChallangeId
+			modelBuilder.Entity<Game>()
+                .HasIndex(g => new {g.UserId, g.DailyChallangeId})
+                .IsUnique()
+                .HasFilter("[UserId] IS NOT NULL AND [DailyChallangeId] IS NOT NULL");
+
+
             modelBuilder.Entity<Game>()
                 .HasOne(g => g.DailyChallange)
                 .WithMany()

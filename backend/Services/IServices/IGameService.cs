@@ -10,6 +10,7 @@ namespace Backend.Services.IServices
         Task<int> GetStreakForUserAsync(int userId);
         Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date, int? currentUserId);
         bool GuestUserHasPlayedToday(string? cookie);
-        string CreatedGuestPlayedCookie();
+		Task<bool> HasUserPlayedDailyChallengeAsync(int userId, DateOnly date);
+		string CreatedGuestPlayedCookie();
     }
 }
