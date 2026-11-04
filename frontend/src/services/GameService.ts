@@ -4,7 +4,7 @@ import type { DailyChallenge } from '@/models/DailyChallenge'
 
 type SavedGame = {
     gameId: number;
-    isGuest: boolean;
+    isGuest: boolean;   
 }
 
 export const submitGameResult  = async (playerResult: GameResult): Promise<SavedGame> => {

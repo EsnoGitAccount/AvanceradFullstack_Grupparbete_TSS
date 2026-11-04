@@ -1966,7 +1966,9 @@ namespace Backend.Migrations
 
                     b.HasIndex("DailyChallangeId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "DailyChallangeId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL AND [DailyChallangeId] IS NOT NULL");
 
                     b.ToTable("Games");
                 });

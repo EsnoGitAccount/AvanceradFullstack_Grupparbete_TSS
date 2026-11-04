@@ -12,5 +12,6 @@ namespace Backend.Repositories.IRepositories
         Task<IEnumerable<Game>> GetGamesForDateAsync(DateOnly date);
         Task<IEnumerable<Game>> GetGamesForUserAsync(int userId);
         Task<bool> GetUserPlayedYesterdayAsync(int userId);
+        Task<bool> HasUserPlayedDailyChallengeAsync(int userId,int dailyChallengeId);
     }
 }

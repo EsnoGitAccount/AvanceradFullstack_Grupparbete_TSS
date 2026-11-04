@@ -35,10 +35,24 @@ namespace Backend.Services
                 throw new ConflictException("This challenge is currently unavailable.");
             }
 
-            var game = MapDtoToGame(gameDto, todaysChallenge.DailyChallangeId);
+			if (gameDto.UserId.HasValue)
+			{
+				var hasPlayed = await _gameRepository.HasUserPlayedDailyChallengeAsync(gameDto.UserId.Value, todaysChallenge.DailyChallangeId);
+				
+                if (hasPlayed)
+				{
+					throw new ConflictException("User has already played today's challenge.");
+				}
+			}
+
+
+			var game = MapDtoToGame(gameDto, todaysChallenge.DailyChallangeId);
 
             var createdGame = await _gameRepository.CreateGameAsync(game);
-            if (!await _gameRepository.SaveChangesAsync())
+			// TODO: Handle DbUpdateException when the unique index
+			// IX_Games_UserId_DailyChallangeId is violated by concurrent requests.
+			// Return HTTP 409 Conflict instead of 500 Internal Server Error.
+			if (!await _gameRepository.SaveChangesAsync())
             {
                 throw new InvalidOperationException("Failed to create game.");
             }
@@ -270,6 +284,19 @@ namespace Backend.Services
                 CompletedAt = game.CompletedAt
             };
         }
+		public async Task<bool> HasUserPlayedDailyChallengeAsync(int userId, DateOnly date)
+		{
+			var dailyChallenge = await _dailyChallengeRepository.GetChallengeForDate(date);
+
+			if (dailyChallenge == null)
+			{
+                return false;
+			}
+
+            return await _gameRepository.HasUserPlayedDailyChallengeAsync(userId, dailyChallenge.DailyChallangeId);
+
+
+		}
 
         private Game MapDtoToGame(GameDto gameDto, int dailyChallengeId)
         {
@@ -282,5 +309,6 @@ namespace Backend.Services
                 DailyChallangeId = dailyChallengeId // This should be bouncing on cache in the future!
             };
         }
-    }
+
+	}
 }
