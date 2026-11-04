@@ -38,7 +38,8 @@ namespace Backend.Services
 			if (gameDto.UserId.HasValue)
 			{
 				var hasPlayed = await _gameRepository.HasUserPlayedDailyChallengeAsync(gameDto.UserId.Value, todaysChallenge.DailyChallangeId);
-				if (hasPlayed)
+				
+                if (hasPlayed)
 				{
 					throw new ConflictException("User has already played today's challenge.");
 				}
