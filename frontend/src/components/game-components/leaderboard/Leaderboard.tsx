@@ -84,7 +84,7 @@ export default function Leaderboard() {
                     <p className="leaderboard-page__eyebrow">Resenärer i hela Sverige</p>
                     <h1 className="leaderboard-page__title">Lite vänskaplig tävling.</h1>
                     <p className="leaderboard-page__description">
-                        Samma fem ledtrådar. Vem har bäst koll på Sverige i dag?
+                        Samma 3 ledtrådar. Vem har bäst koll på Sverige i dag?
                     </p>
                 </div>
                 {data && (
@@ -141,7 +141,7 @@ export default function Leaderboard() {
                                     <span>SVIT / POÄNG</span>
                                 </div>
 
-                                {/* Placeholder for leaderboard rows */}
+                                {/* Leaderboard rows */}
                                 <div className="leaderboard-page__table">
                                     {entries.map((entry, index) => (
                                         <div

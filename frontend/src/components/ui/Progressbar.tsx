@@ -32,7 +32,7 @@ export function ProgressStepper({
                                 ? "text-[var(--primary)] scale-150"
                                 : isCart
                                     ? "text-[var(--primary)] scale-140"
-                                    : "rounded-full bg-[var(--page)] text-[var(--muted-foreground)] border-2 border-[var(--card-border)]" /* Kommande siffror */
+                                    : "rounded-full bg-[var(--page)] text-[var(--muted-foreground)] border-2 border-[var(--card-border)]"
                             }
             `}
                     >

@@ -17,6 +17,7 @@ import { useAuth } from "@/context/auth/UseAuth";
 import TrainIllustration from "@/assets/illustrations/trainillustration";
 import { getTimeOfDay } from "@/models/TimeOfDay";
 import "./RegisterPage.css";
+import { Eye, EyeOff } from "lucide-react";
 
 type RegisterError = {
   userName?: string;
@@ -38,6 +39,8 @@ function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<RegisterError>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,28 +57,37 @@ function RegisterPage() {
 
   /*Validate password*/
   const validatePassword = (password: string) => {
+    const errors: string[] = []
+
     if (password.length < 12) {
-      return "Lösenordet måste innehålla minst 12 tecken.";
+      errors.push("minst 12 tecken")
     }
 
     /*Check uppercase*/
     if (!/[A-Z]/.test(password)) {
-      return "Lösenordet måste innehålla minst en stor bokstav";
+      errors.push("en stor bokstav")
     }
     /*Check lowercase*/
     if (!/[a-z]/.test(password)) {
-      return "Lösenordet måste innehålla minst en liten bokstav.";
+      errors.push("en liten bokstav")
     }
     /*Check number*/
     if (!/\d/.test(password)) {
-      return "Lösenordet måste innehålla minst en siffra.";
+      errors.push("en siffra")
     }
 
     if (!/[^A-Za-z0-9\s]/.test(password)) {
-      return "Lösenordet måste innehålla minst ett specialtecken.";
+      errors.push("ett specialtecken")
     }
 
-    return "";
+    if (errors.length === 0) return ""
+
+    if (errors.length === 1) {
+      return `Lösenordet måste innehålla ${errors[0]}.`
+    }
+
+    const lastError = errors.pop()
+    return `Lösenordet måste innehålla ${errors.join(", ")} samt ${lastError}.`
   };
 
   /*Validate form field*/
@@ -173,7 +185,7 @@ function RegisterPage() {
               ETT SPEL FÖR HELA SVERIGE
             </span>
             <h1 className="register-page__title">
-             Ska vi upptäcka Sverige?
+              Ska vi upptäcka Sverige?
             </h1>
             <p className="register-page__subtitle">
               Spara dina poäng, håll koll på din nivå och hitta din plats på
@@ -245,36 +257,70 @@ function RegisterPage() {
                   {/* Password */}
                   <div className="grid gap-2">
                     <Label htmlFor="password">Lösenord</Label>
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      placeholder="Lösenord"
-                      value={user.password}
-                      onChange={handleInput}
-                      aria-invalid={!!errors.password}
-                      required
-                    />
+
+                    <div className="relative w-full">
+                      <Input
+                        id="password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Lösenord"
+                        value={user.password}
+                        onChange={handleInput}
+                        aria-invalid={!!errors.password}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--primary)] hover:text-[var(--foreground)] transition-colors"
+                        tabIndex={-1}
+                        aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-5 h-5" />
+                        ) : (
+                          <Eye className="w-5 h-5" />
+                        )}
+                      </button>
+                    </div>
+
                     {errors.password && (
                       <p className="text-sm text-destructive">
                         {errors.password}
                       </p>
                     )}
                   </div>
-                  {/*Confirm password*/}
 
+                  {/*Confirm password*/}
                   <div className="grid gap-2">
                     <Label htmlFor="confirmPassword">Bekräfta lösenord</Label>
-                    <Input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      placeholder="Ange lösenordet igen"
-                      value={user.confirmPassword}
-                      onChange={handleInput}
-                      aria-invalid={!!errors.confirmPassword}
-                      required
-                    />
+
+                    <div className="relative w-full">
+                      <Input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Ange lösenordet igen"
+                        value={user.confirmPassword}
+                        onChange={handleInput}
+                        aria-invalid={!!errors.confirmPassword}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--primary)] hover:text-[var(--foreground)] transition-colors"
+                        tabIndex={-1}
+                        aria-label={showConfirmPassword ? "Dölj lösenord" : "Visa lösenord"}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="w-5 h-5" />
+                        ) : (
+                          <Eye className="w-5 h-5" />
+                        )}
+                      </button>
+                    </div>
+
                     {errors.confirmPassword && (
                       <p className="text-sm text-destructive">
                         {errors.confirmPassword}
