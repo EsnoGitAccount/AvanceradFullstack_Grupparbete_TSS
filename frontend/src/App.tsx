@@ -11,6 +11,7 @@ import RegisterPage from './pages/register-page/RegisterPage';
 import SiteHeader from './components/site-header/SiteHeader'
 import SiteFooter from './components/site-footer/SiteFooter'
 import TestTrainLoading from './pages/test-train-loading/TestTrainLoading'
+import AdminTestPage from './pages/admin-test-page/AdminTestPage';
 import './App.css'
 
 function SiteLayout() {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/admin-test" element={<ProtectedRoute requiredRole="Admin"><AdminTestPage /></ProtectedRoute>} />
       </Route>
 
       {/* Without header/footer */}
