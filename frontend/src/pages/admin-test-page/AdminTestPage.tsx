@@ -1,7 +1,11 @@
-import { useAuth } from "../../context/auth/UseAuth";
+import { useState } from 'react';
+import { useAuth } from '../../context/auth/UseAuth';
+import type { AdminCity } from '@/models/AdminModels';
+import ListAdminCities from '../../components/admin-tasks/ListAdminCities';
 
 export default function AdminTestPage() {
   const { user } = useAuth();
+  const [cities, setCities] = useState<AdminCity[]>([]);
 
   return (
     <div>
@@ -13,6 +17,7 @@ export default function AdminTestPage() {
 
       <section>
         <h2>Städer</h2>
+        <ListAdminCities cities={cities} onCitiesLoaded={setCities} />
       </section>
 
       <section>
