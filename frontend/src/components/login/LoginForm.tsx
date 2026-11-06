@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from '@/components/ui/Button';
 import { useAuth } from "@/context/auth/UseAuth";
 import { useNavigate } from 'react-router';
+import { Eye, EyeOff } from "lucide-react"
 
 export function LoginForm() {
     const { login } = useAuth();
@@ -11,6 +12,7 @@ export function LoginForm() {
 
     const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false)
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -56,19 +58,37 @@ export function LoginForm() {
             </div>
 
             {/* Password */}
-            <div className="form-group">
+            <div className="form-group flex flex-col items-center">
                 <label htmlFor="password" className="text-left w-[85%]">
                     Lösenord
                 </label>
-                <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="h-12 w-[85%]"
-                />
+
+                <div className="relative w-[85%]">
+                    <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="h-12 focus:placeholder-transparent"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--primary)] hover:text-[var(--foreground)] transition-colors"
+                        tabIndex={-1}
+                        aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
+                    >
+                        {showPassword ? (
+                            <EyeOff className="w-5 h-5" />
+                        ) : (
+                            <Eye className="w-5 h-5" />
+                        )}
+                    </button>
+                </div>
             </div>
+
+
 
             {/* Error alert */}
             {errorMessage && (
