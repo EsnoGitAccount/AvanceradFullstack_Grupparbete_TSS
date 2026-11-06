@@ -249,9 +249,7 @@ export default function UpdateCityQuestions({
       {error && <p role="alert">{error}</p>}
 
       {saved && (
-        <p role="status">
-          Frågorna uppdaterades och hämtades på nytt.
-        </p>
+        <p role="status">Frågorna har sparats.</p>
       )}
     </div>
   );

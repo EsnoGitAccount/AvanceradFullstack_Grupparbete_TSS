@@ -17,6 +17,7 @@ import ListAdminUsers from "../../components/admin-tasks/ListAdminUsers";
 import ArchiveUser from "../../components/admin-tasks/ArchiveUser";
 import RestoreUser from "../../components/admin-tasks/RestoreUser";
 import ListAdminGames from "../../components/admin-tasks/ListAdminGames";
+import DeleteGame from "../../components/admin-tasks/DeleteGame";
 
 export default function AdminTestPage() {
   const { user } = useAuth();
@@ -88,13 +89,19 @@ export default function AdminTestPage() {
     );
   };
 
+  const handleGameDeleted = (gameId: number) => {
+    setGames((currentGames) =>
+      currentGames.filter((game) => game.gameId !== gameId),
+    );
+  };
+
   return (
     <div>
-      <h1>Admin tester</h1>
+      <h1>Administration</h1>
 
-      <p>Du är inloggad som: {user?.username}</p>
+      <p>Inloggad som: {user?.username}</p>
 
-      <p>Ändringar här påverkar data i databasen.</p>
+      <p>Ändringar sparas direkt.</p>
 
       <section>
         <h2>Städer</h2>
@@ -142,6 +149,8 @@ export default function AdminTestPage() {
         <h2>Spelresultat</h2>
 
         <ListAdminGames games={games} onGamesLoaded={setGames} />
+
+        <DeleteGame games={games} onGameDeleted={handleGameDeleted} />
       </section>
 
       <section>

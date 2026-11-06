@@ -44,7 +44,7 @@ export default function ListAdminUsers({
       <ul>
         {users.map((user) => (
           <li key={user.userId}>
-            ID: {user.userId} – {user.username} – {user.email} –{" "}
+            ID: {user.userId} - {user.username} - {user.email} -{" "}
             {user.isArchived ? "Arkiverad" : "Aktiv"}
           </li>
         ))}

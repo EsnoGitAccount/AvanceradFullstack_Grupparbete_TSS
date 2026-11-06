@@ -46,9 +46,9 @@ export default function ListAdminGames({
       <ul>
         {games.map((game) => (
           <li key={game.gameId}>
-            Spel-ID: {game.gameId} – Spelare: {game.userName || "Gäst"} –
-            Användar-ID: {game.userId ?? "Gäst"} – Poäng: {game.totalScore} –
-            Datum: {game.completedAt} – Stad: {game.cityName}
+            Spel-ID: {game.gameId} - Spelare: {game.userName || "Gäst"} -
+            Användar-ID: {game.userId ?? "Gäst"} - Poäng: {game.totalScore} -
+            Datum: {game.completedAt} - Stad: {game.cityName}
           </li>
         ))}
       </ul>

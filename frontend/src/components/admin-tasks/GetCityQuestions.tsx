@@ -104,7 +104,7 @@ export default function GetCityQuestions({
                   <ul>
                     {question.options.map((option) => (
                       <li key={option.optionId}>
-                        ID: {option.optionId} – {option.optionText} –{" "}
+                        ID: {option.optionId} - {option.optionText} -{" "}
                         {option.isCorrect ? "Rätt svar" : "Fel svar"}
                       </li>
                     ))}

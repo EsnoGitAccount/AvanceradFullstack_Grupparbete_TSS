@@ -75,7 +75,7 @@ export default function RestoreUser({
 
             {archivedUsers.map((user) => (
               <option key={user.userId} value={user.userId}>
-                {user.username} – {user.email}
+                {user.username} - {user.email}
               </option>
             ))}
           </select>

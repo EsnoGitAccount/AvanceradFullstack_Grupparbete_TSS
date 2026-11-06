@@ -88,3 +88,7 @@ export const getAdminGames = async (): Promise<AdminGameResult[]> => {
 
   return response.data;
 };
+
+export const deleteGame = async (gameId: number): Promise<void> => {
+  await api.delete(`/api/games/admin/${gameId}`);
+};

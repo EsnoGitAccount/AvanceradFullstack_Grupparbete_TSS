@@ -44,8 +44,8 @@ export default function ListAdminCities({
       <ul>
         {cities.map((city) => (
           <li key={city.cityId}>
-            ID: {city.cityId} – {city.name} –{" "}
-            {city.isArchived ? "Arkiverad" : "Aktiv"} – Bild: {city.cityPicture}
+            ID: {city.cityId} - {city.name} -{" "}
+            {city.isArchived ? "Arkiverad" : "Aktiv"} - Bild: {city.cityPicture}
           </li>
         ))}
       </ul>
