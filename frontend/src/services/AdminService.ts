@@ -56,3 +56,10 @@ export const getCityQuestions = async (
 
   return response.data;
 };
+
+export const updateCityQuestions = async (
+  cityId: number,
+  questions: CityQuestionsUpdate,
+): Promise<void> => {
+  await api.put(`/api/cities/${cityId}/questions`, questions);
+};

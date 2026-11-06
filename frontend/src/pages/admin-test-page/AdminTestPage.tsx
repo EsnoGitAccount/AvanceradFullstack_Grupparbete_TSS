@@ -7,10 +7,20 @@ import UpdateCity from "../../components/admin-tasks/UpdateCity";
 import ArchiveCity from "../../components/admin-tasks/ArchiveCity";
 import RestoreCity from "../../components/admin-tasks/RestoreCity";
 import GetCityQuestions from "../../components/admin-tasks/GetCityQuestions";
+import UpdateCityQuestions from "../../components/admin-tasks/UpdateCityQuestions";
 
 export default function AdminTestPage() {
   const { user } = useAuth();
+
   const [cities, setCities] = useState<AdminCity[]>([]);
+
+  const [questionCityId, setQuestionCityId] = useState<number | null>(null);
+
+  const [cityQuestions, setCityQuestions] =
+    useState<CityQuestionsUpdate | null>(null);
+
+  const [questionDraft, setQuestionDraft] =
+    useState<CityQuestionsUpdate | null>(null);
 
   const handleCityCreated = (createdCity: AdminCity) => {
     setCities((currentCities) => [...currentCities, createdCity]);
@@ -40,17 +50,13 @@ export default function AdminTestPage() {
     );
   };
 
-  const [questionCityId, setQuestionCityId] = useState<number | null>(null);
-
-  const [cityQuestions, setCityQuestions] =
-    useState<CityQuestionsUpdate | null>(null);
-
   const handleQuestionsLoaded = (
     cityId: number,
     questions: CityQuestionsUpdate,
   ) => {
     setQuestionCityId(cityId);
     setCityQuestions(questions);
+    setQuestionDraft(structuredClone(questions));
   };
 
   return (
@@ -77,11 +83,19 @@ export default function AdminTestPage() {
 
       <section>
         <h2>Frågor</h2>
+
         <GetCityQuestions
           cities={cities}
           loadedCityId={questionCityId}
           questions={cityQuestions}
           onQuestionsLoaded={handleQuestionsLoaded}
+        />
+
+        <UpdateCityQuestions
+          cityId={questionCityId}
+          questions={questionDraft}
+          onQuestionsChange={setQuestionDraft}
+          onQuestionsSaved={handleQuestionsLoaded}
         />
       </section>
 
