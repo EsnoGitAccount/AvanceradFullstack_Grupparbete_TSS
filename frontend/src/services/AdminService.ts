@@ -1,6 +1,7 @@
 import api from "./api";
 import type {
   AdminCity,
+  AdminGameResult,
   AdminUser,
   CityQuestionsUpdate,
 } from "@/models/AdminModels";
@@ -80,4 +81,10 @@ export const archiveUser = async (userId: number): Promise<void> => {
 
 export const restoreUser = async (userId: number): Promise<void> => {
   await api.post(`/api/users/admin/${userId}/restore`);
+};
+
+export const getAdminGames = async (): Promise<AdminGameResult[]> => {
+  const response = await api.get<AdminGameResult[]>("/api/games/admin");
+
+  return response.data;
 };

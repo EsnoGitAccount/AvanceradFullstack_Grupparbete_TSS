@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "../../context/auth/UseAuth";
-import type {  AdminCity, AdminUser, CityQuestionsUpdate } from "@/models/AdminModels";
+import type {
+  AdminCity,
+  AdminGameResult,
+  AdminUser,
+  CityQuestionsUpdate,
+} from "@/models/AdminModels";
 import ListAdminCities from "../../components/admin-tasks/ListAdminCities";
 import CreateCity from "../../components/admin-tasks/CreateCity";
 import UpdateCity from "../../components/admin-tasks/UpdateCity";
@@ -11,6 +16,7 @@ import UpdateCityQuestions from "../../components/admin-tasks/UpdateCityQuestion
 import ListAdminUsers from "../../components/admin-tasks/ListAdminUsers";
 import ArchiveUser from "../../components/admin-tasks/ArchiveUser";
 import RestoreUser from "../../components/admin-tasks/RestoreUser";
+import ListAdminGames from "../../components/admin-tasks/ListAdminGames";
 
 export default function AdminTestPage() {
   const { user } = useAuth();
@@ -20,6 +26,8 @@ export default function AdminTestPage() {
   const [cities, setCities] = useState<AdminCity[]>([]);
 
   const [questionCityId, setQuestionCityId] = useState<number | null>(null);
+
+  const [games, setGames] = useState<AdminGameResult[]>([]);
 
   const [cityQuestions, setCityQuestions] =
     useState<CityQuestionsUpdate | null>(null);
@@ -132,6 +140,8 @@ export default function AdminTestPage() {
 
       <section>
         <h2>Spelresultat</h2>
+
+        <ListAdminGames games={games} onGamesLoaded={setGames} />
       </section>
 
       <section>
