@@ -20,9 +20,22 @@ import ListAdminGames from "../../components/admin-tasks/ListAdminGames";
 import DeleteGame from "../../components/admin-tasks/DeleteGame";
 import UploadImage from "../../components/admin-tasks/UploadImage";
 import DeleteImage from "../../components/admin-tasks/DeleteImage";
+import "./AdminTestPage.css";
+
+const adminTabs = [
+  { id: "cities", label: "Städer" },
+  { id: "questions", label: "Frågor" },
+  { id: "users", label: "Användare" },
+  { id: "games", label: "Spelresultat" },
+  { id: "images", label: "Bilder" },
+] as const;
+
+type AdminTab = (typeof adminTabs)[number]["id"];
 
 export default function AdminTestPage() {
   const { user } = useAuth();
+
+  const [activeTab, setActiveTab] = useState<AdminTab>("cities");
 
   const [users, setUsers] = useState<AdminUser[]>([]);
 
@@ -104,73 +117,160 @@ export default function AdminTestPage() {
   };
 
   return (
-    <div>
-      <h1>Administration</h1>
+    <div className="admin-page">
+      <header className="admin-page__header">
+        <h1>Administration</h1>
 
-      <p>Inloggad som: {user?.username}</p>
+        <p>Inloggad som: {user?.username}</p>
 
-      <p>Ändringar sparas direkt.</p>
+        <p className="admin-page__warning">Ändringar sparas direkt.</p>
+      </header>
 
-      <section>
+      <div className="admin-page__tabs" role="tablist" aria-label="Adminområden">
+        {adminTabs.map((tab) => (
+          <button
+            key={tab.id}
+            id={`admin-tab-${tab.id}`}
+            className={`admin-page__tab${activeTab === tab.id ? " admin-page__tab--active" : ""}`}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            aria-controls={`admin-panel-${tab.id}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <section
+        id="admin-panel-cities"
+        className="admin-page__section"
+        role="tabpanel"
+        aria-labelledby="admin-tab-cities"
+        hidden={activeTab !== "cities"}
+      >
         <h2>Städer</h2>
 
-        <ListAdminCities cities={cities} onCitiesLoaded={setCities} />
+        <div className="admin-page__grid">
+          <div className="admin-page__fetch admin-page__fetch--wide">
+            <ListAdminCities cities={cities} onCitiesLoaded={setCities} />
+          </div>
 
-        <CreateCity onCityCreated={handleCityCreated} />
+          <div className="admin-page__card">
+            <CreateCity onCityCreated={handleCityCreated} />
+          </div>
 
-        <UpdateCity cities={cities} onCityUpdated={handleCityUpdated} />
+          <div className="admin-page__card">
+            <UpdateCity cities={cities} onCityUpdated={handleCityUpdated} />
+          </div>
 
-        <ArchiveCity cities={cities} onCityArchived={handleCityArchived} />
+          <div className="admin-page__card admin-page__card--destructive">
+            <ArchiveCity cities={cities} onCityArchived={handleCityArchived} />
+          </div>
 
-        <RestoreCity cities={cities} onCityRestored={handleCityRestored} />
+          <div className="admin-page__card admin-page__card--success">
+            <RestoreCity cities={cities} onCityRestored={handleCityRestored} />
+          </div>
+        </div>
       </section>
 
-      <section>
+      <section
+        id="admin-panel-questions"
+        className="admin-page__section"
+        role="tabpanel"
+        aria-labelledby="admin-tab-questions"
+        hidden={activeTab !== "questions"}
+      >
         <h2>Frågor</h2>
 
-        <GetCityQuestions
-          cities={cities}
-          loadedCityId={questionCityId}
-          questions={cityQuestions}
-          onQuestionsLoaded={handleQuestionsLoaded}
-        />
+        <div className="admin-page__grid">
+          <div className="admin-page__card admin-page__card--wide admin-page__card--results">
+            <GetCityQuestions
+              cities={cities}
+              loadedCityId={questionCityId}
+              questions={cityQuestions}
+              onQuestionsLoaded={handleQuestionsLoaded}
+            />
+          </div>
 
-        <UpdateCityQuestions
-          cityId={questionCityId}
-          questions={questionDraft}
-          onQuestionsChange={setQuestionDraft}
-          onQuestionsSaved={handleQuestionsLoaded}
-        />
+          <div className="admin-page__card admin-page__card--wide admin-page__card--editor">
+            <UpdateCityQuestions
+              cityId={questionCityId}
+              questions={questionDraft}
+              onQuestionsChange={setQuestionDraft}
+              onQuestionsSaved={handleQuestionsLoaded}
+            />
+          </div>
+        </div>
       </section>
 
-      <section>
+      <section
+        id="admin-panel-users"
+        className="admin-page__section"
+        role="tabpanel"
+        aria-labelledby="admin-tab-users"
+        hidden={activeTab !== "users"}
+      >
         <h2>Användare</h2>
 
-        <ListAdminUsers users={users} onUsersLoaded={setUsers} />
+        <div className="admin-page__grid">
+          <div className="admin-page__fetch admin-page__fetch--wide">
+            <ListAdminUsers users={users} onUsersLoaded={setUsers} />
+          </div>
 
-        <ArchiveUser users={users} onUserArchived={handleUserArchived} />
+          <div className="admin-page__card admin-page__card--destructive">
+            <ArchiveUser users={users} onUserArchived={handleUserArchived} />
+          </div>
 
-        <RestoreUser users={users} onUserRestored={handleUserRestored} />
+          <div className="admin-page__card admin-page__card--success">
+            <RestoreUser users={users} onUserRestored={handleUserRestored} />
+          </div>
+        </div>
       </section>
 
-      <section>
+      <section
+        id="admin-panel-games"
+        className="admin-page__section"
+        role="tabpanel"
+        aria-labelledby="admin-tab-games"
+        hidden={activeTab !== "games"}
+      >
         <h2>Spelresultat</h2>
 
-        <ListAdminGames games={games} onGamesLoaded={setGames} />
+        <div className="admin-page__grid">
+          <div className="admin-page__fetch admin-page__fetch--wide">
+            <ListAdminGames games={games} onGamesLoaded={setGames} />
+          </div>
 
-        <DeleteGame games={games} onGameDeleted={handleGameDeleted} />
+          <div className="admin-page__card admin-page__card--destructive">
+            <DeleteGame games={games} onGameDeleted={handleGameDeleted} />
+          </div>
+        </div>
       </section>
 
-      <section>
+      <section
+        id="admin-panel-images"
+        className="admin-page__section"
+        role="tabpanel"
+        aria-labelledby="admin-tab-images"
+        hidden={activeTab !== "images"}
+      >
         <h2>Bilder</h2>
 
-        <UploadImage onImageUploaded={setImageBlobName} />
+        <div className="admin-page__grid">
+          <div className="admin-page__card">
+            <UploadImage onImageUploaded={setImageBlobName} />
+          </div>
 
-        <DeleteImage
-          blobName={imageBlobName}
-          onBlobNameChange={setImageBlobName}
-          onImageDeleted={handleImageDeleted}
-        />
+          <div className="admin-page__card admin-page__card--destructive">
+            <DeleteImage
+              blobName={imageBlobName}
+              onBlobNameChange={setImageBlobName}
+              onImageDeleted={handleImageDeleted}
+            />
+          </div>
+        </div>
       </section>
     </div>
   );
