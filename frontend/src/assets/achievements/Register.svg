@@ -2,35 +2,80 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="106.18096"
-   height="104.62984"
-   viewBox="0 0 106.18096 104.62984"
+   width="103.80593"
+   height="103.95116"
+   viewBox="0 0 103.80593 103.95116"
    version="1.1"
    id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs1" />
+     id="defs1">
+    <linearGradient
+       id="linearGradient270">
+      <stop
+         style="stop-color:#838383;stop-opacity:1;"
+         offset="0"
+         id="stop269" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="1"
+         id="stop270" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient270"
+       id="linearGradient69"
+       gradientUnits="userSpaceOnUse"
+       x1="128.52289"
+       y1="117.03338"
+       x2="32.339725"
+       y2="34.348434" />
+  </defs>
   <g
      id="g9"
      style="display:inline"
-     transform="translate(-6.4864883,-8.0117531)">
-    <ellipse
-       style="fill:#ee24db;fill-opacity:1;stroke:none;stroke-width:2.89134;stroke-dasharray:8.67402, 2.89134;stroke-dashoffset:9.83055"
-       id="ellipse8"
-       cx="59.576969"
-       cy="60.326675"
-       rx="53.090481"
-       ry="52.314922" />
-    <text
-       xml:space="preserve"
-       style="font-size:22px;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.89134;stroke-dasharray:8.67402, 2.89134;stroke-dashoffset:9.83055"
-       x="8.1786137"
-       y="62.326675"
-       id="text9"><tspan
-         id="tspan9"
-         x="8.1786137"
-         y="62.326675"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none">Register</tspan></text>
+     transform="translate(-7.4013937,-17.343942)">
+    <g
+       id="g457"
+       style="display:inline"
+       transform="matrix(0.95665996,0,0,0.95665996,2.570253,3.0936723)">
+      <circle
+         style="fill:url(#linearGradient69);fill-opacity:1;stroke:#eccc66;stroke-width:5.58501;stroke-dashoffset:9.83058;stroke-opacity:1"
+         id="circle453"
+         cx="74.447533"
+         cy="78.022247"
+         r="51.461845"
+         transform="translate(-15.143174,-8.7753477)" />
+      <g
+         id="g454">
+        <path
+           style="fill:#b39733;fill-opacity:1;stroke:none;stroke-width:5.969;stroke-dashoffset:9.83058;stroke-opacity:1"
+           d="m 59.089398,120.87532 c 29.719547,0.36621 53.689692,-26.55374 51.233592,-54.909042 l 2.84247,9.155145 C 110.30243,103.87175 85.79978,123.40555 59.331834,123.55554 32.863888,123.70553 7.248325,103.4294 5.4652774,74.440229 L 8.0644346,65.853541 C 6.6821526,96.274808 29.369851,120.50912 59.089398,120.87532 Z"
+           id="path453" />
+        <path
+           style="fill:#ccb04c;fill-opacity:1;stroke:none;stroke-width:5.42786;stroke-dashoffset:9.83058;stroke-opacity:1"
+           d="m 59.178156,20.716172 c 24.873611,0.0163 45.621864,20.574656 47.781934,39.488795 l 3.56159,5.760114 C 109.65116,37.616644 83.161745,17.727637 59.088398,17.744783 35.015052,17.76193 9.3289106,36.756296 8.0435721,65.654968 L 11.674547,59.65892 C 15.999062,38.139529 34.304545,20.699872 59.178156,20.716172 Z"
+           id="path454" />
+      </g>
+      <g
+         id="g456">
+        <circle
+           style="fill:none;fill-opacity:1;stroke:#fbefc1;stroke-width:0.4;stroke-dasharray:none;stroke-dashoffset:9.83058;stroke-opacity:1"
+           id="circle454"
+           cx="74.447533"
+           cy="78.022247"
+           r="51.461845"
+           transform="translate(-15.143174,-8.7753477)" />
+        <path
+           style="fill:#fbefc1;fill-opacity:1;stroke:none;stroke-width:0.4;stroke-dasharray:none;stroke-dashoffset:9.83058;stroke-opacity:1"
+           d="m 44.639367,16.936425 -2.520327,3.900514 c 5.315251,-1.979936 9.995915,-2.673813 14.991352,-2.871337 l 2.61644,-3.044386 c -6.127021,0.212862 -10.050423,0.697242 -15.087465,2.015209 z"
+           id="path455" />
+        <path
+           style="fill:#fbefc1;fill-opacity:1;stroke:none;stroke-width:0.4;stroke-dasharray:none;stroke-dashoffset:9.83058;stroke-opacity:1"
+           d="m 62.756971,14.895857 -3.617898,2.911506 c 5.668141,-0.210261 2.062559,0.114821 2.976732,0.158957 l 3.197089,-2.615617 c -1.506996,-0.02026 -1.128751,-0.306389 -2.555923,-0.454846 z"
+           id="path456" />
+      </g>
+    </g>
   </g>
 </svg>
