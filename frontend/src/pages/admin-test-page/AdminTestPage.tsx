@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../context/auth/UseAuth";
-import type {
-  AdminCity,
-  AdminUser,
-  CityQuestionsUpdate,
-} from "@/models/AdminModels";
+import type {  AdminCity, AdminUser, CityQuestionsUpdate } from "@/models/AdminModels";
 import ListAdminCities from "../../components/admin-tasks/ListAdminCities";
 import CreateCity from "../../components/admin-tasks/CreateCity";
 import UpdateCity from "../../components/admin-tasks/UpdateCity";
@@ -14,6 +10,7 @@ import GetCityQuestions from "../../components/admin-tasks/GetCityQuestions";
 import UpdateCityQuestions from "../../components/admin-tasks/UpdateCityQuestions";
 import ListAdminUsers from "../../components/admin-tasks/ListAdminUsers";
 import ArchiveUser from "../../components/admin-tasks/ArchiveUser";
+import RestoreUser from "../../components/admin-tasks/RestoreUser";
 
 export default function AdminTestPage() {
   const { user } = useAuth();
@@ -75,6 +72,14 @@ export default function AdminTestPage() {
     );
   };
 
+  const handleUserRestored = (userId: number) => {
+    setUsers((currentUsers) =>
+      currentUsers.map((user) =>
+        user.userId === userId ? { ...user, isArchived: false } : user,
+      ),
+    );
+  };
+
   return (
     <div>
       <h1>Admin tester</h1>
@@ -121,6 +126,8 @@ export default function AdminTestPage() {
         <ListAdminUsers users={users} onUsersLoaded={setUsers} />
 
         <ArchiveUser users={users} onUserArchived={handleUserArchived} />
+
+        <RestoreUser users={users} onUserRestored={handleUserRestored} />
       </section>
 
       <section>

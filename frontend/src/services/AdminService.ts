@@ -77,3 +77,7 @@ export const getAdminUsers = async (): Promise<AdminUser[]> => {
 export const archiveUser = async (userId: number): Promise<void> => {
   await api.post(`/api/users/admin/${userId}/archive`);
 };
+
+export const restoreUser = async (userId: number): Promise<void> => {
+  await api.post(`/api/users/admin/${userId}/restore`);
+};
