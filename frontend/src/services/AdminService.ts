@@ -1,5 +1,9 @@
 import api from "./api";
-import type { AdminCity, CityQuestionsUpdate } from "@/models/AdminModels";
+import type {
+  AdminCity,
+  AdminUser,
+  CityQuestionsUpdate,
+} from "@/models/AdminModels";
 
 export const getAdminCities = async (): Promise<AdminCity[]> => {
   const response = await api.get<AdminCity[]>("/api/cities/admin");
@@ -62,4 +66,10 @@ export const updateCityQuestions = async (
   questions: CityQuestionsUpdate,
 ): Promise<void> => {
   await api.put(`/api/cities/${cityId}/questions`, questions);
+};
+
+export const getAdminUsers = async (): Promise<AdminUser[]> => {
+  const response = await api.get<AdminUser[]>("/api/users/admin");
+
+  return response.data;
 };
