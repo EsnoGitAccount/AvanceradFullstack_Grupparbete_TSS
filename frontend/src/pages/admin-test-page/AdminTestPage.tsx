@@ -18,6 +18,7 @@ import ArchiveUser from "../../components/admin-tasks/ArchiveUser";
 import RestoreUser from "../../components/admin-tasks/RestoreUser";
 import ListAdminGames from "../../components/admin-tasks/ListAdminGames";
 import DeleteGame from "../../components/admin-tasks/DeleteGame";
+import UploadImage from "../../components/admin-tasks/UploadImage";
 
 export default function AdminTestPage() {
   const { user } = useAuth();
@@ -29,6 +30,8 @@ export default function AdminTestPage() {
   const [questionCityId, setQuestionCityId] = useState<number | null>(null);
 
   const [games, setGames] = useState<AdminGameResult[]>([]);
+
+  const [latestBlobName, setLatestBlobName] = useState<string | null>(null);
 
   const [cityQuestions, setCityQuestions] =
     useState<CityQuestionsUpdate | null>(null);
@@ -155,6 +158,10 @@ export default function AdminTestPage() {
 
       <section>
         <h2>Bilder</h2>
+
+        <UploadImage onImageUploaded={setLatestBlobName} />
+
+        {latestBlobName && <p>Senast uppladdade blob: {latestBlobName}</p>}
       </section>
     </div>
   );

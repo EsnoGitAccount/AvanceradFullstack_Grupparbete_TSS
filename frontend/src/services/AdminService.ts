@@ -4,6 +4,7 @@ import type {
   AdminGameResult,
   AdminUser,
   CityQuestionsUpdate,
+  ImageUploadResult,
 } from "@/models/AdminModels";
 
 export const getAdminCities = async (): Promise<AdminCity[]> => {
@@ -91,4 +92,19 @@ export const getAdminGames = async (): Promise<AdminGameResult[]> => {
 
 export const deleteGame = async (gameId: number): Promise<void> => {
   await api.delete(`/api/games/admin/${gameId}`);
+};
+
+export const uploadImage = async (
+  file: File,
+): Promise<ImageUploadResult> => {
+  const formData = new FormData();
+
+  formData.append('file', file);
+
+  const response = await api.post<ImageUploadResult>(
+    '/api/image',
+    formData,
+  );
+
+  return response.data;
 };
