@@ -4,6 +4,7 @@ import type { AdminCity } from "@/models/AdminModels";
 import ListAdminCities from "../../components/admin-tasks/ListAdminCities";
 import CreateCity from "../../components/admin-tasks/CreateCity";
 import UpdateCity from "../../components/admin-tasks/UpdateCity";
+import ArchiveCity from "../../components/admin-tasks/ArchiveCity";
 
 export default function AdminTestPage() {
   const { user } = useAuth();
@@ -17,6 +18,14 @@ export default function AdminTestPage() {
     setCities((currentCities) =>
       currentCities.map((city) =>
         city.cityId === updatedCity.cityId ? updatedCity : city,
+      ),
+    );
+  };
+
+  const handleCityArchived = (cityId: number) => {
+    setCities((currentCities) =>
+      currentCities.map((city) =>
+        city.cityId === cityId ? { ...city, isArchived: true } : city,
       ),
     );
   };
@@ -37,6 +46,8 @@ export default function AdminTestPage() {
         <CreateCity onCityCreated={handleCityCreated} />
 
         <UpdateCity cities={cities} onCityUpdated={handleCityUpdated} />
+
+        <ArchiveCity cities={cities} onCityArchived={handleCityArchived} />
       </section>
 
       <section>
