@@ -17,6 +17,7 @@ namespace Backend.Services.IServices
         Task UpdateCityQuestionsAsync(int cityId, CityQuestionsUpdateDto updateDto);
         Task<CityQuestionsUpdateDto> GetCityQuestionsForEditAsync(int cityId);
         Task<int> GetCityCountAsync();
-        //Task<int> GetRandomCityIdAsync(int? excludeCityId);
-    }
+		//Do we need this? Task<CityDto> GetCityByNameAsync(string cityName) or we can remove it?
+		//Task<int> GetRandomCityIdAsync(int? excludeCityId);
+	}
 }

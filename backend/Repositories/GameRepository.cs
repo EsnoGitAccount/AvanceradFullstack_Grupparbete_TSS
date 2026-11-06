@@ -39,11 +39,9 @@ namespace Backend.Repositories
             return await _context.Games
                 .FirstOrDefaultAsync(game => game.GameId == gameId);
         }
-        public async Task<bool> DeleteGameAsync(Game game)
+        public void DeleteGame(Game game)
         {
             _context.Games.Remove(game);
-
-            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<IEnumerable<Game>> GetGamesForDateAsync(DateOnly date)
