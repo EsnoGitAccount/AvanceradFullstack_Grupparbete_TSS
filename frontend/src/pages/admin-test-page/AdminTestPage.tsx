@@ -19,6 +19,7 @@ import RestoreUser from "../../components/admin-tasks/RestoreUser";
 import ListAdminGames from "../../components/admin-tasks/ListAdminGames";
 import DeleteGame from "../../components/admin-tasks/DeleteGame";
 import UploadImage from "../../components/admin-tasks/UploadImage";
+import DeleteImage from "../../components/admin-tasks/DeleteImage";
 
 export default function AdminTestPage() {
   const { user } = useAuth();
@@ -31,7 +32,11 @@ export default function AdminTestPage() {
 
   const [games, setGames] = useState<AdminGameResult[]>([]);
 
-  const [latestBlobName, setLatestBlobName] = useState<string | null>(null);
+  const [imageBlobName, setImageBlobName] = useState("");
+
+  const handleImageDeleted = () => {
+    setImageBlobName("");
+  };
 
   const [cityQuestions, setCityQuestions] =
     useState<CityQuestionsUpdate | null>(null);
@@ -159,9 +164,13 @@ export default function AdminTestPage() {
       <section>
         <h2>Bilder</h2>
 
-        <UploadImage onImageUploaded={setLatestBlobName} />
+        <UploadImage onImageUploaded={setImageBlobName} />
 
-        {latestBlobName && <p>Senast uppladdade blob: {latestBlobName}</p>}
+        <DeleteImage
+          blobName={imageBlobName}
+          onBlobNameChange={setImageBlobName}
+          onImageDeleted={handleImageDeleted}
+        />
       </section>
     </div>
   );

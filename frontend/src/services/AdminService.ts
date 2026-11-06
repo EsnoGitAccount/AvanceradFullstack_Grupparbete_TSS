@@ -94,17 +94,18 @@ export const deleteGame = async (gameId: number): Promise<void> => {
   await api.delete(`/api/games/admin/${gameId}`);
 };
 
-export const uploadImage = async (
-  file: File,
-): Promise<ImageUploadResult> => {
+export const uploadImage = async (file: File): Promise<ImageUploadResult> => {
   const formData = new FormData();
 
-  formData.append('file', file);
+  formData.append("file", file);
 
-  const response = await api.post<ImageUploadResult>(
-    '/api/image',
-    formData,
-  );
+  const response = await api.post<ImageUploadResult>("/api/image", formData);
 
   return response.data;
+};
+
+export const deleteImage = async (blobName: string): Promise<void> => {
+  const encodedBlobName = encodeURIComponent(blobName);
+
+  await api.delete(`/api/image/${encodedBlobName}`);
 };
