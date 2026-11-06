@@ -8,7 +8,7 @@
     left: 50%;
     width: 20rem;
     height: 20rem;
-    filter: drop-shadow(0 0 8px rgba(255, 220, 80, 1));
+    filter: drop-shadow(0 0 8px rgb(255, 190, 240));
     z-index: 0;
     pointer-events: none;
     animation: achievement-effect 6s ease-in-out infinite;
@@ -24,24 +24,24 @@
     100% {
         opacity: 0.45;
         transform: translate(-50%, -50%) scale(1.5) rotate(-4deg);
-        filter: drop-shadow(0 0 8px rgba(255, 220, 80, 0.45));
+        filter: drop-shadow(0 0 8px rgba(88, 255, 221, 0.45));
     }
 
     50% {
         opacity: 0.8;
         transform: translate(-50%, -50%) scale(1.7) rotate(4deg);
-        filter: drop-shadow(0 0 9px rgba(255, 220, 80, 0.85));
+        filter: drop-shadow(0 0 9px rgba(98, 255, 221, 1));
     }
 }
 
 @keyframes achievement-glow {
     0%,
     100% {
-        filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.45));
+        filter: drop-shadow(0 0 5px rgba(88, 255, 221, 0.45));
     }
 
     50% {
-        filter: drop-shadow(0 0 11px rgba(250, 204, 21, 0.85));
+        filter: drop-shadow(0 0 11px rgba(98, 255, 221, 1));
     }
 }
 
