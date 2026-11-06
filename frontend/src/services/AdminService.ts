@@ -1,5 +1,5 @@
 import api from "./api";
-import type { AdminCity } from "@/models/AdminModels";
+import type { AdminCity, CityQuestionsUpdate } from "@/models/AdminModels";
 
 export const getAdminCities = async (): Promise<AdminCity[]> => {
   const response = await api.get<AdminCity[]>("/api/cities/admin");
@@ -43,8 +43,16 @@ export const archiveCity = async (cityId: number): Promise<void> => {
   await api.post(`/api/cities/${cityId}/archive`);
 };
 
-export const restoreCity = async (
-  cityId: number,
-): Promise<void> => {
+export const restoreCity = async (cityId: number): Promise<void> => {
   await api.post(`/api/cities/${cityId}/restore`);
+};
+
+export const getCityQuestions = async (
+  cityId: number,
+): Promise<CityQuestionsUpdate> => {
+  const response = await api.get<CityQuestionsUpdate>(
+    `/api/cities/${cityId}/questions`,
+  );
+
+  return response.data;
 };

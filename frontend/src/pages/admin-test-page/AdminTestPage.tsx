@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "../../context/auth/UseAuth";
-import type { AdminCity } from "@/models/AdminModels";
+import type { AdminCity, CityQuestionsUpdate } from "@/models/AdminModels";
 import ListAdminCities from "../../components/admin-tasks/ListAdminCities";
 import CreateCity from "../../components/admin-tasks/CreateCity";
 import UpdateCity from "../../components/admin-tasks/UpdateCity";
 import ArchiveCity from "../../components/admin-tasks/ArchiveCity";
 import RestoreCity from "../../components/admin-tasks/RestoreCity";
+import GetCityQuestions from "../../components/admin-tasks/GetCityQuestions";
 
 export default function AdminTestPage() {
   const { user } = useAuth();
@@ -39,6 +40,19 @@ export default function AdminTestPage() {
     );
   };
 
+  const [questionCityId, setQuestionCityId] = useState<number | null>(null);
+
+  const [cityQuestions, setCityQuestions] =
+    useState<CityQuestionsUpdate | null>(null);
+
+  const handleQuestionsLoaded = (
+    cityId: number,
+    questions: CityQuestionsUpdate,
+  ) => {
+    setQuestionCityId(cityId);
+    setCityQuestions(questions);
+  };
+
   return (
     <div>
       <h1>Admin tester</h1>
@@ -63,6 +77,12 @@ export default function AdminTestPage() {
 
       <section>
         <h2>Frågor</h2>
+        <GetCityQuestions
+          cities={cities}
+          loadedCityId={questionCityId}
+          questions={cityQuestions}
+          onQuestionsLoaded={handleQuestionsLoaded}
+        />
       </section>
 
       <section>
