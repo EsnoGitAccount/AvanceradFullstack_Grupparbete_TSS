@@ -5,6 +5,7 @@ import ListAdminCities from "../../components/admin-tasks/ListAdminCities";
 import CreateCity from "../../components/admin-tasks/CreateCity";
 import UpdateCity from "../../components/admin-tasks/UpdateCity";
 import ArchiveCity from "../../components/admin-tasks/ArchiveCity";
+import RestoreCity from "../../components/admin-tasks/RestoreCity";
 
 export default function AdminTestPage() {
   const { user } = useAuth();
@@ -30,6 +31,14 @@ export default function AdminTestPage() {
     );
   };
 
+  const handleCityRestored = (cityId: number) => {
+    setCities((currentCities) =>
+      currentCities.map((city) =>
+        city.cityId === cityId ? { ...city, isArchived: false } : city,
+      ),
+    );
+  };
+
   return (
     <div>
       <h1>Admin tester</h1>
@@ -48,6 +57,8 @@ export default function AdminTestPage() {
         <UpdateCity cities={cities} onCityUpdated={handleCityUpdated} />
 
         <ArchiveCity cities={cities} onCityArchived={handleCityArchived} />
+
+        <RestoreCity cities={cities} onCityRestored={handleCityRestored} />
       </section>
 
       <section>

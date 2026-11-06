@@ -42,3 +42,9 @@ export const updateCity = async (
 export const archiveCity = async (cityId: number): Promise<void> => {
   await api.post(`/api/cities/${cityId}/archive`);
 };
+
+export const restoreCity = async (
+  cityId: number,
+): Promise<void> => {
+  await api.post(`/api/cities/${cityId}/restore`);
+};
