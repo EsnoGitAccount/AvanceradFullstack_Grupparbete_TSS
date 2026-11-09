@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
 import { useState, type SubmitEvent } from 'react';
 import type { CityQuestionsUpdate } from '@/models/AdminModels';
 import {
@@ -182,13 +185,13 @@ export default function UpdateCityQuestions({
             </legend>
 
             <div>
-              <label
+              <Label
                 htmlFor={`question-${question.questionId}`}
               >
                 Frågetext
-              </label>
+              </Label>
 
-              <input
+              <Input
                 id={`question-${question.questionId}`}
                 type="text"
                 value={question.questionText}
@@ -217,13 +220,13 @@ export default function UpdateCityQuestions({
                   aria-label={`Markera svar ${option.optionId} som rätt`}
                 />
 
-                <label
+                <Label
                   htmlFor={`option-${option.optionId}`}
                 >
                   Svar {option.optionId}
-                </label>
+                </Label>
 
-                <input
+                <Input
                   id={`option-${option.optionId}`}
                   type="text"
                   value={option.optionText}
@@ -241,9 +244,9 @@ export default function UpdateCityQuestions({
           </fieldset>
         ))}
 
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           {loading ? 'Sparar...' : 'Spara frågor'}
-        </button>
+        </Button>
       </form>
 
       {error && <p role="alert">{error}</p>}

@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
 import { useState } from "react";
 import type { AdminCity, CityQuestionsUpdate } from "@/models/AdminModels";
 import { getCityQuestions } from "@/services/AdminService";
@@ -54,7 +56,7 @@ export default function GetCityQuestions({
       <h3>Visa stadens frågor</h3>
 
       <div>
-        <label htmlFor="questions-city-select">Stad</label>
+        <Label htmlFor="questions-city-select">Stad</Label>
 
         <select
           id="questions-city-select"
@@ -75,15 +77,15 @@ export default function GetCityQuestions({
         </select>
       </div>
 
-      <button
+      <Button
         type="button"
         onClick={handleLoadQuestions}
         disabled={loading || !selectedCityId}
       >
         {loading ? "Hämtar..." : "Hämta frågor"}
-      </button>
+      </Button>
 
-      {cities.length === 0 && <p>Hämta stadslistan först.</p>}
+      {cities.length === 0 && <p>Det finns inga städer.</p>}
 
       {error && <p role="alert">{error}</p>}
 

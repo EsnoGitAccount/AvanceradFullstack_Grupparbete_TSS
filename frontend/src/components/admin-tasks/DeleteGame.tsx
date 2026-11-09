@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
 import { useState, type SubmitEvent } from "react";
 import type { AdminGameResult } from "@/models/AdminModels";
 import { deleteGame } from "@/services/AdminService";
@@ -28,16 +30,6 @@ export default function DeleteGame({ games, onGameDeleted }: DeleteGameProps) {
       return;
     }
 
-    const confirmed = window.confirm(
-      `Vill du radera spelresultat med ID ${selectedGame.gameId}? ` +
-        `${selectedGame.userName || "Gäst"}, ` +
-        `${selectedGame.cityName}, ${selectedGame.completedAt}.`,
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -64,7 +56,7 @@ export default function DeleteGame({ games, onGameDeleted }: DeleteGameProps) {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="delete-game-select">Spelresultat</label>
+          <Label htmlFor="delete-game-select">Spelresultat</Label>
 
           <select
             id="delete-game-select"
@@ -87,12 +79,12 @@ export default function DeleteGame({ games, onGameDeleted }: DeleteGameProps) {
           </select>
         </div>
 
-        <button type="submit" disabled={loading || !selectedGameId}>
+        <Button variant="destructive" type="submit" disabled={loading || !selectedGameId}>
           {loading ? "Raderar..." : "Radera spelresultat"}
-        </button>
+        </Button>
       </form>
 
-      {games.length === 0 && <p>Hämta spelresultaten först.</p>}
+      {games.length === 0 && <p>Det finns inga spelresultat.</p>}
 
       {error && <p role="alert">{error}</p>}
 

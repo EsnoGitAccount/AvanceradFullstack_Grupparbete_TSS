@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
 import { useState, type SubmitEvent } from "react";
 import { deleteImage } from "@/services/AdminService";
 
@@ -29,14 +32,6 @@ export default function DeleteImage({
       return;
     }
 
-    const confirmed = window.confirm(
-      `Vill du radera bilden "${trimmedBlobName}"?`,
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -60,9 +55,9 @@ export default function DeleteImage({
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="delete-image-name">Blobnamn</label>
+          <Label htmlFor="delete-image-name">Blobnamn</Label>
 
-          <input
+          <Input
             id="delete-image-name"
             type="text"
             value={blobName}
@@ -75,9 +70,9 @@ export default function DeleteImage({
           />
         </div>
 
-        <button type="submit" disabled={loading || !blobName.trim()}>
+        <Button variant="destructive" type="submit" disabled={loading || !blobName.trim()}>
           {loading ? "Raderar..." : "Radera bild"}
-        </button>
+        </Button>
       </form>
 
       {error && <p role="alert">{error}</p>}

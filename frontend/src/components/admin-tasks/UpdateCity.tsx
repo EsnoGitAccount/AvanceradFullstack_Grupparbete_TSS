@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
 import { useRef, useState, type SubmitEvent } from "react";
 import type { AdminCity } from "@/models/AdminModels";
 import { updateCity } from "@/services/AdminService";
@@ -105,7 +108,7 @@ export default function UpdateCity({ cities, onCityUpdated }: UpdateCityProps) {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="update-city-select">Stad</label>
+          <Label htmlFor="update-city-select">Stad</Label>
 
           <select
             id="update-city-select"
@@ -127,9 +130,9 @@ export default function UpdateCity({ cities, onCityUpdated }: UpdateCityProps) {
         </div>
 
         <div>
-          <label htmlFor="update-city-name">Namn</label>
+          <Label htmlFor="update-city-name">Namn</Label>
 
-          <input
+          <Input
             id="update-city-name"
             type="text"
             value={name}
@@ -143,9 +146,9 @@ export default function UpdateCity({ cities, onCityUpdated }: UpdateCityProps) {
         </div>
 
         <div>
-          <label htmlFor="update-city-picture">Ny bild (valfri)</label>
+          <Label htmlFor="update-city-picture">Ny bild (valfri)</Label>
 
-          <input
+          <Input
             ref={fileInputRef}
             id="update-city-picture"
             type="file"
@@ -157,12 +160,12 @@ export default function UpdateCity({ cities, onCityUpdated }: UpdateCityProps) {
           />
         </div>
 
-        <button type="submit" disabled={loading || !selectedCityId}>
+        <Button type="submit" disabled={loading || !selectedCityId}>
           {loading ? "Uppdaterar..." : "Uppdatera stad"}
-        </button>
+        </Button>
       </form>
 
-      {cities.length === 0 && <p>Hämta stadslistan först.</p>}
+      {cities.length === 0 && <p>Det finns inga städer.</p>}
 
       {error && <p role="alert">{error}</p>}
 

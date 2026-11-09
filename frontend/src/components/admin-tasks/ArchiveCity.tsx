@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
 import { useState, type SubmitEvent } from "react";
 import type { AdminCity } from "@/models/AdminModels";
 import { archiveCity } from "@/services/AdminService";
@@ -33,12 +35,6 @@ export default function ArchiveCity({
       return;
     }
 
-    const confirmed = window.confirm(`Vill du arkivera ${selectedCity.name}?`);
-
-    if (!confirmed) {
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -63,7 +59,7 @@ export default function ArchiveCity({
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="archive-city-select">Aktiv stad</label>
+          <Label htmlFor="archive-city-select">Aktiv stad</Label>
 
           <select
             id="archive-city-select"
@@ -85,12 +81,12 @@ export default function ArchiveCity({
           </select>
         </div>
 
-        <button type="submit" disabled={loading || !selectedCityId}>
+        <Button variant="destructive" type="submit" disabled={loading || !selectedCityId}>
           {loading ? "Arkiverar..." : "Arkivera stad"}
-        </button>
+        </Button>
       </form>
 
-      {cities.length === 0 && <p>Hämta stadslistan först.</p>}
+      {cities.length === 0 && <p>Det finns inga städer.</p>}
 
       {cities.length > 0 && activeCities.length === 0 && (
         <p>Det finns inga aktiva städer att arkivera.</p>

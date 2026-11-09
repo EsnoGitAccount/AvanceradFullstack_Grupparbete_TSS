@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
 import { useState, type SubmitEvent } from "react";
 import type { AdminUser } from "@/models/AdminModels";
 import { restoreUser } from "@/services/AdminService";
@@ -59,7 +61,7 @@ export default function RestoreUser({
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="restore-user-select">Arkiverad användare</label>
+          <Label htmlFor="restore-user-select">Arkiverad användare</Label>
 
           <select
             id="restore-user-select"
@@ -81,12 +83,12 @@ export default function RestoreUser({
           </select>
         </div>
 
-        <button type="submit" disabled={loading || !selectedUserId}>
+        <Button type="submit" disabled={loading || !selectedUserId}>
           {loading ? "Återställer..." : "Återställ användare"}
-        </button>
+        </Button>
       </form>
 
-      {users.length === 0 && <p>Hämta användarlistan först.</p>}
+      {users.length === 0 && <p>Det finns inga användare.</p>}
 
       {users.length > 0 && archivedUsers.length === 0 && (
         <p>Det finns inga arkiverade användare att återställa.</p>

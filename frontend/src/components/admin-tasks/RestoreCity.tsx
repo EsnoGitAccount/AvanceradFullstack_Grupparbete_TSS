@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
 import { useState, type SubmitEvent } from "react";
 import type { AdminCity } from "@/models/AdminModels";
 import { restoreCity } from "@/services/AdminService";
@@ -59,7 +61,7 @@ export default function RestoreCity({
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="restore-city-select">Arkiverad stad</label>
+          <Label htmlFor="restore-city-select">Arkiverad stad</Label>
 
           <select
             id="restore-city-select"
@@ -81,12 +83,12 @@ export default function RestoreCity({
           </select>
         </div>
 
-        <button type="submit" disabled={loading || !selectedCityId}>
+        <Button type="submit" disabled={loading || !selectedCityId}>
           {loading ? "Återställer..." : "Återställ stad"}
-        </button>
+        </Button>
       </form>
 
-      {cities.length === 0 && <p>Hämta stadslistan först.</p>}
+      {cities.length === 0 && <p>Det finns inga städer.</p>}
 
       {cities.length > 0 && archivedCities.length === 0 && (
         <p>Det finns inga arkiverade städer att återställa.</p>

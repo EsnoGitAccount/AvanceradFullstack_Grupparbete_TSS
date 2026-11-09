@@ -11,7 +11,7 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div>Laddar...</div>;
+    return <div></div>;
   }
 
   if (!user) {

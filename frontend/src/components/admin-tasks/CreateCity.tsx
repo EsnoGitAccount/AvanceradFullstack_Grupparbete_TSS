@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
 import { useState, type SubmitEvent } from "react";
 import type { AdminCity } from "@/models/AdminModels";
 import { createCity } from "@/services/AdminService";
@@ -78,9 +81,9 @@ export default function CreateCity({ onCityCreated }: CreateCityProps) {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="create-city-name">Namn</label>
+          <Label htmlFor="create-city-name">Namn</Label>
 
-          <input
+          <Input
             id="create-city-name"
             type="text"
             value={name}
@@ -93,9 +96,9 @@ export default function CreateCity({ onCityCreated }: CreateCityProps) {
         </div>
 
         <div>
-          <label htmlFor="create-city-picture">Bild</label>
+          <Label htmlFor="create-city-picture">Bild</Label>
 
-          <input
+          <Input
             id="create-city-picture"
             type="file"
             accept="image/jpeg,image/png,image/webp"
@@ -106,9 +109,9 @@ export default function CreateCity({ onCityCreated }: CreateCityProps) {
           />
         </div>
 
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           {loading ? "Skapar..." : "Skapa stad"}
-        </button>
+        </Button>
       </form>
 
       {error && <p role="alert">{error}</p>}

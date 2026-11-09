@@ -24,9 +24,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         initAuth();
     }, []);
 
-    const login = async (credentials: LoginCredentials) => {
+    const login = async (credentials: LoginCredentials): Promise<UserDto> => {
         const loggedInUser = await authService.login(credentials);
         setUser(loggedInUser);
+        return loggedInUser;
     };
 
     const logout = async () => {

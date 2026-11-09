@@ -16,7 +16,7 @@ export type LoginCredentials = {
 export interface AuthContextType {
   user: UserDto | null;
   loading: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
+  login: (credentials: LoginCredentials) => Promise<UserDto>;
   logout: () => Promise<void>;
   register:(registerData:RegisterDto)=>Promise<void>
 }

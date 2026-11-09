@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
 import { useRef, useState, type SubmitEvent } from "react";
 import { uploadImage } from "@/services/AdminService";
 
@@ -66,9 +69,9 @@ export default function UploadImage({ onImageUploaded }: UploadImageProps) {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="upload-image-file">Bild</label>
+          <Label htmlFor="upload-image-file">Bild</Label>
 
-          <input
+          <Input
             ref={fileInputRef}
             id="upload-image-file"
             type="file"
@@ -82,9 +85,9 @@ export default function UploadImage({ onImageUploaded }: UploadImageProps) {
           />
         </div>
 
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           {loading ? "Laddar upp..." : "Ladda upp bild"}
-        </button>
+        </Button>
       </form>
 
       {error && <p role="alert">{error}</p>}

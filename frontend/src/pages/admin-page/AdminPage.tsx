@@ -1,26 +1,25 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
+import { Button } from "@/components/ui/Button";
+import TrainLoading from "@/components/train-loading/TrainLoading";
+import { useAdminData } from "@/hooks/useAdminData";
+import { getAdminCities, getAdminUsers, getAdminGames } from "@/services/AdminService";
 import { useAuth } from "../../context/auth/UseAuth";
 import type {
   AdminCity,
-  AdminGameResult,
-  AdminUser,
   CityQuestionsUpdate,
 } from "@/models/AdminModels";
-import ListAdminCities from "../../components/admin-tasks/ListAdminCities";
 import CreateCity from "../../components/admin-tasks/CreateCity";
 import UpdateCity from "../../components/admin-tasks/UpdateCity";
 import ArchiveCity from "../../components/admin-tasks/ArchiveCity";
 import RestoreCity from "../../components/admin-tasks/RestoreCity";
 import GetCityQuestions from "../../components/admin-tasks/GetCityQuestions";
 import UpdateCityQuestions from "../../components/admin-tasks/UpdateCityQuestions";
-import ListAdminUsers from "../../components/admin-tasks/ListAdminUsers";
 import ArchiveUser from "../../components/admin-tasks/ArchiveUser";
 import RestoreUser from "../../components/admin-tasks/RestoreUser";
-import ListAdminGames from "../../components/admin-tasks/ListAdminGames";
 import DeleteGame from "../../components/admin-tasks/DeleteGame";
 import UploadImage from "../../components/admin-tasks/UploadImage";
 import DeleteImage from "../../components/admin-tasks/DeleteImage";
-import "./AdminTestPage.css";
+import "./AdminPage.css";
 
 const adminTabs = [
   { id: "cities", label: "Städer" },
@@ -32,18 +31,45 @@ const adminTabs = [
 
 type AdminTab = (typeof adminTabs)[number]["id"];
 
-export default function AdminTestPage() {
+function AdminDataState({ loading, error, retry, children }: {
+  loading: boolean;
+  error: string | null;
+  retry: () => void;
+  children: ReactNode;
+}) {
+  if (loading) {
+    return (
+      <div className="admin-page__loading">
+        <TrainLoading label="Laddar administrationsdata" />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="admin-page__load-error">
+        <p role="alert">{error}</p>
+        <Button type="button" onClick={retry}>Försök igen</Button>
+      </div>
+    );
+  }
+  return children;
+}
+
+export default function AdminPage() {
   const { user } = useAuth();
 
   const [activeTab, setActiveTab] = useState<AdminTab>("cities");
 
-  const [users, setUsers] = useState<AdminUser[]>([]);
+  const usersData = useAdminData(getAdminUsers);
+  const { data: users, setData: setUsers } = usersData;
 
-  const [cities, setCities] = useState<AdminCity[]>([]);
+  const citiesData = useAdminData(getAdminCities);
+  const { data: cities, setData: setCities } = citiesData;
 
   const [questionCityId, setQuestionCityId] = useState<number | null>(null);
 
-  const [games, setGames] = useState<AdminGameResult[]>([]);
+  const gamesData = useAdminData(getAdminGames);
+  const { data: games, setData: setGames } = gamesData;
 
   const [imageBlobName, setImageBlobName] = useState("");
 
@@ -120,10 +146,7 @@ export default function AdminTestPage() {
     <div className="admin-page">
       <header className="admin-page__header">
         <h1>Administration</h1>
-
         <p>Inloggad som: {user?.username}</p>
-
-        <p className="admin-page__warning">Ändringar sparas direkt.</p>
       </header>
 
       <div className="admin-page__tabs" role="tablist" aria-label="Adminområden">
@@ -152,27 +175,25 @@ export default function AdminTestPage() {
       >
         <h2>Städer</h2>
 
-        <div className="admin-page__grid">
-          <div className="admin-page__fetch admin-page__fetch--wide">
-            <ListAdminCities cities={cities} onCitiesLoaded={setCities} />
-          </div>
+        <AdminDataState {...citiesData}>
+          <div className="admin-page__grid">
+            <div className="admin-page__card">
+              <CreateCity onCityCreated={handleCityCreated} />
+            </div>
 
-          <div className="admin-page__card">
-            <CreateCity onCityCreated={handleCityCreated} />
-          </div>
+            <div className="admin-page__card">
+              <UpdateCity cities={cities} onCityUpdated={handleCityUpdated} />
+            </div>
 
-          <div className="admin-page__card">
-            <UpdateCity cities={cities} onCityUpdated={handleCityUpdated} />
-          </div>
+            <div className="admin-page__card admin-page__card--destructive">
+              <ArchiveCity cities={cities} onCityArchived={handleCityArchived} />
+            </div>
 
-          <div className="admin-page__card admin-page__card--destructive">
-            <ArchiveCity cities={cities} onCityArchived={handleCityArchived} />
+            <div className="admin-page__card admin-page__card--success">
+              <RestoreCity cities={cities} onCityRestored={handleCityRestored} />
+            </div>
           </div>
-
-          <div className="admin-page__card admin-page__card--success">
-            <RestoreCity cities={cities} onCityRestored={handleCityRestored} />
-          </div>
-        </div>
+        </AdminDataState>
       </section>
 
       <section
@@ -184,25 +205,27 @@ export default function AdminTestPage() {
       >
         <h2>Frågor</h2>
 
-        <div className="admin-page__grid">
-          <div className="admin-page__card admin-page__card--wide admin-page__card--results">
-            <GetCityQuestions
-              cities={cities}
-              loadedCityId={questionCityId}
-              questions={cityQuestions}
-              onQuestionsLoaded={handleQuestionsLoaded}
-            />
-          </div>
+        <AdminDataState {...citiesData}>
+          <div className="admin-page__grid">
+            <div className="admin-page__card admin-page__card--wide admin-page__card--results">
+              <GetCityQuestions
+                cities={cities}
+                loadedCityId={questionCityId}
+                questions={cityQuestions}
+                onQuestionsLoaded={handleQuestionsLoaded}
+              />
+            </div>
 
-          <div className="admin-page__card admin-page__card--wide admin-page__card--editor">
-            <UpdateCityQuestions
-              cityId={questionCityId}
-              questions={questionDraft}
-              onQuestionsChange={setQuestionDraft}
-              onQuestionsSaved={handleQuestionsLoaded}
-            />
+            <div className="admin-page__card admin-page__card--wide admin-page__card--editor">
+              <UpdateCityQuestions
+                cityId={questionCityId}
+                questions={questionDraft}
+                onQuestionsChange={setQuestionDraft}
+                onQuestionsSaved={handleQuestionsLoaded}
+              />
+            </div>
           </div>
-        </div>
+        </AdminDataState>
       </section>
 
       <section
@@ -214,19 +237,17 @@ export default function AdminTestPage() {
       >
         <h2>Användare</h2>
 
-        <div className="admin-page__grid">
-          <div className="admin-page__fetch admin-page__fetch--wide">
-            <ListAdminUsers users={users} onUsersLoaded={setUsers} />
-          </div>
+        <AdminDataState {...usersData}>
+          <div className="admin-page__grid">
+            <div className="admin-page__card admin-page__card--destructive">
+              <ArchiveUser users={users} onUserArchived={handleUserArchived} />
+            </div>
 
-          <div className="admin-page__card admin-page__card--destructive">
-            <ArchiveUser users={users} onUserArchived={handleUserArchived} />
+            <div className="admin-page__card admin-page__card--success">
+              <RestoreUser users={users} onUserRestored={handleUserRestored} />
+            </div>
           </div>
-
-          <div className="admin-page__card admin-page__card--success">
-            <RestoreUser users={users} onUserRestored={handleUserRestored} />
-          </div>
-        </div>
+        </AdminDataState>
       </section>
 
       <section
@@ -238,15 +259,13 @@ export default function AdminTestPage() {
       >
         <h2>Spelresultat</h2>
 
-        <div className="admin-page__grid">
-          <div className="admin-page__fetch admin-page__fetch--wide">
-            <ListAdminGames games={games} onGamesLoaded={setGames} />
+        <AdminDataState {...gamesData}>
+          <div className="admin-page__grid">
+            <div className="admin-page__card admin-page__card--destructive">
+              <DeleteGame games={games} onGameDeleted={handleGameDeleted} />
+            </div>
           </div>
-
-          <div className="admin-page__card admin-page__card--destructive">
-            <DeleteGame games={games} onGameDeleted={handleGameDeleted} />
-          </div>
-        </div>
+        </AdminDataState>
       </section>
 
       <section

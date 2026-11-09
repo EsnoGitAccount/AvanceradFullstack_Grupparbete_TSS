@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
 import { useState, type SubmitEvent } from "react";
 import type { AdminUser } from "@/models/AdminModels";
 import { archiveUser } from "@/services/AdminService";
@@ -33,15 +35,6 @@ export default function ArchiveUser({
       return;
     }
 
-    const confirmed = window.confirm(
-      `Vill du arkivera ${selectedUser.username} ` +
-        `(ID ${selectedUser.userId})? Användaren kommer inte längre kunna logga in.`,
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -68,7 +61,7 @@ export default function ArchiveUser({
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="archive-user-select">Aktiv användare</label>
+          <Label htmlFor="archive-user-select">Aktiv användare</Label>
 
           <select
             id="archive-user-select"
@@ -90,12 +83,12 @@ export default function ArchiveUser({
           </select>
         </div>
 
-        <button type="submit" disabled={loading || !selectedUserId}>
+        <Button variant="destructive" type="submit" disabled={loading || !selectedUserId}>
           {loading ? "Arkiverar..." : "Arkivera användare"}
-        </button>
+        </Button>
       </form>
 
-      {users.length === 0 && <p>Hämta användarlistan först.</p>}
+      {users.length === 0 && <p>Det finns inga användare.</p>}
 
       {users.length > 0 && activeUsers.length === 0 && (
         <p>Det finns inga aktiva användare att arkivera.</p>
