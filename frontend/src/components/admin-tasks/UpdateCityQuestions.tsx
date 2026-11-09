@@ -62,13 +62,13 @@ export default function UpdateCityQuestions({
       questions: questions.questions.map((question) =>
         question.questionId === questionId
           ? {
-              ...question,
-              options: question.options.map((option) =>
-                option.optionId === optionId
-                  ? { ...option, optionText }
-                  : option,
-              ),
-            }
+            ...question,
+            options: question.options.map((option) =>
+              option.optionId === optionId
+                ? { ...option, optionText }
+                : option,
+            ),
+          }
           : question,
       ),
     });
@@ -88,13 +88,13 @@ export default function UpdateCityQuestions({
       questions: questions.questions.map((question) =>
         question.questionId === questionId
           ? {
-              ...question,
-              options: question.options.map((option) => ({
-                ...option,
-                isCorrect:
-                  option.optionId === correctOptionId,
-              })),
-            }
+            ...question,
+            options: question.options.map((option) => ({
+              ...option,
+              isCorrect:
+                option.optionId === correctOptionId,
+            })),
+          }
           : question,
       ),
     });

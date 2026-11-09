@@ -30,12 +30,6 @@
   font-size: clamp(1.8rem, 4vw, 2.5rem);
 }
 
-.admin-page__warning {
-  margin-top: 0.8rem !important;
-  color: var(--destructive);
-  font-weight: 650;
-}
-
 .admin-page__tabs {
   margin-bottom: 1.5rem;
   display: flex;
@@ -59,7 +53,7 @@
   border: 1px solid transparent;
   border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: color 150ms ease, background-color 150ms ease, transform 150ms ease;
+  transition: color 150ms ease, background-color 150ms ease;
 }
 
 .admin-page__tab:hover {
@@ -222,7 +216,6 @@
   margin-top: 0.45rem;
 }
 
-.admin-page__card--results > div > ul,
 .admin-page__card--results > div > div:last-child {
   max-height: 24rem;
   overflow: auto;
@@ -273,20 +266,6 @@
   }
 }
 
-@media (max-width: 640px) {
-  .admin-page__card {
-    padding: 1rem;
-  }
-
-  .admin-page__card--editor fieldset > div:not(:first-of-type) {
-    grid-template-columns: auto 1fr;
-  }
-
-  .admin-page__card--editor fieldset > div:not(:first-of-type) input[type="text"] {
-    grid-column: 1 / -1;
-  }
-}
-
 .admin-page__card [data-slot="button"] {
   min-height: 2.5rem;
   width: fit-content;
@@ -297,8 +276,20 @@
 }
 
 @media (max-width: 640px) {
+  .admin-page__card {
+    padding: 1rem;
+  }
+
   .admin-page__card [data-slot="button"] {
     width: 100%;
+  }
+
+  .admin-page__card--editor fieldset > div:not(:first-of-type) {
+    grid-template-columns: auto 1fr;
+  }
+
+  .admin-page__card--editor fieldset > div:not(:first-of-type) input[type="text"] {
+    grid-column: 1 / -1;
   }
 }
 
