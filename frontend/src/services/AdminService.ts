@@ -1,5 +1,6 @@
 import api from "./api";
 import type {
+  CityContentCreate,
   AdminCity,
   AdminGameResult,
   AdminUser,
@@ -108,4 +109,12 @@ export const deleteImage = async (blobName: string): Promise<void> => {
   const encodedBlobName = encodeURIComponent(blobName);
 
   await api.delete(`/api/image/${encodedBlobName}`);
+};
+
+export const createCityContent = async (
+  cityId: number,
+  content: CityContentCreate,
+): Promise<CityQuestionsUpdate> => {
+  const response = await api.post<CityQuestionsUpdate>(`/api/cities/${cityId}/content`, content);
+  return response.data;
 };

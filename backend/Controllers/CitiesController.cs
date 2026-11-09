@@ -75,6 +75,15 @@ namespace Backend.Controllers
             return Ok(updatedCity);
         }
 
+        [HttpPost("{cityId:int}/content")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult<CityQuestionsUpdateDto>> CreateCityContent(int cityId, [FromBody] CityContentCreateDto createDto)
+        {
+            var questions = await _cityService.CreateCityContentAsync(cityId, createDto);
+            return Ok(questions);
+        }
+
         [HttpPut("{cityId:int}/questions")]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]

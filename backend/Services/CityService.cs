@@ -247,14 +247,85 @@ namespace Backend.Services
             return (await _cityRepository.GetAllCitiesAsync()).Count();
         }
 
+        public async Task<CityQuestionsUpdateDto> CreateCityContentAsync(int cityId, CityContentCreateDto createDto)
+        {
+            var city = await _cityRepository.GetCityWithQuestionsAsync(cityId) ??
+                throw new NotFoundException("City not found");
+
+            if (city.Questions.Count > 0 || city.Clues.Count > 0)
+            {
+                throw new ConflictException("City already has questions or clues.");
+            }
+
+            if (createDto.Questions == null || createDto.Questions.Count != 2 ||
+                createDto.Questions.Any(question => question == null ||
+                    string.IsNullOrWhiteSpace(question.QuestionText) ||
+                    question.Options == null || question.Options.Count != 4 ||
+                    question.Options.Any(option => option == null || string.IsNullOrWhiteSpace(option.OptionText)) ||
+                    question.Options.Count(option => option.IsCorrect) != 1))
+            {
+                throw new AppValidationException("Provide two questions with four nonempty answers each and exactly one correct answer per question.");
+            }
+
+            if (createDto.Clues == null || createDto.Clues.Count != 5 ||
+                createDto.Clues.Any(string.IsNullOrWhiteSpace))
+            {
+                throw new AppValidationException("Provide five nonempty clues.");
+            }
+
+            city.Questions = createDto.Questions.Select(question => new Question
+            {
+                CityId = cityId,
+                QuestionText = question.QuestionText.Trim(),
+                Options = question.Options.Select(option => new Option
+                {
+                    OptionText = option.OptionText.Trim(),
+                    IsCorrect = option.IsCorrect
+                }).ToList()
+            }).ToList();
+
+            city.Clues = createDto.Clues.Select((text, index) => new Clue
+            {
+                CityId = cityId,
+                ClueText = text.Trim(),
+                Point = 10 - index * 2
+            }).ToList();
+
+            if (!await _cityRepository.SaveChangesAsync())
+            {
+                throw new InvalidOperationException("Failed to create city content");
+            }
+
+            return MapToCityQuestionsUpdateDto(city);
+        }
+
         public async Task UpdateCityQuestionsAsync(int cityId, CityQuestionsUpdateDto updateDto)
         {
             var city = await _cityRepository.GetCityWithQuestionsAsync(cityId) ??
                 throw new NotFoundException("City not found");
 
             ValidateCityQuestions(city, updateDto);
+            if (updateDto.Clues != null)
+            {
+                var clueIds = updateDto.Clues.Select(clue => clue?.ClueId).ToList();
+                if (updateDto.Clues.Count != city.Clues.Count ||
+                    updateDto.Clues.Any(clue => clue == null || string.IsNullOrWhiteSpace(clue.ClueText)) ||
+                    clueIds.Distinct().Count() != clueIds.Count ||
+                    !city.Clues.All(clue => clueIds.Contains(clue.ClueId)))
+                {
+                    throw new AppValidationException("Include every existing clue exactly once with nonempty text.");
+                }
+            }
 
             ApplyQuestionUpdates(city, updateDto);
+            if (updateDto.Clues != null)
+            {
+                foreach (var draft in updateDto.Clues)
+                {
+                    var clue = city.Clues.Single(clue => clue.ClueId == draft.ClueId);
+                    clue.ClueText = draft.ClueText.Trim();
+                }
+            }
 
             var saved = await _cityRepository.SaveChangesAsync();
 
@@ -370,6 +441,13 @@ namespace Backend.Services
         {
             return new CityQuestionsUpdateDto
             {
+                ClueCount = city.Clues.Count,
+                Clues = city.Clues.OrderByDescending(clue => clue.Point).Select(clue => new ClueUpdateDto
+                {
+                    ClueId = clue.ClueId,
+                    ClueText = clue.ClueText,
+                    Point = clue.Point
+                }).ToList(),
                 Questions = city.Questions
                     .OrderBy(question => question.QuestionId)
                     .Select(question => new QuestionUpdateDto

@@ -302,3 +302,10 @@
   color: var(--destructive);
   margin: 0;
 }
+
+.admin-page__card .admin-page__clues,
+.admin-page__clues > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem;
+}

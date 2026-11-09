@@ -65,6 +65,7 @@ namespace Backend.Repositories
             return await _context.Cities
                 .Include(city => city.Questions)
                 .ThenInclude(question => question.Options)
+                .Include(city => city.Clues)
                 .FirstOrDefaultAsync(city => city.CityId == cityId);
         }
 

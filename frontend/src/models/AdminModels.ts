@@ -22,6 +22,8 @@ export type AdminGameResult = {
 };
 
 export type CityQuestionsUpdate = {
+  clueCount?: number;
+  clues?: { clueId: number; clueText: string; point: number }[];
   questions: QuestionUpdate[];
 };
 
@@ -39,4 +41,12 @@ export type OptionUpdate = {
 
 export type ImageUploadResult = {
   blobName: string;
+};
+
+export type CityContentCreate = {
+  questions: {
+    questionText: string;
+    options: { optionText: string; isCorrect: boolean }[];
+  }[];
+  clues: string[];
 };

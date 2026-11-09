@@ -54,7 +54,7 @@ export default function GetCityQuestions({
 
   return (
     <div>
-      <h3>Hämta stadens frågor</h3>
+      <h3>Hämta stadens frågor & ledtrådar</h3>
 
       <div>
         <Label htmlFor="questions-city-select">Stad</Label>
@@ -84,7 +84,7 @@ export default function GetCityQuestions({
         onClick={handleLoadQuestions}
         disabled={disabled || loading || !selectedCityId}
       >
-        {loading ? "Hämtar..." : "Hämta frågor"}
+        {loading ? "Hämtar..." : "Hämta frågor & ledtrådar"}
       </Button>
 
       {cities.length === 0 && <p>Det finns inga städer.</p>}

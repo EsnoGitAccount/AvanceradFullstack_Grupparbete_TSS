@@ -8,6 +8,7 @@ import type {
   AdminCity,
   CityQuestionsUpdate,
 } from "@/models/AdminModels";
+import CreateCityContent from "../../components/admin-tasks/CreateCityContent";
 import CreateCity from "../../components/admin-tasks/CreateCity";
 import UpdateCity from "../../components/admin-tasks/UpdateCity";
 import ArchiveCity from "../../components/admin-tasks/ArchiveCity";
@@ -23,7 +24,7 @@ import "./AdminPage.css";
 
 const adminTabs = [
   { id: "cities", label: "Städer" },
-  { id: "questions", label: "Frågor" },
+  { id: "questions", label: "Frågor & ledtrådar" },
   { id: "users", label: "Användare" },
   { id: "games", label: "Spelresultat" },
   { id: "images", label: "Bilder" },
@@ -129,8 +130,9 @@ export default function AdminPage() {
 
   const handleQuestionsSaved = (cityId: number, questions: CityQuestionsUpdate) => {
     setQuestionCityId(cityId);
-    setCityQuestions(questions);
-    setQuestionDraft(structuredClone(questions));
+    const savedQuestions = { ...questions, clueCount: questions.clueCount ?? cityQuestions?.clueCount };
+    setCityQuestions(savedQuestions);
+    setQuestionDraft(structuredClone(savedQuestions));
   };
 
   const handleUserArchived = (userId: number) => {
@@ -216,7 +218,7 @@ export default function AdminPage() {
         aria-labelledby="admin-tab-questions"
         hidden={activeTab !== "questions"}
       >
-        <h2>Frågor</h2>
+        <h2>Frågor &amp; ledtrådar</h2>
 
         <AdminDataState {...citiesData}>
           <div className="admin-page__grid">
@@ -230,17 +232,30 @@ export default function AdminPage() {
             </div>
 
             <div className="admin-page__card admin-page__card--wide admin-page__card--editor">
-              <UpdateCityQuestions
-                key={questionRevision}
-                cityId={questionCityId}
-                cityName={cities.find((city) => city.cityId === questionCityId)?.name}
-                busy={questionsBusy}
-                dirty={questionsDirty}
-                onLoadingChange={setQuestionsBusy}
-                questions={questionDraft}
-                onQuestionsChange={setQuestionDraft}
-                onQuestionsSaved={handleQuestionsSaved}
-              />
+              {questionCityId !== null && cityQuestions?.questions.length === 0 && cityQuestions.clueCount === 0 ? (
+                <CreateCityContent
+                  key={questionRevision}
+                  cityId={questionCityId}
+                  cityName={cities.find((city) => city.cityId === questionCityId)?.name}
+                  busy={questionsBusy}
+                  onLoadingChange={setQuestionsBusy}
+                  onContentCreated={handleQuestionsLoaded}
+                />
+              ) : cityQuestions?.questions.length === 0 ? (
+                <p>Staden har ofullständigt innehåll. Nytt innehåll kan bara skapas för en stad utan frågor och ledtrådar.</p>
+              ) : (
+                <UpdateCityQuestions
+                  key={questionRevision}
+                  cityId={questionCityId}
+                  cityName={cities.find((city) => city.cityId === questionCityId)?.name}
+                  busy={questionsBusy}
+                  dirty={questionsDirty}
+                  onLoadingChange={setQuestionsBusy}
+                  questions={questionDraft}
+                  onQuestionsChange={setQuestionDraft}
+                  onQuestionsSaved={handleQuestionsSaved}
+                />
+              )}
             </div>
           </div>
         </AdminDataState>
