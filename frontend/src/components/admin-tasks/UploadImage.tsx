@@ -1,3 +1,4 @@
+import { allowedImageTypes, maxImageSize } from "@/constants/imageValidation";
 import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
@@ -9,10 +10,6 @@ type UploadImageProps = {
   onLoadingChange: (loading: boolean) => void;
   onImageUploaded: (blobName: string) => void;
 };
-
-const allowedImageTypes = ["image/jpeg", "image/png", "image/webp"];
-
-const maxImageSize = 5 * 1024 * 1024;
 
 export default function UploadImage({ onImageUploaded, busy, onLoadingChange }: UploadImageProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);

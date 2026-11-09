@@ -130,9 +130,8 @@ export default function AdminPage() {
 
   const handleQuestionsSaved = (cityId: number, questions: CityQuestionsUpdate) => {
     setQuestionCityId(cityId);
-    const savedQuestions = { ...questions, clueCount: questions.clueCount ?? cityQuestions?.clueCount };
-    setCityQuestions(savedQuestions);
-    setQuestionDraft(structuredClone(savedQuestions));
+    setCityQuestions(questions);
+    setQuestionDraft(structuredClone(questions));
   };
 
   const handleUserArchived = (userId: number) => {
@@ -232,17 +231,16 @@ export default function AdminPage() {
             </div>
 
             <div className="admin-page__card admin-page__card--wide admin-page__card--editor">
-              {questionCityId !== null && cityQuestions?.questions.length === 0 && cityQuestions.clueCount === 0 ? (
+              {questionCityId !== null && cityQuestions && (cityQuestions.questions.length !== 2 || cityQuestions.clues.length !== 5 || cityQuestions.questions.some((question) => question.options.length !== 4)) ? (
                 <CreateCityContent
                   key={questionRevision}
                   cityId={questionCityId}
+                  initialContent={cityQuestions}
                   cityName={cities.find((city) => city.cityId === questionCityId)?.name}
                   busy={questionsBusy}
                   onLoadingChange={setQuestionsBusy}
                   onContentCreated={handleQuestionsLoaded}
                 />
-              ) : cityQuestions?.questions.length === 0 ? (
-                <p>Staden har ofullständigt innehåll. Nytt innehåll kan bara skapas för en stad utan frågor och ledtrådar.</p>
               ) : (
                 <UpdateCityQuestions
                   key={questionRevision}

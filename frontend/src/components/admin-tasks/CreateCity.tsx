@@ -1,3 +1,4 @@
+import { allowedImageTypes, maxImageSize } from "@/constants/imageValidation";
 import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
@@ -8,10 +9,6 @@ import { createCity } from "@/services/AdminService";
 type CreateCityProps = {
   onCityCreated: (city: AdminCity) => void;
 };
-
-const allowedImageTypes = ["image/jpeg", "image/png", "image/webp"];
-
-const maxImageSize = 5 * 1024 * 1024;
 
 export default function CreateCity({ onCityCreated }: CreateCityProps) {
   const [name, setName] = useState("");

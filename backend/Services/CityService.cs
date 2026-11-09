@@ -247,16 +247,8 @@ namespace Backend.Services
             return (await _cityRepository.GetAllCitiesAsync()).Count();
         }
 
-        public async Task<CityQuestionsUpdateDto> CreateCityContentAsync(int cityId, CityContentCreateDto createDto)
+        public async Task<CityQuestionsEditDto> CreateCityContentAsync(int cityId, CityContentCreateDto createDto)
         {
-            var city = await _cityRepository.GetCityWithQuestionsAsync(cityId) ??
-                throw new NotFoundException("City not found");
-
-            if (city.Questions.Count > 0 || city.Clues.Count > 0)
-            {
-                throw new ConflictException("City already has questions or clues.");
-            }
-
             if (createDto.Questions == null || createDto.Questions.Count != 2 ||
                 createDto.Questions.Any(question => question == null ||
                     string.IsNullOrWhiteSpace(question.QuestionText) ||
@@ -273,30 +265,48 @@ namespace Backend.Services
                 throw new AppValidationException("Provide five nonempty clues.");
             }
 
-            city.Questions = createDto.Questions.Select(question => new Question
+            return await _cityRepository.WithCityContentTransactionAsync(cityId, async city =>
             {
-                CityId = cityId,
-                QuestionText = question.QuestionText.Trim(),
-                Options = question.Options.Select(option => new Option
+                if (city.Questions.Count == 2 && city.Clues.Count == 5 &&
+                    city.Questions.All(question => question.Options.Count == 4))
                 {
-                    OptionText = option.OptionText.Trim(),
-                    IsCorrect = option.IsCorrect
-                }).ToList()
-            }).ToList();
+                    throw new ConflictException("City content is already complete. Reload the city to edit it.");
+                }
+                if (city.Questions.Count > 2 || city.Clues.Count > 5 ||
+                    city.Questions.Any(question => question.Options.Count > 4))
+                {
+                    throw new AppValidationException("City contains excess records that must be corrected before setup.");
+                }
 
-            city.Clues = createDto.Clues.Select((text, index) => new Clue
-            {
-                CityId = cityId,
-                ClueText = text.Trim(),
-                Point = 10 - index * 2
-            }).ToList();
+                var existingQuestions = city.Questions.OrderBy(question => question.QuestionId).ToList();
+                for (var index = 0; index < 2; index++)
+                {
+                    var draft = createDto.Questions[index];
+                    var question = index < existingQuestions.Count ? existingQuestions[index] : new Question { CityId = cityId };
+                    question.QuestionText = draft.QuestionText.Trim();
+                    var existingOptions = question.Options.OrderBy(option => option.OptionId).ToList();
+                    for (var optionIndex = 0; optionIndex < 4; optionIndex++)
+                    {
+                        var option = optionIndex < existingOptions.Count ? existingOptions[optionIndex] : new Option();
+                        option.OptionText = draft.Options[optionIndex].OptionText.Trim();
+                        option.IsCorrect = draft.Options[optionIndex].IsCorrect;
+                        if (optionIndex >= existingOptions.Count) question.Options.Add(option);
+                    }
+                    if (index >= existingQuestions.Count) city.Questions.Add(question);
+                }
 
-            if (!await _cityRepository.SaveChangesAsync())
-            {
-                throw new InvalidOperationException("Failed to create city content");
-            }
+                var existingClues = city.Clues.OrderByDescending(clue => clue.Point).ThenBy(clue => clue.ClueId).ToList();
+                for (var index = 0; index < 5; index++)
+                {
+                    var clue = index < existingClues.Count ? existingClues[index] : new Clue { CityId = cityId };
+                    clue.ClueText = createDto.Clues[index].Trim();
+                    clue.Point = 10 - index * 2;
+                    if (index >= existingClues.Count) city.Clues.Add(clue);
+                }
 
-            return MapToCityQuestionsUpdateDto(city);
+                await _cityRepository.SaveChangesAsync();
+                return MapToCityQuestionsEditDto(city);
+            });
         }
 
         public async Task UpdateCityQuestionsAsync(int cityId, CityQuestionsUpdateDto updateDto)
@@ -305,6 +315,10 @@ namespace Backend.Services
                 throw new NotFoundException("City not found");
 
             ValidateCityQuestions(city, updateDto);
+            if (updateDto.Clues == null)
+            {
+                throw new AppValidationException("Clues are required.");
+            }
             if (updateDto.Clues != null)
             {
                 var clueIds = updateDto.Clues.Select(clue => clue?.ClueId).ToList();
@@ -327,12 +341,8 @@ namespace Backend.Services
                 }
             }
 
-            var saved = await _cityRepository.SaveChangesAsync();
-
-            if (!saved)
-            {
-                throw new InvalidOperationException("Failed to update city questions");
-            }
+            // No changed rows is valid when the submitted text only differs in whitespace.
+            await _cityRepository.SaveChangesAsync();
         }
 
         private static void ApplyQuestionUpdates(City city, CityQuestionsUpdateDto updateDto)
@@ -429,20 +439,19 @@ namespace Backend.Services
             }
         }
 
-        public async Task<CityQuestionsUpdateDto> GetCityQuestionsForEditAsync(int cityId)
+        public async Task<CityQuestionsEditDto> GetCityQuestionsForEditAsync(int cityId)
         {
             var city = await _cityRepository.GetCityWithQuestionsAsync(cityId) ??
                 throw new NotFoundException("City not found");
 
-            return MapToCityQuestionsUpdateDto(city);
+            return MapToCityQuestionsEditDto(city);
         }
 
-        private static CityQuestionsUpdateDto MapToCityQuestionsUpdateDto(City city)
+        private static CityQuestionsEditDto MapToCityQuestionsEditDto(City city)
         {
-            return new CityQuestionsUpdateDto
+            return new CityQuestionsEditDto
             {
-                ClueCount = city.Clues.Count,
-                Clues = city.Clues.OrderByDescending(clue => clue.Point).Select(clue => new ClueUpdateDto
+                Clues = city.Clues.OrderByDescending(clue => clue.Point).Select(clue => new ClueEditDto
                 {
                     ClueId = clue.ClueId,
                     ClueText = clue.ClueText,

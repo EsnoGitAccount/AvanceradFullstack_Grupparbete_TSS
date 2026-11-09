@@ -24,7 +24,9 @@ namespace Backend.Services
 
             if (challenge != null)
             {
-                if (challenge.City.IsArchived)
+                if (challenge.City.IsArchived || challenge.City.Questions.Count != 2 || challenge.City.Clues.Count != 5 ||
+                    challenge.City.Questions.Any(question => question.Options.Count != 4 ||
+                        question.Options.Count(option => option.IsCorrect) != 1))
                 {
                     throw new ConflictException("This challenge is currently unavailable.");
                 }

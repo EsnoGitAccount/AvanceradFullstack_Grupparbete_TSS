@@ -137,9 +137,7 @@
 
 .admin-page__card h3,
 .admin-page__card h4,
-.admin-page__card p,
-.admin-page__card ul,
-.admin-page__card ol {
+.admin-page__card p {
   margin: 0;
 }
 
@@ -209,15 +207,6 @@
 .admin-page__card [role="status"] {
   background: var(--secondary);
   border: 1px solid var(--border);
-}
-
-.admin-page__card ul,
-.admin-page__card ol {
-  padding-left: 1.3rem;
-}
-
-.admin-page__card li + li {
-  margin-top: 0.45rem;
 }
 
 .admin-page__card fieldset {

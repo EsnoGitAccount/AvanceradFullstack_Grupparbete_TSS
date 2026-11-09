@@ -156,14 +156,14 @@ export default function UpdateCityQuestions({
       return;
     }
 
-    if (questions.clues?.some((clue) => !clue.clueText.trim())) {
+    if (questions.clues.some((clue) => !clue.clueText.trim())) {
       setError('Ledtrådar får inte vara tomma.');
       return;
     }
 
     const payload: CityQuestionsUpdate = {
       ...questions,
-      clues: questions.clues?.map((clue) => ({ ...clue, clueText: clue.clueText.trim() })),
+      clues: questions.clues.map((clue) => ({ ...clue, clueText: clue.clueText.trim() })),
       questions: questions.questions.map((question) => ({
         ...question,
         questionText: question.questionText.trim(),
@@ -277,24 +277,22 @@ export default function UpdateCityQuestions({
           </fieldset>
         ))}
 
-        {questions.clues && (
-          <div className="admin-page__clues">
-            <h4>Ledtrådar</h4>
-            {questions.clues.map((clue) => (
-              <div key={clue.clueId}>
-                <Label htmlFor={`edit-clue-${clue.clueId}`}>Ledtråd för {clue.point} poäng</Label>
-                <Input id={`edit-clue-${clue.clueId}`} value={clue.clueText} required disabled={busy || loading}
-                  onChange={(event) => {
-                    onQuestionsChange({ ...questions, clues: questions.clues?.map((item) =>
-                      item.clueId === clue.clueId ? { ...item, clueText: event.target.value } : item) });
-                    setSaved(false);
-                    setError(null);
-                  }} />
-              </div>
-            ))}
-            {questions.clues.length === 0 && <p>Staden har inga ledtrådar.</p>}
-          </div>
-        )}
+        <div className="admin-page__clues">
+          <h4>Ledtrådar</h4>
+          {questions.clues.map((clue) => (
+            <div key={clue.clueId}>
+              <Label htmlFor={`edit-clue-${clue.clueId}`}>Ledtråd för {clue.point} poäng</Label>
+              <Input id={`edit-clue-${clue.clueId}`} value={clue.clueText} required disabled={busy || loading}
+                onChange={(event) => {
+                  onQuestionsChange({ ...questions, clues: questions.clues.map((item) =>
+                    item.clueId === clue.clueId ? { ...item, clueText: event.target.value } : item) });
+                  setSaved(false);
+                  setError(null);
+                }} />
+            </div>
+          ))}
+          {questions.clues.length === 0 && <p>Staden har inga ledtrådar.</p>}
+        </div>
 
         <Button type="submit" disabled={busy || loading || !dirty || questions.questions.length === 0}>
           {loading ? 'Sparar...' : 'Spara frågor & ledtrådar'}

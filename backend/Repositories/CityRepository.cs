@@ -1,4 +1,6 @@
-﻿using Backend.Data;
+﻿using System.Data;
+using Backend.Exceptions;
+using Backend.Data;
 using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,21 @@ namespace Backend.Repositories
             await _context.Cities.AddAsync(city);
         }
 
+        public async Task<T> WithCityContentTransactionAsync<T>(int cityId, Func<City, Task<T>> action)
+        {
+            var strategy = _context.Database.CreateExecutionStrategy();
+            return await strategy.ExecuteAsync(async () =>
+            {
+                // A retry must reload the city rather than reuse an earlier tracked draft.
+                _context.ChangeTracker.Clear();
+                await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+                var city = await GetCityWithQuestionsAsync(cityId) ?? throw new NotFoundException("City not found");
+                var result = await action(city);
+                await transaction.CommitAsync();
+                return result;
+            });
+        }
+
         public void DeleteCity(City city)
         {
             _context.Cities.Remove(city);
@@ -34,7 +51,9 @@ namespace Backend.Repositories
         public async Task<List<int>> GetActiveCityIdsAsync()
         {
             return await _context.Cities
-                .Where(city => !city.IsArchived)
+                .Where(city => !city.IsArchived && city.Questions.Count == 2 && city.Clues.Count == 5 &&
+                    city.Questions.All(question => question.Options.Count == 4 &&
+                        question.Options.Count(option => option.IsCorrect) == 1))
                 .OrderBy(city => city.CityId)
                 .Select(city => city.CityId)
                 .ToListAsync();

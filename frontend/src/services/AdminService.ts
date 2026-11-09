@@ -61,6 +61,9 @@ export const getCityQuestions = async (
     `/api/cities/${cityId}/questions`,
   );
 
+  if (!Array.isArray(response.data.questions) || !Array.isArray(response.data.clues)) {
+    throw new Error("Kunde inte ladda stadens frågor och ledtrådar. Försök igen.");
+  }
   return response.data;
 };
 
@@ -68,7 +71,10 @@ export const updateCityQuestions = async (
   cityId: number,
   questions: CityQuestionsUpdate,
 ): Promise<void> => {
-  await api.put(`/api/cities/${cityId}/questions`, questions);
+  await api.put(`/api/cities/${cityId}/questions`, {
+    questions: questions.questions,
+    clues: questions.clues.map(({ clueId, clueText }) => ({ clueId, clueText })),
+  });
 };
 
 export const getAdminUsers = async (): Promise<AdminUser[]> => {

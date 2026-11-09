@@ -8,6 +8,7 @@ import { createCityContent } from "@/services/AdminService";
 type CreateCityContentProps = {
   cityId: number;
   cityName?: string;
+  initialContent: CityQuestionsUpdate;
   busy: boolean;
   onLoadingChange: (loading: boolean) => void;
   onContentCreated: (cityId: number, questions: CityQuestionsUpdate) => void;
@@ -16,16 +17,23 @@ type CreateCityContentProps = {
 export default function CreateCityContent({
   cityId,
   cityName,
+  initialContent,
   busy,
   onLoadingChange,
   onContentCreated,
 }: CreateCityContentProps) {
   const [content, setContent] = useState<CityContentCreate>(() => ({
-    questions: Array.from({ length: 2 }, () => ({
-      questionText: "",
-      options: Array.from({ length: 4 }, () => ({ optionText: "", isCorrect: false })),
-    })),
-    clues: Array.from({ length: 5 }, () => ""),
+    questions: Array.from({ length: 2 }, (_, questionIndex) => {
+      const question = initialContent.questions[questionIndex];
+      return {
+        questionText: question?.questionText ?? "",
+        options: Array.from({ length: 4 }, (_, optionIndex) => ({
+          optionText: question?.options[optionIndex]?.optionText ?? "",
+          isCorrect: question?.options[optionIndex]?.isCorrect ?? false,
+        })),
+      };
+    }),
+    clues: Array.from({ length: 5 }, (_, index) => initialContent.clues[index]?.clueText ?? ""),
   }));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +42,12 @@ export default function CreateCityContent({
     event.preventDefault();
     if (busy || loading) return;
     setError(null);
+
+    if (initialContent.questions.length > 2 || initialContent.clues.length > 5 ||
+      initialContent.questions.some((question) => question.options.length > 4)) {
+      setError("Staden har för många frågor, svar eller ledtrådar. Befintliga poster behöver korrigeras först.");
+      return;
+    }
 
     if (content.questions.some((question) => !question.questionText.trim() ||
       question.options.some((option) => !option.optionText.trim())) ||

@@ -22,8 +22,7 @@ export type AdminGameResult = {
 };
 
 export type CityQuestionsUpdate = {
-  clueCount?: number;
-  clues?: { clueId: number; clueText: string; point: number }[];
+  clues: { clueId: number; clueText: string; point: number }[];
   questions: QuestionUpdate[];
 };
 
