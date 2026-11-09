@@ -15,13 +15,15 @@ namespace Backend.Services
 		private readonly IDailyChallengeRepository _dailyChallengeRepository;
 		private readonly IUserRepository _userRepository;
 		private readonly IDataProtector _guestCookieProtector;
+		private readonly IAchievementService _achievementService;
 
-		public GameService(IGameRepository gameRepository, IDailyChallengeRepository dailyChallengeRepository, IUserRepository userRepository, IDataProtectionProvider protectionProvider)
+		public GameService(IGameRepository gameRepository, IDailyChallengeRepository dailyChallengeRepository, IUserRepository userRepository, IDataProtectionProvider protectionProvider, IAchievementService achievementService)
 		{
 			_gameRepository = gameRepository;
 			_dailyChallengeRepository = dailyChallengeRepository;
 			_userRepository = userRepository;
 			_guestCookieProtector = protectionProvider.CreateProtector("GuestDailyGameLimit");
+			_achievementService = achievementService;
 		}
 		public async Task<int> CreateGameAsync(GameDto gameDto)
 		{
@@ -68,8 +70,19 @@ namespace Backend.Services
 				var user = await _userRepository.GetUserByIdAsync(game.UserId.Value);
 				if (user != null)
 				{
-					await SetStreakForUserAsync(user);
-				}
+                    await SetStreakForUserAsync(user);
+
+                    var games = await _gameRepository.GetGamesForUserAsync(user.Id);
+                    user.TotalScore = games.Sum(g => g.TotalScore);
+
+                    var hasVisitedMora = todaysChallenge.City.Name == "Mora";
+
+                    var newAchievements =
+                        await _achievementService.CheckAchievementsAsync(
+                            user, hasVisitedMora);
+
+                    await _gameRepository.SaveChangesAsync();
+                }
 			}
 
 			return createdGame.GameId;
