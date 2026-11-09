@@ -68,13 +68,15 @@ namespace Backend.Tests.Services
         }
 
         // @Esbjörn Please add tests for getting and setting streaks here using interrupted streaks/gaps and existing streaks
-        [Fact]
-        public async Task SetStreakForUserAsync_IfUserPlayedYesterday_AddOneToCurrentStreakAndReturnIt()
+        [Theory]
+        [InlineData(true, 6)]
+        [InlineData(false, 1)]
+        public async Task SetStreakForUserAsync_IfUserPlayedYesterday_AddOneToCurrentStreakAndReturnIt(bool userPlayedYesterday, int expectedStreak)
         {
             // Assign
             var todaysDate = DateOnly.FromDateTime(DateTime.Today);
 
-            // Create user
+            // Create user and game data
             var testUser = new User
             {
                 Id = 1,
@@ -114,9 +116,18 @@ namespace Backend.Tests.Services
                 ChallangeDate = todaysDate
             };
 
-            _mockGameRepo.Setup(repo => repo.GetUserPlayedYesterdayAsync(testUser.Id)).ReturnsAsync(true);
+            // Configure mocks
+            _mockGameRepo.Setup(repo => repo.GetUserPlayedYesterdayAsync(testUser.Id)).ReturnsAsync(userPlayedYesterday);
             _mockGameRepo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
-            _mockGameRepo.Setup(repo => repo.CreateGameAsync(testGame)).ReturnsAsync(testGame);
+            _userMockRepo.Setup(repo => repo.GetUserByIdAsync(testUser.Id)).ReturnsAsync(testUser);
+            _mockGameRepo
+                .Setup(repo => repo.CreateGameAsync(It.Is<Game>(game =>
+                    game.UserName == testUser.UserName &&
+                    game.UserId == testUser.Id &&
+                    game.CompletedAt == todaysDate &&
+                    game.DailyChallangeId == testDailyChallenge.DailyChallangeId &&
+                    game.TotalScore == 26)))
+                .ReturnsAsync(testGame);
 
             _userMockRepo.Setup(repo => repo.UpdateUserStreakAsync(testUser, 5)).ReturnsAsync(true);
 
@@ -133,7 +144,7 @@ namespace Backend.Tests.Services
             _userMockRepo.Verify(
                     repo => repo.UpdateUserStreakAsync(
                         testUser,
-                        5
+                        expectedStreak
                     ),
                     Times.Once
                 );
