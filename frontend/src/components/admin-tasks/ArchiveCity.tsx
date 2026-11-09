@@ -22,6 +22,7 @@ export default function ArchiveCity({
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading) return;
 
     setError(null);
     setArchivedCityName(null);
@@ -62,6 +63,7 @@ export default function ArchiveCity({
           <Label htmlFor="archive-city-select">Aktiv stad</Label>
 
           <select
+            disabled={loading}
             id="archive-city-select"
             value={selectedCityId}
             onChange={(event) => {

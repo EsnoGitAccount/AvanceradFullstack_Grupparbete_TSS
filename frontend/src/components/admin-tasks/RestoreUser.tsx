@@ -22,6 +22,7 @@ export default function RestoreUser({
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading) return;
 
     setError(null);
     setRestoredUsername(null);
@@ -64,6 +65,7 @@ export default function RestoreUser({
           <Label htmlFor="restore-user-select">Arkiverad användare</Label>
 
           <select
+            disabled={loading}
             id="restore-user-select"
             value={selectedUserId}
             onChange={(event) => {

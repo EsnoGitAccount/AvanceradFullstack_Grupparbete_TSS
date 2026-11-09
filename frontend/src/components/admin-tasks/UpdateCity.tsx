@@ -43,6 +43,7 @@ export default function UpdateCity({ cities, onCityUpdated }: UpdateCityProps) {
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading) return;
 
     const trimmedName = name.trim();
 
@@ -111,6 +112,7 @@ export default function UpdateCity({ cities, onCityUpdated }: UpdateCityProps) {
           <Label htmlFor="update-city-select">Stad</Label>
 
           <select
+            disabled={loading}
             id="update-city-select"
             value={selectedCityId}
             onChange={(event) => {
@@ -140,7 +142,7 @@ export default function UpdateCity({ cities, onCityUpdated }: UpdateCityProps) {
             onChange={(event) => {
               setName(event.target.value);
             }}
-            disabled={!selectedCityId}
+            disabled={loading || !selectedCityId}
             required
           />
         </div>
@@ -153,7 +155,7 @@ export default function UpdateCity({ cities, onCityUpdated }: UpdateCityProps) {
             id="update-city-picture"
             type="file"
             accept="image/jpeg,image/png,image/webp"
-            disabled={!selectedCityId}
+            disabled={loading || !selectedCityId}
             onChange={(event) => {
               setCityPicture(event.target.files?.[0] ?? null);
             }}

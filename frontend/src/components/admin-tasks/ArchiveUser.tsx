@@ -22,6 +22,7 @@ export default function ArchiveUser({
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading) return;
 
     setError(null);
     setArchivedUsername(null);
@@ -64,6 +65,7 @@ export default function ArchiveUser({
           <Label htmlFor="archive-user-select">Aktiv användare</Label>
 
           <select
+            disabled={loading}
             id="archive-user-select"
             value={selectedUserId}
             onChange={(event) => {

@@ -6,15 +6,15 @@ import { getCityQuestions } from "@/services/AdminService";
 
 type GetCityQuestionsProps = {
   cities: AdminCity[];
-  loadedCityId: number | null;
-  questions: CityQuestionsUpdate | null;
+  disabled: boolean;
+  onLoadingChange: (loading: boolean) => void;
   onQuestionsLoaded: (cityId: number, questions: CityQuestionsUpdate) => void;
 };
 
 export default function GetCityQuestions({
   cities,
-  loadedCityId,
-  questions,
+  disabled,
+  onLoadingChange,
   onQuestionsLoaded,
 }: GetCityQuestionsProps) {
   const [selectedCityId, setSelectedCityId] = useState("");
@@ -22,6 +22,7 @@ export default function GetCityQuestions({
   const [error, setError] = useState<string | null>(null);
 
   const handleLoadQuestions = async () => {
+    if (disabled || loading) return;
     setError(null);
 
     if (!selectedCityId) {
@@ -32,6 +33,7 @@ export default function GetCityQuestions({
     const cityId = Number(selectedCityId);
 
     setLoading(true);
+    onLoadingChange(true);
 
     try {
       const loadedQuestions = await getCityQuestions(cityId);
@@ -46,19 +48,19 @@ export default function GetCityQuestions({
       setError(message);
     } finally {
       setLoading(false);
+      onLoadingChange(false);
     }
   };
 
-  const loadedCity = cities.find((city) => city.cityId === loadedCityId);
-
   return (
     <div>
-      <h3>Visa stadens frågor</h3>
+      <h3>Hämta stadens frågor</h3>
 
       <div>
         <Label htmlFor="questions-city-select">Stad</Label>
 
         <select
+          disabled={disabled || loading}
           id="questions-city-select"
           value={selectedCityId}
           onChange={(event) => {
@@ -80,7 +82,7 @@ export default function GetCityQuestions({
       <Button
         type="button"
         onClick={handleLoadQuestions}
-        disabled={loading || !selectedCityId}
+        disabled={disabled || loading || !selectedCityId}
       >
         {loading ? "Hämtar..." : "Hämta frågor"}
       </Button>
@@ -88,35 +90,6 @@ export default function GetCityQuestions({
       {cities.length === 0 && <p>Det finns inga städer.</p>}
 
       {error && <p role="alert">{error}</p>}
-
-      {questions && loadedCityId !== null && (
-        <div>
-          <h4>Frågor för {loadedCity?.name ?? `stad ${loadedCityId}`}</h4>
-
-          {questions.questions.length === 0 ? (
-            <p>Staden har inga frågor.</p>
-          ) : (
-            <ol>
-              {questions.questions.map((question) => (
-                <li key={question.questionId}>
-                  <p>Fråga-ID: {question.questionId}</p>
-
-                  <p>{question.questionText}</p>
-
-                  <ul>
-                    {question.options.map((option) => (
-                      <li key={option.optionId}>
-                        ID: {option.optionId} - {option.optionText} -{" "}
-                        {option.isCorrect ? "Rätt svar" : "Fel svar"}
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ol>
-          )}
-        </div>
-      )}
     </div>
   );
 }

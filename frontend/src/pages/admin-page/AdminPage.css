@@ -117,6 +117,10 @@
   grid-column: 1 / -1;
 }
 
+.admin-page__card--compact {
+  min-height: auto;
+}
+
 .admin-page__card--destructive {
   --admin-card-accent: var(--destructive);
 }
@@ -214,11 +218,6 @@
 
 .admin-page__card li + li {
   margin-top: 0.45rem;
-}
-
-.admin-page__card--results > div > div:last-child {
-  max-height: 24rem;
-  overflow: auto;
 }
 
 .admin-page__card fieldset {

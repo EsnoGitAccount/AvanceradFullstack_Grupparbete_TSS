@@ -22,6 +22,7 @@ export default function CreateCity({ onCityCreated }: CreateCityProps) {
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading) return;
 
     const form = event.currentTarget;
     const trimmedName = name.trim();
@@ -84,6 +85,7 @@ export default function CreateCity({ onCityCreated }: CreateCityProps) {
           <Label htmlFor="create-city-name">Namn</Label>
 
           <Input
+            disabled={loading}
             id="create-city-name"
             type="text"
             value={name}
@@ -99,6 +101,7 @@ export default function CreateCity({ onCityCreated }: CreateCityProps) {
           <Label htmlFor="create-city-picture">Bild</Label>
 
           <Input
+            disabled={loading}
             id="create-city-picture"
             type="file"
             accept="image/jpeg,image/png,image/webp"

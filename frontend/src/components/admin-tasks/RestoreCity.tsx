@@ -22,6 +22,7 @@ export default function RestoreCity({
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading) return;
 
     setError(null);
     setRestoredCityName(null);
@@ -64,6 +65,7 @@ export default function RestoreCity({
           <Label htmlFor="restore-city-select">Arkiverad stad</Label>
 
           <select
+            disabled={loading}
             id="restore-city-select"
             value={selectedCityId}
             onChange={(event) => {

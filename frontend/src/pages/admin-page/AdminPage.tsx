@@ -71,6 +71,10 @@ export default function AdminPage() {
   const gamesData = useAdminData(getAdminGames);
   const { data: games, setData: setGames } = gamesData;
 
+  const [questionsBusy, setQuestionsBusy] = useState(false);
+  const [questionRevision, setQuestionRevision] = useState(0);
+  const [imageBusy, setImageBusy] = useState(false);
+
   const [imageBlobName, setImageBlobName] = useState("");
 
   const handleImageDeleted = () => {
@@ -115,9 +119,23 @@ export default function AdminPage() {
     cityId: number,
     questions: CityQuestionsUpdate,
   ) => {
+    setQuestionRevision((revision) => revision + 1);
     setQuestionCityId(cityId);
     setCityQuestions(questions);
     setQuestionDraft(structuredClone(questions));
+  };
+
+  const questionsDirty = JSON.stringify(questionDraft) !== JSON.stringify(cityQuestions);
+
+  const handleQuestionsSaved = (cityId: number, questions: CityQuestionsUpdate) => {
+    setQuestionCityId(cityId);
+    setCityQuestions(questions);
+    setQuestionDraft(structuredClone(questions));
+  };
+
+  const handleDiscardQuestions = () => {
+    setQuestionDraft(cityQuestions ? structuredClone(cityQuestions) : null);
+    setQuestionRevision((revision) => revision + 1);
   };
 
   const handleUserArchived = (userId: number) => {
@@ -207,21 +225,27 @@ export default function AdminPage() {
 
         <AdminDataState {...citiesData}>
           <div className="admin-page__grid">
-            <div className="admin-page__card admin-page__card--wide admin-page__card--results">
+            <div className="admin-page__card admin-page__card--wide admin-page__card--compact">
               <GetCityQuestions
                 cities={cities}
-                loadedCityId={questionCityId}
-                questions={cityQuestions}
+                disabled={questionsBusy || questionsDirty}
+                onLoadingChange={setQuestionsBusy}
                 onQuestionsLoaded={handleQuestionsLoaded}
               />
             </div>
 
             <div className="admin-page__card admin-page__card--wide admin-page__card--editor">
               <UpdateCityQuestions
+                key={questionRevision}
                 cityId={questionCityId}
+                cityName={cities.find((city) => city.cityId === questionCityId)?.name}
+                busy={questionsBusy}
+                dirty={questionsDirty}
+                onLoadingChange={setQuestionsBusy}
+                onDiscard={handleDiscardQuestions}
                 questions={questionDraft}
                 onQuestionsChange={setQuestionDraft}
-                onQuestionsSaved={handleQuestionsLoaded}
+                onQuestionsSaved={handleQuestionsSaved}
               />
             </div>
           </div>
@@ -279,11 +303,13 @@ export default function AdminPage() {
 
         <div className="admin-page__grid">
           <div className="admin-page__card">
-            <UploadImage onImageUploaded={setImageBlobName} />
+            <UploadImage onImageUploaded={setImageBlobName} busy={imageBusy} onLoadingChange={setImageBusy} />
           </div>
 
           <div className="admin-page__card admin-page__card--destructive">
             <DeleteImage
+              busy={imageBusy}
+              onLoadingChange={setImageBusy}
               blobName={imageBlobName}
               onBlobNameChange={setImageBlobName}
               onImageDeleted={handleImageDeleted}

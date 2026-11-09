@@ -4,12 +4,16 @@ import { Input } from "@/components/ui/Input";
 import { useState, type SubmitEvent } from 'react';
 import type { CityQuestionsUpdate } from '@/models/AdminModels';
 import {
-  getCityQuestions,
   updateCityQuestions,
 } from '@/services/AdminService';
 
 type UpdateCityQuestionsProps = {
   cityId: number | null;
+  cityName?: string;
+  busy: boolean;
+  dirty: boolean;
+  onLoadingChange: (loading: boolean) => void;
+  onDiscard: () => void;
   questions: CityQuestionsUpdate | null;
   onQuestionsChange: (
     questions: CityQuestionsUpdate,
@@ -22,6 +26,11 @@ type UpdateCityQuestionsProps = {
 
 export default function UpdateCityQuestions({
   cityId,
+  cityName,
+  busy,
+  dirty,
+  onLoadingChange,
+  onDiscard,
   questions,
   onQuestionsChange,
   onQuestionsSaved,
@@ -47,6 +56,7 @@ export default function UpdateCityQuestions({
     });
 
     setSaved(false);
+    setError(null);
   };
 
   const handleOptionTextChange = (
@@ -74,6 +84,7 @@ export default function UpdateCityQuestions({
     });
 
     setSaved(false);
+    setError(null);
   };
 
   const handleCorrectOptionChange = (
@@ -100,12 +111,14 @@ export default function UpdateCityQuestions({
     });
 
     setSaved(false);
+    setError(null);
   };
 
   const handleSubmit = async (
     event: SubmitEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
+    if (busy || loading || !dirty) return;
 
     setError(null);
     setSaved(false);
@@ -142,15 +155,23 @@ export default function UpdateCityQuestions({
       return;
     }
 
+    const payload: CityQuestionsUpdate = {
+      questions: questions.questions.map((question) => ({
+        ...question,
+        questionText: question.questionText.trim(),
+        options: question.options.map((option) => ({
+          ...option,
+          optionText: option.optionText.trim(),
+        })),
+      })),
+    };
+
     setLoading(true);
+    onLoadingChange(true);
 
     try {
-      await updateCityQuestions(cityId, questions);
-
-      const refreshedQuestions =
-        await getCityQuestions(cityId);
-
-      onQuestionsSaved(cityId, refreshedQuestions);
+      await updateCityQuestions(cityId, payload);
+      onQuestionsSaved(cityId, payload);
       setSaved(true);
     } catch (error) {
       const message =
@@ -161,6 +182,7 @@ export default function UpdateCityQuestions({
       setError(message);
     } finally {
       setLoading(false);
+      onLoadingChange(false);
     }
   };
 
@@ -177,9 +199,12 @@ export default function UpdateCityQuestions({
     <div>
       <h3>Uppdatera frågor</h3>
 
+      <p>{cityName ?? `Stad ${cityId}`}</p>
+      {questions.questions.length === 0 && <p>Staden har inga frågor.</p>}
+      {dirty && <p>Osparade ändringar. Spara eller ångra innan du hämtar frågor igen.</p>}
       <form onSubmit={handleSubmit}>
         {questions.questions.map((question) => (
-          <fieldset key={question.questionId}>
+          <fieldset key={question.questionId} disabled={busy || loading}>
             <legend>
               Fråga {question.questionId}
             </legend>
@@ -244,8 +269,11 @@ export default function UpdateCityQuestions({
           </fieldset>
         ))}
 
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={busy || loading || !dirty || questions.questions.length === 0}>
           {loading ? 'Sparar...' : 'Spara frågor'}
+        </Button>
+        <Button type="button" variant="outline" disabled={busy || loading || !dirty} onClick={onDiscard}>
+          Ångra ändringar
         </Button>
       </form>
 

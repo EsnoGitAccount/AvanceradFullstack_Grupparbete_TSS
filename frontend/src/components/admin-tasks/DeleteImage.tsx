@@ -5,12 +5,16 @@ import { useState, type SubmitEvent } from "react";
 import { deleteImage } from "@/services/AdminService";
 
 type DeleteImageProps = {
+  busy: boolean;
+  onLoadingChange: (loading: boolean) => void;
   blobName: string;
   onBlobNameChange: (blobName: string) => void;
   onImageDeleted: () => void;
 };
 
 export default function DeleteImage({
+  busy,
+  onLoadingChange,
   blobName,
   onBlobNameChange,
   onImageDeleted,
@@ -21,6 +25,7 @@ export default function DeleteImage({
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading || busy) return;
 
     const trimmedBlobName = blobName.trim();
 
@@ -33,6 +38,7 @@ export default function DeleteImage({
     }
 
     setLoading(true);
+    onLoadingChange(true);
 
     try {
       await deleteImage(trimmedBlobName);
@@ -46,6 +52,7 @@ export default function DeleteImage({
       setError(message);
     } finally {
       setLoading(false);
+      onLoadingChange(false);
     }
   };
 
@@ -58,6 +65,7 @@ export default function DeleteImage({
           <Label htmlFor="delete-image-name">Blobnamn</Label>
 
           <Input
+            disabled={busy || loading}
             id="delete-image-name"
             type="text"
             value={blobName}
@@ -70,7 +78,7 @@ export default function DeleteImage({
           />
         </div>
 
-        <Button variant="destructive" type="submit" disabled={loading || !blobName.trim()}>
+        <Button variant="destructive" type="submit" disabled={busy || loading || !blobName.trim()}>
           {loading ? "Raderar..." : "Radera bild"}
         </Button>
       </form>

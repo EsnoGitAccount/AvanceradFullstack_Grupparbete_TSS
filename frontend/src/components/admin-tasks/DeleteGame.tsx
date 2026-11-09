@@ -17,6 +17,7 @@ export default function DeleteGame({ games, onGameDeleted }: DeleteGameProps) {
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading) return;
 
     setError(null);
     setDeletedGameId(null);
@@ -59,6 +60,7 @@ export default function DeleteGame({ games, onGameDeleted }: DeleteGameProps) {
           <Label htmlFor="delete-game-select">Spelresultat</Label>
 
           <select
+            disabled={loading}
             id="delete-game-select"
             value={selectedGameId}
             onChange={(event) => {

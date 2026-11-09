@@ -5,6 +5,8 @@ import { useRef, useState, type SubmitEvent } from "react";
 import { uploadImage } from "@/services/AdminService";
 
 type UploadImageProps = {
+  busy: boolean;
+  onLoadingChange: (loading: boolean) => void;
   onImageUploaded: (blobName: string) => void;
 };
 
@@ -12,7 +14,7 @@ const allowedImageTypes = ["image/jpeg", "image/png", "image/webp"];
 
 const maxImageSize = 5 * 1024 * 1024;
 
-export default function UploadImage({ onImageUploaded }: UploadImageProps) {
+export default function UploadImage({ onImageUploaded, busy, onLoadingChange }: UploadImageProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [file, setFile] = useState<File | null>(null);
@@ -22,6 +24,7 @@ export default function UploadImage({ onImageUploaded }: UploadImageProps) {
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading || busy) return;
 
     setError(null);
     setUploadedBlobName(null);
@@ -42,6 +45,7 @@ export default function UploadImage({ onImageUploaded }: UploadImageProps) {
     }
 
     setLoading(true);
+    onLoadingChange(true);
 
     try {
       const result = await uploadImage(file);
@@ -60,6 +64,7 @@ export default function UploadImage({ onImageUploaded }: UploadImageProps) {
       setError(message);
     } finally {
       setLoading(false);
+      onLoadingChange(false);
     }
   };
 
@@ -72,6 +77,7 @@ export default function UploadImage({ onImageUploaded }: UploadImageProps) {
           <Label htmlFor="upload-image-file">Bild</Label>
 
           <Input
+            disabled={busy || loading}
             ref={fileInputRef}
             id="upload-image-file"
             type="file"
@@ -85,7 +91,7 @@ export default function UploadImage({ onImageUploaded }: UploadImageProps) {
           />
         </div>
 
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={busy || loading}>
           {loading ? "Laddar upp..." : "Ladda upp bild"}
         </Button>
       </form>
