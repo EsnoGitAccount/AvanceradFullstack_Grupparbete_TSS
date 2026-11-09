@@ -133,11 +133,6 @@ export default function AdminPage() {
     setQuestionDraft(structuredClone(questions));
   };
 
-  const handleDiscardQuestions = () => {
-    setQuestionDraft(cityQuestions ? structuredClone(cityQuestions) : null);
-    setQuestionRevision((revision) => revision + 1);
-  };
-
   const handleUserArchived = (userId: number) => {
     setUsers((currentUsers) =>
       currentUsers.map((user) =>
@@ -228,7 +223,7 @@ export default function AdminPage() {
             <div className="admin-page__card admin-page__card--wide admin-page__card--compact">
               <GetCityQuestions
                 cities={cities}
-                disabled={questionsBusy || questionsDirty}
+                disabled={questionsBusy}
                 onLoadingChange={setQuestionsBusy}
                 onQuestionsLoaded={handleQuestionsLoaded}
               />
@@ -242,7 +237,6 @@ export default function AdminPage() {
                 busy={questionsBusy}
                 dirty={questionsDirty}
                 onLoadingChange={setQuestionsBusy}
-                onDiscard={handleDiscardQuestions}
                 questions={questionDraft}
                 onQuestionsChange={setQuestionDraft}
                 onQuestionsSaved={handleQuestionsSaved}

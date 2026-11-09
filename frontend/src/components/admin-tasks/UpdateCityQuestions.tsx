@@ -13,7 +13,6 @@ type UpdateCityQuestionsProps = {
   busy: boolean;
   dirty: boolean;
   onLoadingChange: (loading: boolean) => void;
-  onDiscard: () => void;
   questions: CityQuestionsUpdate | null;
   onQuestionsChange: (
     questions: CityQuestionsUpdate,
@@ -30,7 +29,6 @@ export default function UpdateCityQuestions({
   busy,
   dirty,
   onLoadingChange,
-  onDiscard,
   questions,
   onQuestionsChange,
   onQuestionsSaved,
@@ -201,7 +199,7 @@ export default function UpdateCityQuestions({
 
       <p>{cityName ?? `Stad ${cityId}`}</p>
       {questions.questions.length === 0 && <p>Staden har inga frågor.</p>}
-      {dirty && <p>Osparade ändringar. Spara eller ångra innan du hämtar frågor igen.</p>}
+      {dirty && <p>Osparade ändringar. Hämtar du frågor igen ersätts dina osparade ändringar.</p>}
       <form onSubmit={handleSubmit}>
         {questions.questions.map((question) => (
           <fieldset key={question.questionId} disabled={busy || loading}>
@@ -271,9 +269,6 @@ export default function UpdateCityQuestions({
 
         <Button type="submit" disabled={busy || loading || !dirty || questions.questions.length === 0}>
           {loading ? 'Sparar...' : 'Spara frågor'}
-        </Button>
-        <Button type="button" variant="outline" disabled={busy || loading || !dirty} onClick={onDiscard}>
-          Ångra ändringar
         </Button>
       </form>
 
