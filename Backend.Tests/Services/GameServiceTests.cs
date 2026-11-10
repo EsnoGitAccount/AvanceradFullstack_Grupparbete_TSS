@@ -3,6 +3,7 @@ using Backend.Dto;
 using Backend.Model;
 using Backend.Repositories.IRepositories;
 using Backend.Services;
+using Backend.Services.IServices;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,13 @@ namespace Backend.Tests.Services
         private readonly Mock<IGameRepository> _mockGameRepo;
         private readonly Mock<IDailyChallengeRepository> _dailyChallengeMockRepo;
         private readonly Mock<IUserRepository> _userMockRepo;
+        private readonly Mock<IAchievementService> achievementServiceMock;
         public GameServiceTests()
         {
             _mockGameRepo = new Mock<IGameRepository>();
             _dailyChallengeMockRepo = new Mock<IDailyChallengeRepository>();
             _userMockRepo = new Mock<IUserRepository>();
+            achievementServiceMock = new Mock<IAchievementService>();
         }
 
         [Fact]
@@ -52,10 +55,18 @@ namespace Backend.Tests.Services
 
             _mockGameRepo.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
 
-            var service = new GameService(_mockGameRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider());
+            var achievementServiceMock = new Mock<IAchievementService>();
+
+            achievementServiceMock.Setup(s => s.CheckAchievementsAsync(It.IsAny<User>(), It.IsAny<bool>()))
+                .ReturnsAsync(new List<AchievementDto>());
+
+            _mockGameRepo.Setup(r => r.GetGamesForUserAsync(It.IsAny<int>()))
+                .ReturnsAsync(new List<Game>());
+
+            var service = new GameService(_mockGameRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider(), achievementServiceMock.Object);
 
             // Act
-            var gameId = await service.CreateGameAsync(gameDto);
+            var result = await service.CreateGameAsync(gameDto);
 
             // Assert - verify mapping and that repo was called once
             _mockGameRepo.Verify(r => r.CreateGameAsync(It.Is<Game>(g =>
@@ -65,6 +76,9 @@ namespace Backend.Tests.Services
                 g.CompletedAt == gameDto.CompletedAt &&
                 g.DailyChallangeId == todaysChallenge.DailyChallangeId
             )), Times.Once);
+
+            Assert.Equal(1, result.GameId);
+            Assert.Empty(result.NewAchievements); // Assuming no achievements are unlocked in this test case
         }
 
         // @Esbjörn Please add tests for getting and setting streaks here using interrupted streaks/gaps and existing streaks
@@ -134,7 +148,7 @@ namespace Backend.Tests.Services
             _dailyChallengeMockRepo.Setup(repo => repo.GetChallengeForDate(todaysDate)).ReturnsAsync(testDailyChallenge);
 
             // Create Service
-            var service = new GameService(_mockGameRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider());
+            var service = new GameService(_mockGameRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider(), achievementServiceMock.Object);
 
             // Act
             await service.CreateGameAsync(testGameDto);
