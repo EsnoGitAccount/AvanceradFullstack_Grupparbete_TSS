@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/Label";
 import { useState, type SubmitEvent } from "react";
 import type { AdminGameResult } from "@/models/AdminModels";
 import { deleteGame } from "@/services/AdminService";
+import StaticMessage from "@/components/message/StaticMessage";
 
 type DeleteGameProps = {
   games: AdminGameResult[];
@@ -88,7 +89,7 @@ export default function DeleteGame({ games, onGameDeleted }: DeleteGameProps) {
 
       {games.length === 0 && <p>Det finns inga spelresultat.</p>}
 
-      {error && <p role="alert">{error}</p>}
+      {error && <StaticMessage type="error" message={error} />}
 
       {deletedGameId !== null && (
         <p role="status">Spelresultat med ID {deletedGameId} raderades.</p>
