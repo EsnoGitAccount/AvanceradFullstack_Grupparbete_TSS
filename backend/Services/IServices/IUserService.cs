@@ -7,7 +7,5 @@ namespace Backend.Services.IServices
         Task<IEnumerable<AdminUserDto>> GetRegularUsersAsync();
         Task ArchiveUserAsync(int userId);
         Task RestoreUserAsync(int userId);
-
-
     }
 }

@@ -247,15 +247,8 @@ namespace Backend.Services
 			return displayResults;
 		}
 
-		public async Task<int> GetStreakForUserAsync(int userId)
-		{
-			var user = await _userRepository.GetUserByIdAsync(userId);
-
-			return user?.CurrentStreak ?? 0;
-		}
-
-		public bool GuestUserHasPlayedToday(string? cookie)
-		{
+        public bool GuestUserHasPlayedToday(string? cookie)
+        {
 
 			if (string.IsNullOrEmpty(cookie))
 			{
@@ -281,25 +274,33 @@ namespace Backend.Services
 			return _guestCookieProtector.Protect(today);
 		}
 
-		private async Task<int> GetStreakForUserAsync(User user)
-		{
-			var playedYesterday = await _gameRepository.GetUserPlayedYesterdayAsync(user.Id);
+        private async Task<bool> DidUserPlayYesterdayAsync(User user)
+        {
+            var playedYesterday = await _gameRepository.GetUserPlayedYesterdayAsync(user.Id);
 
-			if (!playedYesterday)
-			{
-				return 1;
-			}
-			else
-			{
-				return user.CurrentStreak + 1;
-			}
-		}
+            if (!playedYesterday)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
-		private async Task SetStreakForUserAsync(User user)
-		{
-			var streak = await GetStreakForUserAsync(user);
-			await _userRepository.UpdateUserStreakAsync(user, streak);
-		}
+        private async Task SetStreakForUserAsync(User user)
+        {
+            var playedYesterday = await DidUserPlayYesterdayAsync(user);
+
+            if(playedYesterday == true)
+            {
+                await _userRepository.UpdateUserStreakAsync(user, user.CurrentStreak+1);
+            }
+            else
+            {
+                await _userRepository.UpdateUserStreakAsync(user, 1);
+            }
+        }
 
 		//Please note that is not used in the current implementation,probably we can remove it?
 		private GameDto MapGameToDto(Game game)
