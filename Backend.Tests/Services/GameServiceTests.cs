@@ -16,11 +16,13 @@ namespace Backend.Tests.Services
         private readonly Mock<IGameRepository> _mockGameRepo;
         private readonly Mock<IDailyChallengeRepository> _dailyChallengeMockRepo;
         private readonly Mock<IUserRepository> _userMockRepo;
+        private readonly Mock<IAchievementService> achievementServiceMock;
         public GameServiceTests()
         {
             _mockGameRepo = new Mock<IGameRepository>();
             _dailyChallengeMockRepo = new Mock<IDailyChallengeRepository>();
             _userMockRepo = new Mock<IUserRepository>();
+            achievementServiceMock = new Mock<IAchievementService>();
         }
 
         [Fact]
@@ -58,10 +60,10 @@ namespace Backend.Tests.Services
             achievementServiceMock.Setup(s => s.CheckAchievementsAsync(It.IsAny<User>(), It.IsAny<bool>()))
                 .ReturnsAsync(new List<AchievementDto>());
 
-            _mockRepo.Setup(r => r.GetGamesForUserAsync(It.IsAny<int>()))
+            _mockGameRepo.Setup(r => r.GetGamesForUserAsync(It.IsAny<int>()))
                 .ReturnsAsync(new List<Game>());
 
-            var service = new GameService(_mockRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider(), achievementServiceMock.Object);
+            var service = new GameService(_mockGameRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider(), achievementServiceMock.Object);
 
             // Act
             var result = await service.CreateGameAsync(gameDto);
@@ -146,7 +148,7 @@ namespace Backend.Tests.Services
             _dailyChallengeMockRepo.Setup(repo => repo.GetChallengeForDate(todaysDate)).ReturnsAsync(testDailyChallenge);
 
             // Create Service
-            var service = new GameService(_mockGameRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider());
+            var service = new GameService(_mockGameRepo.Object, _dailyChallengeMockRepo.Object, _userMockRepo.Object, new EphemeralDataProtectionProvider(), achievementServiceMock.Object);
 
             // Act
             await service.CreateGameAsync(testGameDto);
