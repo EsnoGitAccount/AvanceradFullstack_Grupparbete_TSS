@@ -47,7 +47,7 @@ namespace Backend.Controllers
                 return Problem(statusCode: StatusCodes.Status409Conflict, detail: "Guest users can only play once per day.");
             }
 
-            var gameId = await _gameService.CreateGameAsync(gameDto);
+            var result = await _gameService.CreateGameAsync(gameDto);
 
             if (gameDto.IsGuest)
             {
@@ -66,8 +66,9 @@ namespace Backend.Controllers
             return Ok(new
             {
                 Message = "Game data received successfully.",
-                gameId = gameId,
-                IsGuest = gameDto.IsGuest
+                gameId = result.GameId,
+                IsGuest = gameDto.IsGuest,
+                newAchievements = result.NewAchievements
             });
         }
 

@@ -25,7 +25,7 @@ namespace Backend.Services
 			_guestCookieProtector = protectionProvider.CreateProtector("GuestDailyGameLimit");
 			_achievementService = achievementService;
 		}
-		public async Task<int> CreateGameAsync(GameDto gameDto)
+		public async Task<CreateGameResponseDto> CreateGameAsync(GameDto gameDto)
 		{
 			var todaysChallenge = await _dailyChallengeRepository.GetChallengeForDate(DateOnly.FromDateTime(DateTime.UtcNow));
 
@@ -65,11 +65,15 @@ namespace Backend.Services
 				throw new InvalidOperationException("Failed to create game.");
 			}
 
-			if (game.UserId.HasValue)
-			{
-				var user = await _userRepository.GetUserByIdAsync(game.UserId.Value);
-				if (user != null)
-				{
+            var newAchievements = new List<AchievementDto>();
+
+            if (game.UserId.HasValue)
+            {
+                var user = await _userRepository.GetUserByIdAsync(
+                    game.UserId.Value);
+
+                if (user != null)
+                {
                     await SetStreakForUserAsync(user);
 
                     var games = await _gameRepository.GetGamesForUserAsync(user.Id);
@@ -77,16 +81,19 @@ namespace Backend.Services
 
                     var hasVisitedMora = todaysChallenge.City.Name == "Mora";
 
-                    var newAchievements =
-                        await _achievementService.CheckAchievementsAsync(
-                            user, hasVisitedMora);
+                    newAchievements = await _achievementService
+                        .CheckAchievementsAsync(user, hasVisitedMora);
 
                     await _gameRepository.SaveChangesAsync();
                 }
-			}
+            }
 
-			return createdGame.GameId;
-		}
+            return new CreateGameResponseDto
+            {
+                GameId = createdGame.GameId,
+                NewAchievements = newAchievements
+            };
+        }
 
 		public async Task<IEnumerable<GameResultDto>> GetGameResultsAsync()
 		{
