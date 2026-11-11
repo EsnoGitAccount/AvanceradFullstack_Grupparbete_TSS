@@ -7,7 +7,7 @@ import { useAuth } from "@/context/auth/UseAuth";
 // Components
 import QuestionDestination from "../question-destination/QuestionDestination";
 import WhereAreWe from "../where-are-we/whereAreWe";
-import StartGameTest from "@/test-components/start-game-test/StartGameTest";
+import StartGameTest from "@/components/game-components/start-game/StartGame";
 import Leaderboard from "../leaderboard/Leaderboard";
 import { ProgressStepper } from "@/components/ui/Progressbar";
 import StaticMessage from "../message/StaticMessage";
