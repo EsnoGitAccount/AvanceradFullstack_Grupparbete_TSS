@@ -290,9 +290,15 @@ namespace Backend.Services
                         var option = optionIndex < existingOptions.Count ? existingOptions[optionIndex] : new Option();
                         option.OptionText = draft.Options[optionIndex].OptionText.Trim();
                         option.IsCorrect = draft.Options[optionIndex].IsCorrect;
-                        if (optionIndex >= existingOptions.Count) question.Options.Add(option);
+                        if (optionIndex >= existingOptions.Count)
+                        {
+                            question.Options.Add(option);
+                        }
                     }
-                    if (index >= existingQuestions.Count) city.Questions.Add(question);
+                    if (index >= existingQuestions.Count)
+                    {
+                        city.Questions.Add(question);
+                    }
                 }
 
                 var existingClues = city.Clues.OrderByDescending(clue => clue.Point).ThenBy(clue => clue.ClueId).ToList();
@@ -301,7 +307,10 @@ namespace Backend.Services
                     var clue = index < existingClues.Count ? existingClues[index] : new Clue { CityId = cityId };
                     clue.ClueText = createDto.Clues[index].Trim();
                     clue.Point = 10 - index * 2;
-                    if (index >= existingClues.Count) city.Clues.Add(clue);
+                    if (index >= existingClues.Count)
+                    {
+                        city.Clues.Add(clue);
+                    }
                 }
 
                 await _cityRepository.SaveChangesAsync();
