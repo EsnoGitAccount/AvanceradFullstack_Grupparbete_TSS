@@ -258,7 +258,13 @@ namespace Backend.Services
                 ApplyQuestionDrafts(city, cityId, createDto.Questions);
                 ApplyClueDrafts(city, cityId, createDto.Clues);
 
-                await _cityRepository.SaveChangesAsync();
+                var saved = await _cityRepository.SaveChangesAsync();
+
+                if (!saved)
+                {
+                    throw new InvalidOperationException("Failed to create city content");
+                }
+
                 return MapToCityQuestionsEditDto(city);
             });
         }
@@ -380,6 +386,11 @@ namespace Backend.Services
                 }
             }
 
+            if (!HasCityContentChanges(city, updateDto))
+            {
+                return;
+            }
+
             ApplyQuestionUpdates(city, updateDto);
             if (updateDto.Clues != null)
             {
@@ -390,8 +401,42 @@ namespace Backend.Services
                 }
             }
 
-            // No changed rows is valid when the submitted text only differs in whitespace.
-            await _cityRepository.SaveChangesAsync();
+            var saved = await _cityRepository.SaveChangesAsync();
+
+            if (!saved)
+            {
+                throw new InvalidOperationException("Failed to update city questions");
+            }
+        }
+
+        private static bool HasCityContentChanges(City city, CityQuestionsUpdateDto updateDto)
+        {
+            var questionsChanged = updateDto.Questions.Any(updatedQuestion =>
+            {
+                var question = city.Questions.Single(
+                    question => question.QuestionId == updatedQuestion.QuestionId);
+
+                return question.QuestionText != updatedQuestion.QuestionText.Trim() ||
+                    updatedQuestion.Options.Any(updatedOption =>
+                    {
+                        var option = question.Options.Single(
+                            option => option.OptionId == updatedOption.OptionId);
+
+                        return option.OptionText != updatedOption.OptionText.Trim() ||
+                            option.IsCorrect != updatedOption.IsCorrect;
+                    });
+            });
+
+            if (questionsChanged)
+            {
+                return true;
+            }
+
+            return updateDto.Clues.Any(updatedClue =>
+            {
+                var clue = city.Clues.Single(clue => clue.ClueId == updatedClue.ClueId);
+                return clue.ClueText != updatedClue.ClueText.Trim();
+            });
         }
 
         private static void ApplyQuestionUpdates(City city, CityQuestionsUpdateDto updateDto)
