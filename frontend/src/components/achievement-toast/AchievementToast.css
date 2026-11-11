@@ -1,9 +1,9 @@
-.achievement-toas{
+.achievement-toast{
     display: flex;
     align-items: center;
     gap:1rem;
 
-    width:22.5rem;
+    width:21rem;
     max-width: calc(100vw - 2rem);
     padding: 1rem;
 
@@ -28,6 +28,7 @@
     flex-direction: column;
     gap: 0.25rem;
 }
+
 
 
 

@@ -53,7 +53,7 @@ function App() {
         <Route path="/errortesting" element={<ErrorTestPage />} />
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
-      <Toaster position="bottom-center" />
+      <Toaster position="top-center" />
     </>
   );
 }
