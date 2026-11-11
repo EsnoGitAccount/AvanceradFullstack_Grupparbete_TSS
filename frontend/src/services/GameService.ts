@@ -2,9 +2,18 @@ import api from './api';
 import type { GameResult } from '@/models/GameResult'
 import type { DailyChallenge } from '@/models/DailyChallenge'
 
-type SavedGame = {
+
+type Achievement = {
+    achievementId: number;
+    name: string;
+    description: string;
+    imageKey: string;
+};
+
+type SavedGame={
     gameId: number;
-    isGuest: boolean;   
+    isGuest: boolean;
+    newAchievements: Achievement[];
 }
 
 export const submitGameResult  = async (playerResult: GameResult): Promise<SavedGame> => {
