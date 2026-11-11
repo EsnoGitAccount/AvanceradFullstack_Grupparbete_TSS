@@ -8,7 +8,6 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Ticket } from "lucide-react";
 import "./StartGame.css";
-import type { DailyChallenge } from "@/models/DailyChallenge";
 import { Input } from "@/components/ui/Input";
 import { TrainTrackAnimation } from "@/assets/illustrations/TrainTrackAnimation";
 
@@ -26,7 +25,6 @@ type StartGameProps = {
   guestUserName: string;
   setGuestUserName: (name: string) => void;
   authenticatedUserName: string;
-  dailyChallenge: DailyChallenge;
 };
 function StartGameTest({
   handleStart,
@@ -34,7 +32,7 @@ function StartGameTest({
   guestUserName,
   setGuestUserName,
   authenticatedUserName,
-  // dailyChallenge,
+
 }: StartGameProps) {
   const currentDate = new Date().toLocaleDateString("sv-SE", {
     day: "numeric",
