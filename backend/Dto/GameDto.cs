@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using Backend.Model;
+using System.Security.Principal;
 
 namespace Backend.Dto
 {

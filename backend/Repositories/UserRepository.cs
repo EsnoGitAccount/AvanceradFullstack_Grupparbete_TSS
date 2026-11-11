@@ -1,6 +1,7 @@
 ﻿using Backend.Data;
 using Backend.Model;
 using Backend.Repositories.IRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories
 {
@@ -15,7 +16,7 @@ namespace Backend.Repositories
 
         public async Task<User?> GetUserByIdAsync(int userId)
         {
-            return await _context.Users.FindAsync(userId);
+            return await _context.Users.Include(u => u.Achievements).FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task<bool> UpdateUserStreakAsync(User user, int streak)

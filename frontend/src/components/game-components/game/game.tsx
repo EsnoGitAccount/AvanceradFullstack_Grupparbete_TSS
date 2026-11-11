@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { LoaderCircle } from "lucide-react";
 import { useAuth } from "@/context/auth/UseAuth";
-
+import { showAchievementToast } from "@/components/achievement-toast/showAchievementToast";
 // Components
 import QuestionDestination from "../question-destination/QuestionDestination";
 import WhereAreWe from "../where-are-we/whereAreWe";
@@ -158,7 +158,15 @@ export default function Game() {
       };
 
       try {
-        await submitGameResult(result);
+        const savedGame = await submitGameResult(result);
+        
+        savedGame.newAchievements.forEach((achievement) => {
+          showAchievementToast({
+            title: achievement.name,
+            description: achievement.description,
+            icon: achievement.imageKey,
+          });
+        });
       } finally {
         setIsSavingResult(false);
       }

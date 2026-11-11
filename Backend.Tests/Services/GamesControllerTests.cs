@@ -75,7 +75,8 @@ namespace Backend.Tests.Services
 
             controller.Request.Scheme = "https";
         
-            _service.Setup(s => s.CreateGameAsync(It.IsAny<GameDto>())).ReturnsAsync(42);
+            _service.Setup(s => s.CreateGameAsync(It.IsAny<GameDto>())).ReturnsAsync(new CreateGameResponseDto { 
+                GameId = 42, NewAchievements = new List<AchievementDto>() });
 
             _service.Setup(s => s.CreatedGuestPlayedCookie()).Returns("protected-cookie");
 

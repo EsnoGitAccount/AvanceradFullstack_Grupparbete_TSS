@@ -391,7 +391,7 @@ namespace Backend.Data
                 // Sundsvall
                 new Question { QuestionId = 25, CityId = 13, QuestionText = "Under vilken svensk kung grundades Sundsvall?" },
                 // Sundsvall
-                new Question { QuestionId = 26, CityId = 13, QuestionText = "Vilket år räknas som Sundsvalls grundande?" },
+                new Question { QuestionId = 26, CityId = 13, QuestionText = "I Sundsvall bor Sveriges bästa programmerare. Vad heter denne?" },
                 // Luleå
                 new Question { QuestionId = 27, CityId = 14, QuestionText = "Vilket år invigdes Kulturens hus i Luleå?" },
                 // Luleå
@@ -523,10 +523,10 @@ namespace Backend.Data
                 new Option { OptionId = 98, QuestionId = 25, OptionText = "Gustav Vasa", IsCorrect = false },
                 new Option { OptionId = 99, QuestionId = 25, OptionText = "Karl XII", IsCorrect = false },
                 new Option { OptionId = 100, QuestionId = 25, OptionText = "Gustav III", IsCorrect = false },
-                new Option { OptionId = 101, QuestionId = 26, OptionText = "1786", IsCorrect = false },
-                new Option { OptionId = 102, QuestionId = 26, OptionText = "1621", IsCorrect = true },
-                new Option { OptionId = 103, QuestionId = 26, OptionText = "1523", IsCorrect = false },
-                new Option { OptionId = 104, QuestionId = 26, OptionText = "1680", IsCorrect = false },
+                new Option { OptionId = 101, QuestionId = 26, OptionText = "Johan", IsCorrect = false },
+                new Option { OptionId = 102, QuestionId = 26, OptionText = "Aldor", IsCorrect = true },
+                new Option { OptionId = 103, QuestionId = 26, OptionText = "Pelle", IsCorrect = false },
+                new Option { OptionId = 104, QuestionId = 26, OptionText = "Hampus", IsCorrect = false },
                 new Option { OptionId = 105, QuestionId = 27, OptionText = "1997", IsCorrect = false },
                 new Option { OptionId = 106, QuestionId = 27, OptionText = "2017", IsCorrect = false },
                 new Option { OptionId = 107, QuestionId = 27, OptionText = "2007", IsCorrect = true },
