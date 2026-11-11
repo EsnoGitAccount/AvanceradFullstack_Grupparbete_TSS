@@ -1,4 +1,5 @@
 ﻿using Backend.Dto;
+using Backend.Constants;
 using Backend.Exceptions;
 using Backend.Model;
 using Backend.Repositories.IRepositories;
@@ -249,17 +250,17 @@ namespace Backend.Services
 
         public async Task<CityQuestionsEditDto> CreateCityContentAsync(int cityId, CityContentCreateDto createDto)
         {
-            if (createDto.Questions == null || createDto.Questions.Count != 2 ||
+            if (createDto.Questions == null || createDto.Questions.Count != GameContentRules.QuestionsPerCity ||
                 createDto.Questions.Any(question => question == null ||
                     string.IsNullOrWhiteSpace(question.QuestionText) ||
-                    question.Options == null || question.Options.Count != 4 ||
+                    question.Options == null || question.Options.Count != GameContentRules.OptionsPerQuestion ||
                     question.Options.Any(option => option == null || string.IsNullOrWhiteSpace(option.OptionText)) ||
                     question.Options.Count(option => option.IsCorrect) != 1))
             {
                 throw new AppValidationException("Provide two questions with four nonempty answers each and exactly one correct answer per question.");
             }
 
-            if (createDto.Clues == null || createDto.Clues.Count != 5 ||
+            if (createDto.Clues == null || createDto.Clues.Count != GameContentRules.CluesPerCity ||
                 createDto.Clues.Any(string.IsNullOrWhiteSpace))
             {
                 throw new AppValidationException("Provide five nonempty clues.");
@@ -267,25 +268,27 @@ namespace Backend.Services
 
             return await _cityRepository.WithCityContentTransactionAsync(cityId, async city =>
             {
-                if (city.Questions.Count == 2 && city.Clues.Count == 5 &&
-                    city.Questions.All(question => question.Options.Count == 4))
+                if (city.Questions.Count == GameContentRules.QuestionsPerCity &&
+                    city.Clues.Count == GameContentRules.CluesPerCity &&
+                    city.Questions.All(question => question.Options.Count == GameContentRules.OptionsPerQuestion))
                 {
                     throw new ConflictException("City content is already complete. Reload the city to edit it.");
                 }
-                if (city.Questions.Count > 2 || city.Clues.Count > 5 ||
-                    city.Questions.Any(question => question.Options.Count > 4))
+                if (city.Questions.Count > GameContentRules.QuestionsPerCity ||
+                    city.Clues.Count > GameContentRules.CluesPerCity ||
+                    city.Questions.Any(question => question.Options.Count > GameContentRules.OptionsPerQuestion))
                 {
                     throw new AppValidationException("City contains excess records that must be corrected before setup.");
                 }
 
                 var existingQuestions = city.Questions.OrderBy(question => question.QuestionId).ToList();
-                for (var index = 0; index < 2; index++)
+                for (var index = 0; index < GameContentRules.QuestionsPerCity; index++)
                 {
                     var draft = createDto.Questions[index];
                     var question = index < existingQuestions.Count ? existingQuestions[index] : new Question { CityId = cityId };
                     question.QuestionText = draft.QuestionText.Trim();
                     var existingOptions = question.Options.OrderBy(option => option.OptionId).ToList();
-                    for (var optionIndex = 0; optionIndex < 4; optionIndex++)
+                    for (var optionIndex = 0; optionIndex < GameContentRules.OptionsPerQuestion; optionIndex++)
                     {
                         var option = optionIndex < existingOptions.Count ? existingOptions[optionIndex] : new Option();
                         option.OptionText = draft.Options[optionIndex].OptionText.Trim();
@@ -302,11 +305,11 @@ namespace Backend.Services
                 }
 
                 var existingClues = city.Clues.OrderByDescending(clue => clue.Point).ThenBy(clue => clue.ClueId).ToList();
-                for (var index = 0; index < 5; index++)
+                for (var index = 0; index < GameContentRules.CluesPerCity; index++)
                 {
                     var clue = index < existingClues.Count ? existingClues[index] : new Clue { CityId = cityId };
                     clue.ClueText = createDto.Clues[index].Trim();
-                    clue.Point = 10 - index * 2;
+                    clue.Point = GameContentRules.InitialCluePoints - index * GameContentRules.CluePointsStep;
                     if (index >= existingClues.Count)
                     {
                         city.Clues.Add(clue);

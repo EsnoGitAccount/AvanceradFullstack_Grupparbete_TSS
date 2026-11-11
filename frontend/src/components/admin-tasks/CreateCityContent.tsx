@@ -2,6 +2,7 @@ import { useState, type SubmitEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
+import { GAME_RULES } from "@/constants/gameConstants";
 import type { CityContentCreate, CityQuestionsUpdate } from "@/models/AdminModels";
 import { createCityContent } from "@/services/AdminService";
 
@@ -23,17 +24,17 @@ export default function CreateCityContent({
   onContentCreated,
 }: CreateCityContentProps) {
   const [content, setContent] = useState<CityContentCreate>(() => ({
-    questions: Array.from({ length: 2 }, (_, questionIndex) => {
+    questions: Array.from({ length: GAME_RULES.questionsPerCity }, (_, questionIndex) => {
       const question = initialContent.questions[questionIndex];
       return {
         questionText: question?.questionText ?? "",
-        options: Array.from({ length: 4 }, (_, optionIndex) => ({
+        options: Array.from({ length: GAME_RULES.optionsPerQuestion }, (_, optionIndex) => ({
           optionText: question?.options[optionIndex]?.optionText ?? "",
           isCorrect: question?.options[optionIndex]?.isCorrect ?? false,
         })),
       };
     }),
-    clues: Array.from({ length: 5 }, (_, index) => initialContent.clues[index]?.clueText ?? ""),
+    clues: Array.from({ length: GAME_RULES.cluesPerCity }, (_, index) => initialContent.clues[index]?.clueText ?? ""),
   }));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,8 +44,9 @@ export default function CreateCityContent({
     if (busy || loading) return;
     setError(null);
 
-    if (initialContent.questions.length > 2 || initialContent.clues.length > 5 ||
-      initialContent.questions.some((question) => question.options.length > 4)) {
+    if (initialContent.questions.length > GAME_RULES.questionsPerCity ||
+      initialContent.clues.length > GAME_RULES.cluesPerCity ||
+      initialContent.questions.some((question) => question.options.length > GAME_RULES.optionsPerQuestion)) {
       setError("Staden har för många frågor, svar eller ledtrådar. Befintliga poster behöver korrigeras först.");
       return;
     }
@@ -113,7 +115,7 @@ export default function CreateCityContent({
         <div className="admin-page__clues">
           {content.clues.map((clue, clueIndex) => (
             <div key={clueIndex}>
-              <Label htmlFor={`create-clue-${clueIndex}`}>Ledtråd {clueIndex + 1} ({10 - clueIndex * 2} poäng)</Label>
+              <Label htmlFor={`create-clue-${clueIndex}`}>Ledtråd {clueIndex + 1} ({GAME_RULES.initialCluePoints - clueIndex * GAME_RULES.cluePointsStep} poäng)</Label>
               <Input id={`create-clue-${clueIndex}`} value={clue} required disabled={busy || loading}
                 onChange={(event) => setContent((current) => ({ ...current,
                   clues: current.clues.map((text, index) => index === clueIndex ? event.target.value : text),

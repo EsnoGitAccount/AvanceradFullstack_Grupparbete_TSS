@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Backend.Constants;
 using Backend.Exceptions;
 using Backend.Data;
 using Backend.Model;
@@ -51,8 +52,10 @@ namespace Backend.Repositories
         public async Task<List<int>> GetActiveCityIdsAsync()
         {
             return await _context.Cities
-                .Where(city => !city.IsArchived && city.Questions.Count == 2 && city.Clues.Count == 5 &&
-                    city.Questions.All(question => question.Options.Count == 4 &&
+                .Where(city => !city.IsArchived &&
+                    city.Questions.Count == GameContentRules.QuestionsPerCity &&
+                    city.Clues.Count == GameContentRules.CluesPerCity &&
+                    city.Questions.All(question => question.Options.Count == GameContentRules.OptionsPerQuestion &&
                         question.Options.Count(option => option.IsCorrect) == 1))
                 .OrderBy(city => city.CityId)
                 .Select(city => city.CityId)
