@@ -11,6 +11,7 @@ import RegisterPage from "./pages/register-page/RegisterPage";
 import SiteHeader from "./components/site-header/SiteHeader";
 import SiteFooter from "./components/site-footer/SiteFooter";
 import TestTrainLoading from "./pages/test-train-loading/TestTrainLoading";
+import AdminPage from "./pages/admin-page/AdminPage";
 import { Toaster } from "./components/ui/Sonner";
 import "./App.css";
 
@@ -43,6 +44,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminPage />
               </ProtectedRoute>
             }
           />

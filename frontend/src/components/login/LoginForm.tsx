@@ -27,8 +27,11 @@ export function LoginForm() {
         setIsSubmitting(true);
 
         try {
-            await login({ username: userName, password });
-            navigate('/profile');
+            const loggedInUser = await login({ username: userName, password });
+            const destination = loggedInUser.roles.includes('Admin')
+                ? '/admin'
+                : '/profile';
+            navigate(destination, { replace: true });
         } catch (err) {
             if (err instanceof Error) {
                 setErrorMessage(err.message);

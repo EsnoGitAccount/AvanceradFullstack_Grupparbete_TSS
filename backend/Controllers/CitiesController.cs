@@ -75,6 +75,15 @@ namespace Backend.Controllers
             return Ok(updatedCity);
         }
 
+        [HttpPost("{cityId:int}/content")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult<CityQuestionsEditDto>> CreateCityContent(int cityId, [FromBody] CityContentCreateDto createDto)
+        {
+            var questions = await _cityService.CreateCityContentAsync(cityId, createDto);
+            return Ok(questions);
+        }
+
         [HttpPut("{cityId:int}/questions")]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
@@ -87,7 +96,7 @@ namespace Backend.Controllers
 
         [HttpGet("{cityId:int}/questions")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<CityQuestionsUpdateDto>> GetCityQuestionsForEdit(int cityId)
+        public async Task<ActionResult<CityQuestionsEditDto>> GetCityQuestionsForEdit(int cityId)
         {
             var questions = await _cityService
                 .GetCityQuestionsForEditAsync(cityId);
