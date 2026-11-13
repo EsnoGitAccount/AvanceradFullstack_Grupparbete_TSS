@@ -68,10 +68,6 @@ namespace Backend.Controllers
         public async Task<IActionResult> DeleteAccount()
         {
             var user = await GetCurrentUserAsync();
-            if (user == null)
-            {
-                return Unauthorized();
-            }
 
             user.IsArchived = true;
             var result = await _userManager.UpdateAsync(user);
