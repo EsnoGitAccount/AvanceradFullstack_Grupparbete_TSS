@@ -41,7 +41,14 @@ namespace Backend
             }
 
             // Behåll CORS-konfigurationen från master.
-            app.UseCors("LocalConnection");
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseCors("LocalConnection");
+            }
+            else
+            {
+                app.UseCors("ProductionConnection");
+            }
 
             app.UseMiddleware<ExceptionMiddleware>();
 
