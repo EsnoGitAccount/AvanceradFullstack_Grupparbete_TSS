@@ -10,7 +10,7 @@ import "./ProfilePage.css"
 
 function ProfilePage() {
     const navigate = useNavigate();
-    const { logout } = useAuth();
+    const { clearSession, updateUsername } = useAuth();
     const [profile, setProfile] = useState<UserProfileDto | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -29,13 +29,14 @@ function ProfilePage() {
             });
     }, [navigate]);
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            navigate('/homepage');
-        } catch (error) {
-            console.error("Misslyckades att logga ut", error);
-        }
+    const handleUsernameUpdated = (newUsername: string) => {
+        updateUsername(newUsername);
+        setProfile((prev) => (prev ? { ...prev, username: newUsername } : null));
+    };
+
+    const handleAccountDeleted = () => {
+        clearSession();
+        navigate('/homepage');
     };
 
     if (loading) {
@@ -64,17 +65,17 @@ function ProfilePage() {
                 <div className='profile-grid'>
                     <ProfileSidebar
                         profile={profile}
-                        onLogout={handleLogout}
-                        onOpenEditModal={() => console.log("Öppna redigera-popup")}
+                        onAccountDeleted={handleAccountDeleted}
+                        onUsernameUpdated={handleUsernameUpdated}
                     />
                     <ProfileOverview profile={profile} />
                 </div>
 
-                    <AchievementsSection
-                        achievements={profile.achievements}
-                        unachievedAchievements={profile.unachievedAchievements}
-                    />
-                </div>
+                <AchievementsSection
+                    achievements={profile.achievements}
+                    unachievedAchievements={profile.unachievedAchievements}
+                />
+            </div>
         </div>
     );
 }
