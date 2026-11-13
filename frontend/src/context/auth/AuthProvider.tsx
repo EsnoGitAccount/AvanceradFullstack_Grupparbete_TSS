@@ -8,6 +8,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [user, setUser] = useState<UserDto | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
+    const updateUsername = (newUsername: string) => {
+        setUser((prev) => (prev ? { ...prev, username: newUsername } : null));
+    };
+
     useEffect(() => {
         const initAuth = async () => {
             try {
@@ -38,13 +42,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
-   const register=async( registerData:RegisterDto)=>{
-    const registeredUser=await authService.register(registerData);
-    setUser(registeredUser);
-   }
+    const clearSession = () => {
+        setUser(null);
+    };
+
+    const register = async (registerData: RegisterDto) => {
+        const registeredUser = await authService.register(registerData);
+        setUser(registeredUser);
+    }
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout, register }}>
+        <AuthContext.Provider value={{ user, loading, login, logout, register, clearSession, updateUsername }}>
             {children}
         </AuthContext.Provider>
     );
