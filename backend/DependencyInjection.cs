@@ -62,6 +62,15 @@ namespace Backend
                             .AllowCredentials();
                         }
                 );
+
+                options.AddPolicy(name: "ProductionConnection",
+                    policy =>
+                    {
+                        object allowMethod = policy.WithOrigins("wherearewefrontend-h0dsgcg9bhhgfwfj.norwayeast-01.azurewebsites.net")
+                        .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE")
+                        .WithHeaders("Content-Type", "Authorization", "X-XSRF-TOKEN")
+                        .AllowCredentials();
+                    });
             });
 
             // ASP.NET Core services
@@ -162,7 +171,7 @@ namespace Backend
                 c.SecurePolicy = CookieSecurePolicy.Always;
                 c.SameSite = environment.IsDevelopment()
                     ? SameSiteMode.None
-                    : SameSiteMode.Lax;
+                    : SameSiteMode.None;
                 c.Path = "/";
             });
 
