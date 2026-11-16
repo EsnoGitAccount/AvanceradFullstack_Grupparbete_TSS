@@ -66,15 +66,7 @@
     font-weight: 700;
     letter-spacing: 0.05em;
     color: var(--primary);
-    margin-bottom: 0.5rem;
-}
-
-.login-page__title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    line-height: 1.1;
-    color: var(--foreground);
-    margin-bottom: 1rem;
+    margin: 0;
 }
 
 .login-page__subtitle {

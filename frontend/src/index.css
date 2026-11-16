@@ -3,6 +3,19 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 
+.page-title {
+  margin-block: 1.25rem 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--foreground);
+}
+
+.page-title:first-child {
+  margin-top: 0;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

@@ -19,7 +19,7 @@ function HomePage() {
             <p className="home-page__eyebrow">
               EN LITEN RESA. VARJE DAG.
             </p>
-            <h1 className="home-page__title">
+            <h1 className="page-title home-page__title">
               Tre stopp. Hela Sverige. Hur långt kan du?
             </h1>
             <p className="home-page__description">

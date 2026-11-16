@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { Clue } from '../../../models/City.ts'
 import placeholderImg from '../../../assets/images/photo-example.jpg'
 import { SWEDISH_CITIES } from '../../../constants/swedishCities'
@@ -8,6 +8,15 @@ import { Button } from '@/components/ui/Button'
 import GameImage from '@/components/game-image/GameImage'
 
 import './whereAreWe.css'
+
+const mobileQuery = "(max-width: 64rem)";
+const subscribeToMobile = (onChange: () => void) => {
+  const query = window.matchMedia(mobileQuery);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+};
+const getMobileSnapshot = () => window.matchMedia(mobileQuery).matches;
+const getServerMobileSnapshot = () => false;
 
 type WhereAreWeProps = {
   onComplete: (score: number) => void
@@ -41,10 +50,18 @@ export default function WhereAreWe({
   requireCorrectAnswer = false,
 }: WhereAreWeProps){
 
+  const isMobile = useSyncExternalStore(
+    subscribeToMobile, getMobileSnapshot, getServerMobileSnapshot
+  );
   const [currentScore, setCurrentScore] = useState(10)
   const [cityGuess, setCityGuess] = useState("");
   const [isCitySuggestionsOpen, setIsCitySuggestionsOpen] = useState(false);
   const [isWrongGuess, setIsWrongGuess] = useState(false);
+  const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (feedbackTimer.current !== null) clearTimeout(feedbackTimer.current);
+  }, []);
 
   const filteredCities = suggestions.filter((city) =>
     city.toLocaleLowerCase('sv-SE').includes(
@@ -55,7 +72,7 @@ export default function WhereAreWe({
   const handleWhereAreWeSubmit = (event: React.SubmitEvent) => {
     event.preventDefault();
 
-    if (isWrongGuess || !cityGuess.trim()) {
+    if (isWrongGuess || feedbackTimer.current !== null || !cityGuess.trim()) {
       return;
     }
 
@@ -72,7 +89,8 @@ export default function WhereAreWe({
 
     setIsWrongGuess(true);
 
-    setTimeout(() => {
+    feedbackTimer.current = setTimeout(() => {
+      feedbackTimer.current = null;
       setIsWrongGuess(false);
       setCityGuess("");
 
@@ -81,7 +99,7 @@ export default function WhereAreWe({
       if (nextScore <= 0 && !requireCorrectAnswer) {
         onComplete(0);
       }
-    }, 1500);
+    }, 750);
   };
 
   const handleNextClue = () => {
@@ -90,11 +108,88 @@ export default function WhereAreWe({
     return nextScore;
   }
 
+  const displayedClues = isMobile
+    ? clues.filter((clue) => clue.pointValue >= currentScore).reverse()
+    : clues;
+
+  const nextClueButton = (
+    <Button
+      className="where-are-we__show-clue-button"
+      onClick={handleNextClue}
+      disabled={currentScore <= 2 || isWrongGuess}
+      variant="secondary"
+    >
+      {currentScore <= 2 ? "Inga fler ledtrådar!" : "Visa nästa ledtråd"}
+    </Button>
+  );
+
+  const answerForm = (
+    <form className="where-are-we__form" onSubmit={handleWhereAreWeSubmit}>
+      <div className="where-are-we__city-field">
+        <Input
+          className={isWrongGuess ? "where-are-we__input--wrong" : ""}
+          readOnly={isWrongGuess}
+          aria-invalid={isWrongGuess}
+          value={cityGuess}
+          onChange={(event) => {
+            const value = event.target.value;
+            setCityGuess(value);
+            setIsCitySuggestionsOpen(value.trim().length > 0);
+          }}
+          onFocus={() => {
+            if (cityGuess.trim().length > 0) {
+              setIsCitySuggestionsOpen(true);
+            }
+          }}
+          placeholder={title}
+          aria-label={guessLabel}
+          autoComplete="off"
+        />
+
+        {showSuggestions && isCitySuggestionsOpen && cityGuess.trim().length > 0 && (
+          <div
+            className="where-are-we__city-suggestions"
+            role="listbox"
+            aria-label={suggestionLabel}
+          >
+            {filteredCities.length > 0 ? (
+              filteredCities.map((city) => (
+                <button
+                  className="where-are-we__city-suggestion"
+                  key={city}
+                  type="button"
+                  role="option"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => {
+                    setCityGuess(city);
+                    setIsCitySuggestionsOpen(false);
+                  }}
+                >
+                  {city}
+                </button>
+              ))
+            ) : (
+              <p className="where-are-we__city-empty">
+                {emptySuggestionText}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+      <Button className="where-are-we__submit-button
+      "type="submit"
+      disabled={isWrongGuess || !cityGuess.trim()}
+      >
+        Svara
+        </Button>
+    </form>
+  );
+
   return (
     <div className="where-are-we__page">
       <section className="where-are-we__main">
         <div className="where-are-we__left-side">
-          <h1 className="where-are-we__title">{title}</h1>
+          <h1 className="page-title where-are-we__title">{title}</h1>
           <GameImage className="where-are-we__image" src={
                   imageSrc ?? (imageUrl
                     ? `/api/Image/${imageUrl}`
@@ -103,8 +198,11 @@ export default function WhereAreWe({
         </div>
         <div className="where-are-we__right-side">
 
+          {isMobile && answerForm}
+
           <div className="where-are-we__clues">
-            {clues.map((clue) => {
+            {isMobile && nextClueButton}
+            {displayedClues.map((clue) => {
               const isVisible = clue.pointValue >= currentScore;
 
               return (
@@ -119,75 +217,10 @@ export default function WhereAreWe({
               );
             })}
 
-            <Button
-              className="where-are-we__show-clue-button"
-              onClick={handleNextClue}
-              disabled={currentScore <= 2 || isWrongGuess}
-              variant="secondary"
-            >
-              {currentScore <= 2 ? "Inga fler ledtrådar!" : "Visa nästa ledtråd"}
-            </Button>
+            {!isMobile && nextClueButton}
           </div>
 
-          <form className="where-are-we__form" onSubmit={handleWhereAreWeSubmit}>
-            <div className="where-are-we__city-field">
-              <Input
-                className={isWrongGuess ? "where-are-we__input--wrong" : ""}
-                readOnly={isWrongGuess}
-                aria-invalid={isWrongGuess}
-                value={cityGuess}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  setCityGuess(value);
-                  setIsCitySuggestionsOpen(value.trim().length > 0);
-                }}
-                onFocus={() => {
-                  if (cityGuess.trim().length > 0) {
-                    setIsCitySuggestionsOpen(true);
-                  }
-                }}
-                placeholder={title}
-                aria-label={guessLabel}
-                autoComplete="off"
-              />
-
-              {showSuggestions && isCitySuggestionsOpen && cityGuess.trim().length > 0 && (
-                <div
-                  className="where-are-we__city-suggestions"
-                  role="listbox"
-                  aria-label={suggestionLabel}
-                >
-                  {filteredCities.length > 0 ? (
-                    filteredCities.map((city) => (
-                      <button
-                        className="where-are-we__city-suggestion"
-                        key={city}
-                        type="button"
-                        role="option"
-                        onMouseDown={(event) => event.preventDefault()}
-                        onClick={() => {
-                          setCityGuess(city);
-                          setIsCitySuggestionsOpen(false);
-                        }}
-                      >
-                        {city}
-                      </button>
-                    ))
-                  ) : (
-                    <p className="where-are-we__city-empty">
-                      {emptySuggestionText}
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
-            <Button className="where-are-we__submit-button
-            "type="submit"
-            disabled={isWrongGuess || !cityGuess.trim()}
-            >
-              Svara
-              </Button>
-          </form>
+          {!isMobile && answerForm}
         </div>
       </section>
     </div>

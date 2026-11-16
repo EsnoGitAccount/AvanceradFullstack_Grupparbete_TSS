@@ -30,7 +30,7 @@ function LoginPage() {
                     {/* Left column */}
                     <div className="login-page__left-column">
                         <span className="login-page__eyebrow ">VÄLKOMMEN TILLBAKA</span>
-                        <h1 className="login-page__title">Redo för nästa stopp?</h1>
+                        <h1 className="page-title">Redo för nästa stopp?</h1>
                         <p className="login-page__subtitle">
                             Logga in och fortsätt din resa. Dagens 3 ledtrådar väntar på dig.
                         </p>

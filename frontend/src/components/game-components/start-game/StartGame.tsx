@@ -47,7 +47,7 @@ function StartGameTest({
           <span className="start-game__date">
             DAGENS SPEL · {currentDate}
           </span>
-          <h1 className="start-game__title">Alla ombord!</h1>
+          <h1 className="page-title">Alla ombord!</h1>
 
           <p className="start-game__description">
             Tre stopp, tre chanser att visa hur väl du känner Sverige.

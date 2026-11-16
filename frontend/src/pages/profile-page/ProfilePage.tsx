@@ -54,7 +54,7 @@ function ProfilePage() {
                     <span className='text-[0.75rem] font-bold tracking-widest text-[var(--primary)] uppercase'>
                         DINA UPPGIFTER
                     </span>
-                    <h1 className='text-4xl font-extrabold text-[var(--foreground)] mt-1 mb-2'>
+                    <h1 className='page-title'>
                         Din plats på resan.
                     </h1>
                     <p className='text-base text-[var(--muted-foreground)]'>

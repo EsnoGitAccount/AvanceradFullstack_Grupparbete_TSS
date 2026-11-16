@@ -160,7 +160,7 @@ export default function AdminPage() {
   return (
     <div className="admin-page">
       <header className="admin-page__header">
-        <h1>Administration</h1>
+        <h1 className="page-title">Administration</h1>
         <p>Inloggad som: {user?.username}</p>
       </header>
 
