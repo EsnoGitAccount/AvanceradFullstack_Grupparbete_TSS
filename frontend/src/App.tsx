@@ -40,6 +40,7 @@ function App() {
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/game" element={<GamePage />} />          
           <Route path="/johan" element={<JohanPage />} />
+          <Route path="/aldor" element={<AldorPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route
