@@ -6,6 +6,7 @@ import { SWEDISH_CITIES } from '../../../constants/swedishCities'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import GameImage from '@/components/game-image/GameImage'
+import { getImageUrl } from '@/services/api'
 
 import './whereAreWe.css'
 
@@ -192,7 +193,7 @@ export default function WhereAreWe({
           <h1 className="page-title where-are-we__title">{title}</h1>
           <GameImage className="where-are-we__image" src={
                   imageSrc ?? (imageUrl
-                    ? `/api/Image/${imageUrl}`
+                    ? getImageUrl(imageUrl)
                     : placeholderImg)
                 } alt={imageAlt} />
         </div>
