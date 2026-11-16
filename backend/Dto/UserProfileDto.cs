@@ -5,7 +5,7 @@
         public string Username { get; set; } = string.Empty;
         public int CurrentStreak { get; set; }
         public decimal? DailyScore { get; set; }
-        public decimal AllTimeScore { get; set; }
+        public decimal TotalScore { get; set; }
         public List<AchievementDto> Achievements { get; set; } = [];
 
         public List<AchievementDto> UnachievedAchievements { get; set; } = [];

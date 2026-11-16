@@ -54,7 +54,7 @@ namespace Backend.Tests.Services
 
         [Theory]
         [InlineData("Development", Microsoft.Net.Http.Headers.SameSiteMode.None)]
-        [InlineData("Production", Microsoft.Net.Http.Headers.SameSiteMode.Lax)]
+        [InlineData("Production", Microsoft.Net.Http.Headers.SameSiteMode.None)]
         public async Task PostGame_NewGuest_SavesAndSetsProtectedCookie(
             string environmentName,
             Microsoft.Net.Http.Headers.SameSiteMode expectedSameSite)

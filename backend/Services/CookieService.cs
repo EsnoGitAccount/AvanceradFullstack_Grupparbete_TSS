@@ -53,9 +53,7 @@ namespace Backend.Services
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = isDevelopment
-                    ? SameSiteMode.None
-                    : SameSiteMode.Lax,
+                SameSite = SameSiteMode.None,
                 Path = path,
                 Expires = expiresAt
             };
@@ -70,9 +68,7 @@ namespace Backend.Services
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = isDevelopment
-                    ? SameSiteMode.None
-                    : SameSiteMode.Lax,
+                SameSite = SameSiteMode.None,
                 Path = path
             };
         }

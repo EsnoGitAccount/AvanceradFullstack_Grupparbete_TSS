@@ -40,7 +40,7 @@ namespace Backend.Controllers
                 Username = user.Username,
                 CurrentStreak = stats?.Streak ?? 0,
                 DailyScore = stats?.DailyScore,
-                AllTimeScore = stats?.AllTimeScore ?? 0,
+                TotalScore = stats?.TotalScore ?? 0,
                 Achievements = user.Achievements,
                 UnachievedAchievements = await _achievementService.GetUnachievedAchievementsAsync(user.Achievements)
             };

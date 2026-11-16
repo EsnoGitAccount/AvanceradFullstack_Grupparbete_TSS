@@ -11,7 +11,7 @@ export type PlayerStatistics = {
     streak: number;
     dailyScore: number | null;
     dailyRank: number | null;
-    allTimeScore: number;
+    totalScore: number;
     allTimeRank: number | null;
 };
 
