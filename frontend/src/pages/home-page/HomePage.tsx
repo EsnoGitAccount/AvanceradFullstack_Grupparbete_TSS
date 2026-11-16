@@ -2,14 +2,36 @@ import { ArrowRightIcon } from '@/assets/icons/Icons'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { SwedenMap } from "@/assets/illustrations/SwedenMap"
-import { useNavigate } from 'react-router'
+import { useEffect, useRef } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 import { useAuth } from "@/context/auth/UseAuth"
+import { showAchievementToast } from "@/components/achievement-toast/showAchievementToast"
 
 import './HomePage.css'
 
 function HomePage() {
   const navigate = useNavigate()
+
   const { user } = useAuth()
+
+  const location = useLocation()
+  const registrationToastShown = useRef(false)
+
+  useEffect(() => {
+    if (
+      registrationToastShown.current ||
+      location.state?.showRegistrationAchievement !== true
+    ) {
+      return
+    }
+
+    registrationToastShown.current = true
+    showAchievementToast({
+      title: "Biljettkontroll",
+      description: "Registrera ett konto.",
+      icon: "Register",
+    })
+  }, [location.state, navigate])
 
   return (
     <div className="home-page home-page__main">
