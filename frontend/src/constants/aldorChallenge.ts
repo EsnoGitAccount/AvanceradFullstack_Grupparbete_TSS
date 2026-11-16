@@ -1,8 +1,6 @@
 import type { DailyChallenge } from '@/models/DailyChallenge'
 import aldorPortrait from '@/assets/images/aldor.png'
 
-// Byt ledtrådar, frågor och bild här när ni vill anpassa Aldor-läget.
-// Programmeringsfrågorna är exempel, inte påståenden om Aldors privatliv.
 export const ALDOR_PORTRAIT = aldorPortrait
 
 export const ALDOR_CHALLENGE: DailyChallenge = {

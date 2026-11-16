@@ -3,8 +3,6 @@ import johanPortrait from '@/assets/images/johan.png'
 
 export const JOHAN_PORTRAIT = johanPortrait
 
-// Anpassa ledtrådar, frågor och bild här.
-// Scrum-frågorna utgår från https://scrumguides.org/scrum-guide.html
 export const JOHAN_CHALLENGE: DailyChallenge = {
   challangeDate: '',
   cityDetails: {
