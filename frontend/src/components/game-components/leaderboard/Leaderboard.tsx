@@ -82,7 +82,7 @@ export default function Leaderboard() {
             <div className="leaderboard-page__header">
                 <div>
                     <p className="leaderboard-page__eyebrow">Resenärer i hela Sverige</p>
-                    <h1 className="leaderboard-page__title">Lite vänskaplig tävling.</h1>
+                    <h1 className="page-title">Lite vänskaplig tävling.</h1>
                     <p className="leaderboard-page__description">
                         Samma 3 ledtrådar. Vem har bäst koll på Sverige i dag?
                     </p>

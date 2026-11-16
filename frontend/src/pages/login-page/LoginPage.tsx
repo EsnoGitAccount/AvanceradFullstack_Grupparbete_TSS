@@ -20,9 +20,8 @@ function LoginPage() {
                     onClick={() => navigate('/homepage')}
                     className="login-page__back-link"
                 >
-                    <a href="/" className="login-page__back-link">
-                        <ArrowLeft className="w-4 h-4 mr-1 inline" /> Tillbaka till startsidan
-                    </a>
+                    <ArrowLeft className="w-4 h-4 mr-1" />
+                    Tillbaka till startsidan
                 </Button>
 
                 <div className="login-page__grid">
@@ -30,7 +29,7 @@ function LoginPage() {
                     {/* Left column */}
                     <div className="login-page__left-column">
                         <span className="login-page__eyebrow ">VÄLKOMMEN TILLBAKA</span>
-                        <h1 className="login-page__title">Redo för nästa stopp?</h1>
+                        <h1 className="page-title">Redo för nästa stopp?</h1>
                         <p className="login-page__subtitle">
                             Logga in och fortsätt din resa. Dagens stopp väntar på dig.
                         </p>

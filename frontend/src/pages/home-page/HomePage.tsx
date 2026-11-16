@@ -11,8 +11,7 @@ import './HomePage.css'
 
 function HomePage() {
   const navigate = useNavigate()
-
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
 
   const location = useLocation()
   const registrationToastShown = useRef(false)
@@ -41,7 +40,7 @@ function HomePage() {
             <p className="home-page__eyebrow">
               EN LITEN RESA. VARJE DAG.
             </p>
-            <h1 className="home-page__title">
+            <h1 className="page-title home-page__title">
               {user ? (
                 <>
                   Välkommen tillbaka,{' '}
@@ -80,13 +79,15 @@ function HomePage() {
                     Kliv ombord
                     <ArrowRightIcon data-icon="inline-end" />
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="home-page__secondary-button"
-                    onClick={() => navigate('/login')}
-                  >
-                    Logga in
-                  </Button>
+                  {!loading && (
+                    <Button
+                      variant="outline"
+                      className="home-page__secondary-button"
+                      onClick={() => navigate('/login')}
+                    >
+                      Logga in
+                    </Button>
+                  )}
                 </>
               )}
             </div>
@@ -95,7 +96,7 @@ function HomePage() {
             </p>
           </div>
           <Card
-            className="home-page__journey-card relative overflow-hidden"
+            className="home-page__journey-card relative"
             aria-label="Sverigekarta med bonuslägen"
           >
             <SwedenMap className="home-page__journey-card-map" bonusLinks />

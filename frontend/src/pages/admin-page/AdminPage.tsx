@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import TrainLoading from "@/components/train-loading/TrainLoading";
 import { useAdminData } from "@/hooks/useAdminData";
 import { getAdminCities, getAdminUsers, getAdminGames } from "@/services/AdminService";
@@ -159,9 +160,29 @@ export default function AdminPage() {
   return (
     <div className="admin-page">
       <header className="admin-page__header">
-        <h1>Administration</h1>
+        <h1 className="page-title">Administration</h1>
         <p>Inloggad som: {user?.username}</p>
       </header>
+
+      <div className="admin-page__tab-picker">
+        <Select
+          items={adminTabs.map((tab) => ({ value: tab.id, label: tab.label }))}
+          value={activeTab}
+          onValueChange={(value) => { if (value !== null) setActiveTab(value); }}
+        >
+          <SelectTrigger aria-label="Adminområde" className="min-h-11 gap-4 px-3">
+            <span className="inline-grid">
+              <span aria-hidden="true" className="invisible col-start-1 row-start-1">Frågor &amp; ledtrådar</span>
+              <SelectValue className="col-start-1 row-start-1" />
+            </span>
+          </SelectTrigger>
+          <SelectContent align="start" alignItemWithTrigger={false}>
+            {adminTabs.map((tab) => (
+              <SelectItem key={tab.id} value={tab.id}>{tab.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
       <div className="admin-page__tabs" role="tablist" aria-label="Adminområden">
         {adminTabs.map((tab) => (
@@ -184,10 +205,10 @@ export default function AdminPage() {
         id="admin-panel-cities"
         className="admin-page__section"
         role="tabpanel"
-        aria-labelledby="admin-tab-cities"
+        aria-labelledby="admin-heading-cities"
         hidden={activeTab !== "cities"}
       >
-        <h2>Städer</h2>
+        <h2 id="admin-heading-cities">Städer</h2>
 
         <AdminDataState {...citiesData}>
           <div className="admin-page__grid">
@@ -214,10 +235,10 @@ export default function AdminPage() {
         id="admin-panel-questions"
         className="admin-page__section"
         role="tabpanel"
-        aria-labelledby="admin-tab-questions"
+        aria-labelledby="admin-heading-questions"
         hidden={activeTab !== "questions"}
       >
-        <h2>Frågor &amp; ledtrådar</h2>
+        <h2 id="admin-heading-questions">Frågor &amp; ledtrådar</h2>
 
         <AdminDataState {...citiesData}>
           <div className="admin-page__grid">
@@ -263,10 +284,10 @@ export default function AdminPage() {
         id="admin-panel-users"
         className="admin-page__section"
         role="tabpanel"
-        aria-labelledby="admin-tab-users"
+        aria-labelledby="admin-heading-users"
         hidden={activeTab !== "users"}
       >
-        <h2>Användare</h2>
+        <h2 id="admin-heading-users">Användare</h2>
 
         <AdminDataState {...usersData}>
           <div className="admin-page__grid">
@@ -285,10 +306,10 @@ export default function AdminPage() {
         id="admin-panel-games"
         className="admin-page__section"
         role="tabpanel"
-        aria-labelledby="admin-tab-games"
+        aria-labelledby="admin-heading-games"
         hidden={activeTab !== "games"}
       >
-        <h2>Spelresultat</h2>
+        <h2 id="admin-heading-games">Spelresultat</h2>
 
         <AdminDataState {...gamesData}>
           <div className="admin-page__grid">
@@ -303,10 +324,10 @@ export default function AdminPage() {
         id="admin-panel-images"
         className="admin-page__section"
         role="tabpanel"
-        aria-labelledby="admin-tab-images"
+        aria-labelledby="admin-heading-images"
         hidden={activeTab !== "images"}
       >
-        <h2>Bilder</h2>
+        <h2 id="admin-heading-images">Bilder</h2>
 
         <div className="admin-page__grid">
           <div className="admin-page__card">

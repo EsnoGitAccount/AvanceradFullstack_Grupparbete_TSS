@@ -14,7 +14,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 2rem;
-    align-items: start;
+    align-items: stretch;
 }
 
 .start-game__instructions {
@@ -25,6 +25,8 @@
 
 .start-game__left-column {
     min-width: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .start-game__instruction {
@@ -54,6 +56,7 @@
 }
 
 .start-game__card {
+    flex: 1;
     width: 100%;
     min-width: 0;
     padding: 1.75rem;
@@ -78,14 +81,6 @@
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 700;
-}
-
-.start-game__title {
-    color: var(--foreground);
-    font-family: 'Inter', sans-serif;
-    font-size: 3rem;
-    font-weight: 800;
-    line-height: 1.05;
 }
 
 .start-game__description {
@@ -155,7 +150,7 @@
     border: 1px solid var(--card-border);
     border-radius: 1.5rem;
     overflow: visible;
-    margin-top: 3rem;
+    margin-top: auto;
 }
 
 .start-game__info-card::after {
@@ -194,6 +189,10 @@
 }
 
 @media (max-width: 64rem) {
+    .start-game__sidebar {
+        display: none;
+    }
+
     .start-game {
         padding: 1rem;
     }
@@ -202,7 +201,4 @@
         grid-template-columns: 1fr;
     }
 
-    .start-game__title {
-        font-size: 2rem;
-    }
 }

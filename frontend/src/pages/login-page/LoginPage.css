@@ -66,15 +66,7 @@
     font-weight: 700;
     letter-spacing: 0.05em;
     color: var(--primary);
-    margin-bottom: 0.5rem;
-}
-
-.login-page__title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    line-height: 1.1;
-    color: var(--foreground);
-    margin-bottom: 1rem;
+    margin: 0;
 }
 
 .login-page__subtitle {
@@ -164,12 +156,6 @@
     outline: none;
 }
 
-.form-group__error-text {
-    font-size: 0.75rem;
-    color: var(--destructive);
-    margin-top: 0.25rem;
-}
-
 /* Error alert */
 .login-card__alert {
     display: flex;
@@ -244,4 +230,22 @@
     margin-top: 0.5rem;
     text-align: center;
 
+}
+
+@media (max-width: 63.999rem) {
+    .login-page__main {
+        align-items: flex-start;
+        padding-top: 3rem;
+    }
+
+    .login-page__right-column {
+        width: 100%;
+        max-width: 32.5rem;
+        margin-inline: auto;
+    }
+
+    .login-page__left-column,
+    .login-page__back-link {
+        display: none;
+    }
 }

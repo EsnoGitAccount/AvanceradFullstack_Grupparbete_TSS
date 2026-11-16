@@ -188,7 +188,7 @@ function RegisterPage() {
             <span className="register-page__eyebrow">
               ETT SPEL FÖR HELA SVERIGE
             </span>
-            <h1 className="register-page__title">
+            <h1 className="page-title">
               Ska vi upptäcka Sverige?
             </h1>
             <p className="register-page__subtitle">

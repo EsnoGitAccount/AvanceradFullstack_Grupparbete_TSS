@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import './QuestionDestination.css'
@@ -18,6 +18,11 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
     const [selectedOption, setSelectedOption] = useState<string | null>(null)
     const [score, setScore] = useState<number>(0)
+    const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+    useEffect(() => () => {
+        if (feedbackTimer.current !== null) clearTimeout(feedbackTimer.current);
+    }, [])
 
     const [challengeQuestions] = useState<Question[]>(dailyChallange.cityDetails.questions)
 
@@ -27,7 +32,7 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
     const currentQuestion = challengeQuestions[currentQuestionIndex]
 
     const handleSelectOption = (optionText: string, isCorrect: boolean) => {
-    if (selectedOption !== null) return;
+    if (selectedOption !== null || feedbackTimer.current !== null) return;
 
     setSelectedOption(optionText);
 
@@ -37,7 +42,8 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
 
     setScore(newScore);
 
-    setTimeout(() => {
+    feedbackTimer.current = setTimeout(() => {
+        feedbackTimer.current = null;
         if (currentQuestionIndex < challengeQuestions.length - 1) {
             const nextIndex = currentQuestionIndex + 1;
 
@@ -47,7 +53,7 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
         } else {
             onComplete(newScore);
         }
-    }, 3000);
+    }, 1000);
 };
 
     {
@@ -152,15 +158,15 @@ export default function QuestionDestination({ onComplete, dailyChallange, previo
                             <Card className="info-card info-card--yellow">
                                 <CardHeader>
                                     <CardTitle className="info-card__title">
-                                        En bit i taget.
+                                        Tänk efter.
                                     </CardTitle>
                                     <CardDescription className="info-card__description">
-                                        Varje stopp är en egen fråga. Svaret här avslöjar inte vart nästa ledtråd tar dig.
+                                        Varje fråga här ger 10 poäng, så tänk efter noga innan du svarar.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <p className="info-card__footer-text">
-                                        3 stopp · Max {GAME_RULES.maxScore} poäng · Ingen tidspress
+                                        2 frågor · 10 poäng per fråga · Ingen tidspress
                                     </p>
                                 </CardContent>
                             </Card>

@@ -157,6 +157,20 @@
        margin-top: 0.5rem;
    }
 
+   @media (max-width: 63.999rem) {
+       .question-page__right-column {
+           display: contents;
+       }
+
+       .question-page__grid > .question-page__right-column > .info-card--blue {
+           order: -1;
+       }
+
+       .question-page__grid > .question-page__right-column > .info-card--yellow {
+           order: 1;
+       }
+   }
+
    /* Responsive adjustment for small screens */
    @media (max-width: 40rem) {
        .question-card__options-grid {

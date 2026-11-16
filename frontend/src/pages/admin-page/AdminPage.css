@@ -19,15 +19,12 @@
   margin-bottom: 2rem;
 }
 
-.admin-page__header h1,
 .admin-page__header p {
   margin: 0;
 }
 
-.admin-page__header h1 {
-  margin-bottom: 0.65rem;
-  color: var(--primary);
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
+.admin-page__tab-picker {
+  display: none;
 }
 
 .admin-page__tabs {
@@ -237,6 +234,21 @@
 #admin-panel-games {
   min-height: 65vh;
   padding-bottom: 2rem;
+}
+
+@media (max-width: 63.999rem) {
+  .admin-page__tabs {
+    display: none;
+  }
+
+  .admin-page__tab-picker {
+    display: grid;
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+    font-weight: 650;
+  }
+
 }
 
 @media (max-width: 780px) {
