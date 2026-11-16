@@ -51,7 +51,7 @@ function HomePage() {
 
                 </>
               ) : (
-                'Tre stopp. Hela Sverige. Hur långt kan du?'
+                'Ett stopp. Två frågor. Vad kan du om Svenska städer?'
               )}
             </h1>
             <p className="home-page__description">
