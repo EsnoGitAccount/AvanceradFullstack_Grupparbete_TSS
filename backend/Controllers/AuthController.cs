@@ -50,13 +50,13 @@ namespace Backend.Controllers
 					Path = "/"
 				});
 
-			return NoContent();
+			return Ok(new {token = tokens.RequestToken});
 		}
 
 		// Authenticate a user and create an authenticated session
 		[HttpPost("login")]
 		[AllowAnonymous]
-		//[ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken]
 		public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
 		{
 			var session = await _authService.LoginAsync(loginDto);
@@ -86,7 +86,7 @@ namespace Backend.Controllers
 		// Refresh the authentication session using the refresh token
 		[HttpPost("refresh")]
 		[AllowAnonymous]
-		//[ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken]
 		public async Task<ActionResult<UserDto>> Refresh()
 		{
 			Request.Cookies.TryGetValue(RefreshTokenCookieName, out var refreshToken);
