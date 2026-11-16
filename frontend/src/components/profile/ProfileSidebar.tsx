@@ -22,7 +22,7 @@ export function ProfileSidebar({ profile, onAccountDeleted, onUsernameUpdated }:
     return (
         <div className='profile-left-col'>
             {/* Profilecard */}
-            <Card className='bg-[var(--blue-card)] border-none rounded-[20px] p-6'>
+            <Card className='grow bg-[var(--blue-card)] border-none rounded-[20px] p-6'>
                 <CardContent className='p-0'>
                     <div className='w-[70px] h-[70px] rounded-full bg-[var(--yellow-card)] text-[var(--primary)] flex items-center justify-center text-2xl font-bold mb-4'>
                         {avatarLetter}

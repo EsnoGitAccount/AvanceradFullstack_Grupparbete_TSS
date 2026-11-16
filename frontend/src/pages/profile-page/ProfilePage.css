@@ -14,7 +14,7 @@
     display: grid;
     grid-template-columns: 360px 1fr;
     gap: 2rem;
-    align-items: start;
+    align-items: stretch;
 }
 
 @media (max-width: 768px) {
@@ -30,7 +30,7 @@
 }
 
 .profile-right-col {
-    height: 100%;
+    display: flex;
 }
 
 .achievements-grid {
@@ -48,4 +48,21 @@
 
 .achievement-tile:hover {
     transform: translateY(-2px);
+}
+
+.profile-page .achievements-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .achievement-tile.achievement-tile--mobile-hidden {
+        display: none;
+    }
+
+    .profile-page .achievements-toggle {
+        display: inline-flex;
+        width: 100%;
+        min-height: 44px;
+        margin-top: 1rem;
+    }
 }

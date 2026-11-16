@@ -110,27 +110,41 @@
 
 @media (max-width: 63.999rem) {
   .home-page__hero {
-    padding-block: 5rem;
+    /* Negative values move up; positive values move down. */
+    --map-offset-y: -2rem;
+    --title-offset-y: -4rem;
+    padding-block: 1rem 4rem;
   }
 
   .home-page__hero-layout {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 1rem;
   }
 
   .home-page__journey-card {
     display: block;
     min-height: 0;
-    max-width: 22rem;
+    max-width: 18.7rem;
     justify-self: center;
+    order: -1;
+    margin-top: var(--map-offset-y);
   }
 
-  .home-page__journey-card-map { height: auto; }
+  .home-page__hero-copy {
+    position: relative;
+    z-index: 1;
+    margin-top: var(--title-offset-y);
+  }
+
+  .home-page__journey-card-map {
+    height: auto;
+    transform: none;
+  }
 }
 
 @media (max-width: 39.999rem) {
   .home-page__hero {
-    padding: 4rem 1.25rem;
+    padding: 1rem 1.25rem 4rem;
   }
 
   .home-page__description {

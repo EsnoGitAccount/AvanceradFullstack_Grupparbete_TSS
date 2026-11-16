@@ -35,11 +35,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const logout = async () => {
-        try {
-            await authService.logout();
-        } finally {
-            setUser(null);
-        }
+        await authService.logout();
+        setUser(null);
     };
 
     const clearSession = () => {

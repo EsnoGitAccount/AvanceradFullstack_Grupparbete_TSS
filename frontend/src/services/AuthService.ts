@@ -26,6 +26,7 @@ export const authService = {
     },
 
     async logout(): Promise<void> {
+        await this.fetchCsrfToken();
         await api.post('/api/auth/logout');
     },
 
