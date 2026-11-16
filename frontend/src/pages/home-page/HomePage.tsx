@@ -42,9 +42,9 @@ function HomePage() {
             </div>
             <Card
               className="home-page__journey-card relative overflow-hidden"
-              aria-label="Dagens Sverigeresa"
+              aria-label="Sverigekarta med bonuslägen"
             >
-              <SwedenMap className="home-page__journey-card-map" />
+              <SwedenMap className="home-page__journey-card-map" bonusLinks />
             </Card>
           </div>
         </section>

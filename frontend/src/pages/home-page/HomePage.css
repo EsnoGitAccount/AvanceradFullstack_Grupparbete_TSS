@@ -2,6 +2,17 @@
   flex: 1;
 }
 
+.sweden-map__bonus-link { cursor: pointer; outline: none; }
+
+/* Hidden until keyboard focus; the hit areas use the map's own coordinates. */
+.sweden-map__bonus-link circle { fill: transparent; stroke: transparent; }
+
+.sweden-map__bonus-link:focus-visible circle {
+  fill: color-mix(in srgb, var(--primary) 12%, transparent);
+  stroke: var(--primary);
+  stroke-width: 1;
+}
+
 .home-page__hero {
   width: 100%;
   max-width: 72rem;
@@ -108,8 +119,13 @@
   }
 
   .home-page__journey-card {
-    display: none;
+    display: block;
+    min-height: 0;
+    max-width: 22rem;
+    justify-self: center;
   }
+
+  .home-page__journey-card-map { height: auto; }
 }
 
 @media (max-width: 39.999rem) {

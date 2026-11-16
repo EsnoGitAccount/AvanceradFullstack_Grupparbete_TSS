@@ -1,10 +1,12 @@
-import { Outlet, Route, Routes } from "react-router";
-import LeaderboardPage from "./pages/leaderboard-page/LeaderboardPage";
-import HomePage from "./pages/home-page/HomePage";
-import ErrorTestPage from "./pages/error-test-page/ErrorTestPage";
-import NotFoundPage from "./pages/not-found-page/NotFoundPage";
-import LoginPage from "./pages/login-page/LoginPage";
-import GamePage from "./pages/game-page/gamePage";
+import { Outlet, Route, Routes } from 'react-router'
+import LeaderboardPage from './pages/leaderboard-page/LeaderboardPage'
+import HomePage from './pages/home-page/HomePage'
+import ErrorTestPage from './pages/error-test-page/ErrorTestPage';
+import NotFoundPage from './pages/not-found-page/NotFoundPage';
+import LoginPage from './pages/login-page/LoginPage';
+import GamePage from './pages/game-page/gamePage';
+import AldorPage from './pages/aldor-page/AldorPage';
+import JohanPage from './pages/johan-page/JohanPage';
 import ProfilePage from "./pages/profile-page/ProfilePage";
 import ProtectedRoute from "./protected-route/ProtectedRoute";
 import RegisterPage from "./pages/register-page/RegisterPage";
@@ -28,7 +30,7 @@ function SiteLayout() {
 }
 
 function App() {
-  return (
+  return (    
     <>
       <Routes>
         {/* With header/footer */}
@@ -36,7 +38,9 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
-          <Route path="/game" element={<GamePage />} />
+          <Route path="/game" element={<GamePage />} />          
+          <Route path="/johan" element={<JohanPage />} />
+          <Route path="/aldor" element={<AldorPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route
