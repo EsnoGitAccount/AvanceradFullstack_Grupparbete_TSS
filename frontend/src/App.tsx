@@ -41,7 +41,6 @@ function App() {
           <Route path="/game" element={<GamePage />} />          
           <Route path="/johan" element={<JohanPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route
             path="/profile"
