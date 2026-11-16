@@ -152,7 +152,11 @@ function RegisterPage() {
     /*Send register request*/
     try {
       await register(registerData);
-      navigate("/", { replace: true });
+
+      navigate("/", {
+        replace: true,
+        state: { showRegistrationAchievement: true },
+      });
     } catch (error) {
       /* Handle existing user conflicts */
       if (axios.isAxiosError(error) && error.response?.status === 409) {

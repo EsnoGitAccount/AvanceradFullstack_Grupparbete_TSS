@@ -31,7 +31,7 @@ function LoginPage() {
                         <span className="login-page__eyebrow ">VÄLKOMMEN TILLBAKA</span>
                         <h1 className="page-title">Redo för nästa stopp?</h1>
                         <p className="login-page__subtitle">
-                            Logga in och fortsätt din resa. Dagens 3 ledtrådar väntar på dig.
+                            Logga in och fortsätt din resa. Dagens stopp väntar på dig.
                         </p>
 
                         <div className={`login-page__illustration train-illustration--${time}`}>
