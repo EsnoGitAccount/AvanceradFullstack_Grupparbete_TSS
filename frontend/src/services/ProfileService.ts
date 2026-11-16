@@ -10,7 +10,7 @@ export type UserProfileDto = {
     username: string;
     currentStreak: number;
     dailyScore?: number;
-    allTimeScore: number;
+    totalScore: number;
     achievements: AchievementDto[];
     unachievedAchievements: AchievementDto[];
 };
