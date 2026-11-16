@@ -55,9 +55,7 @@ namespace Backend.Controllers
                 {
                     HttpOnly = true,
                     Secure = true,
-                    SameSite = _environment.IsDevelopment()
-                    ? SameSiteMode.None
-                    : SameSiteMode.Lax,
+                    SameSite = SameSiteMode.None,
                     Path = "/",
                     Expires = new DateTimeOffset(now.UtcDateTime.Date.AddDays(1), TimeSpan.Zero)
                 });

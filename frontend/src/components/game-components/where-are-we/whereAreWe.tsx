@@ -14,6 +14,15 @@ type WhereAreWeProps = {
   clues: Clue[]
   correctCity: string
   imageUrl: string | undefined
+  imageSrc?: string
+  imageAlt?: string
+  title?: string
+  guessLabel?: string
+  suggestionLabel?: string
+  emptySuggestionText?: string
+  suggestions?: readonly string[]
+  showSuggestions?: boolean
+  requireCorrectAnswer?: boolean
 }
 
 export default function WhereAreWe({
@@ -21,6 +30,15 @@ export default function WhereAreWe({
   clues,
   correctCity,
   imageUrl,
+  imageSrc,
+  imageAlt = "Bild från destinationen",
+  title = "Vart är vi?",
+  guessLabel = "Gissa vilken svensk stad vi är i",
+  suggestionLabel = "Stadsförslag",
+  emptySuggestionText = "Ingen stad hittades.",
+  suggestions = SWEDISH_CITIES,
+  showSuggestions = true,
+  requireCorrectAnswer = false,
 }: WhereAreWeProps){
 
   const [currentScore, setCurrentScore] = useState(10)
@@ -28,7 +46,7 @@ export default function WhereAreWe({
   const [isCitySuggestionsOpen, setIsCitySuggestionsOpen] = useState(false);
   const [isWrongGuess, setIsWrongGuess] = useState(false);
 
-  const filteredCities = SWEDISH_CITIES.filter((city) =>
+  const filteredCities = suggestions.filter((city) =>
     city.toLocaleLowerCase('sv-SE').includes(
       cityGuess.trim().toLocaleLowerCase('sv-SE')
     )
@@ -60,7 +78,7 @@ export default function WhereAreWe({
 
       const nextScore = handleNextClue();
 
-      if (nextScore <= 0) {
+      if (nextScore <= 0 && !requireCorrectAnswer) {
         onComplete(0);
       }
     }, 1500);
@@ -76,12 +94,12 @@ export default function WhereAreWe({
     <div className="where-are-we__page">
       <section className="where-are-we__main">
         <div className="where-are-we__left-side">
-          <h1 className="where-are-we__title">Vart är vi?</h1>
+          <h1 className="where-are-we__title">{title}</h1>
           <GameImage className="where-are-we__image" src={
-                  imageUrl
+                  imageSrc ?? (imageUrl
                     ? `/api/Image/${imageUrl}`
-                    : placeholderImg
-                } alt="Bild från destinationen" />
+                    : placeholderImg)
+                } alt={imageAlt} />
         </div>
         <div className="where-are-we__right-side">
 
@@ -128,16 +146,16 @@ export default function WhereAreWe({
                     setIsCitySuggestionsOpen(true);
                   }
                 }}
-                placeholder="Vart är vi?"
-                aria-label="Gissa vilken svensk stad vi är i"
+                placeholder={title}
+                aria-label={guessLabel}
                 autoComplete="off"
               />
 
-              {isCitySuggestionsOpen && cityGuess.trim().length > 0 && (
+              {showSuggestions && isCitySuggestionsOpen && cityGuess.trim().length > 0 && (
                 <div
                   className="where-are-we__city-suggestions"
                   role="listbox"
-                  aria-label="Stadsförslag"
+                  aria-label={suggestionLabel}
                 >
                   {filteredCities.length > 0 ? (
                     filteredCities.map((city) => (
@@ -157,7 +175,7 @@ export default function WhereAreWe({
                     ))
                   ) : (
                     <p className="where-are-we__city-empty">
-                      Ingen stad hittades.
+                      {emptySuggestionText}
                     </p>
                   )}
                 </div>

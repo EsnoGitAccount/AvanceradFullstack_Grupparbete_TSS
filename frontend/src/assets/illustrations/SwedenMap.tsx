@@ -1,11 +1,16 @@
 import type { SVGProps } from 'react'
+import { Link } from 'react-router'
 import { TrainIcon } from "@/assets/icons/TrainIcon";
 
-export function SwedenMap(props: SVGProps<SVGSVGElement>) {
+type SwedenMapProps = SVGProps<SVGSVGElement> & { bonusLinks?: boolean }
+
+export function SwedenMap({ bonusLinks = false, ...props }: SwedenMapProps) {
     return (
         <svg
             {...props}
             className={`sweden-map ${props.className || ''}`}
+            role={bonusLinks ? 'group' : undefined}
+            aria-label={bonusLinks ? 'Sverigekarta med dolda bonuslägen' : undefined}
             width="150.10121mm"
             height="220.9202mm"
             viewBox="0 0 150.10121 220.9202"
@@ -252,6 +257,19 @@ export function SwedenMap(props: SVGProps<SVGSVGElement>) {
                     </g>
                 </g>
             </g>
+            {bonusLinks && (
+                <g>
+                    {/* Coordinates belong to the illustrated map, so they scale with it. */}
+                    <Link to="/aldor" className="sweden-map__bonus-link"
+                        aria-label="Öppna bonusläget vid Sundsvall">
+                        <circle cx="104" cy="65" r="11" fill="transparent" pointerEvents="all" />
+                    </Link>
+                    <Link to="/johan" className="sweden-map__bonus-link"
+                        aria-label="Öppna bonusläget vid Kiruna">
+                        <circle cx="112" cy="43" r="12" fill="transparent" pointerEvents="all" />
+                    </Link>
+                </g>
+            )}
         </svg>
     )
 }
