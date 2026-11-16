@@ -83,6 +83,10 @@ namespace Backend.Repositories
 
                 var userRoles = await userManager.GetRolesAsync(user);
 
+                var achievements = await context.Achievements.SingleAsync(a => a.AchievementId == 13);
+
+                user.Achievements.Add(achievements);
+
                 var (sessionDto, refreshTokenHash) = await createSession(user, userRoles);
 
                 var refreshToken = new RefreshToken
