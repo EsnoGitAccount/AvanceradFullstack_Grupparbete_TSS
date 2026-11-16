@@ -169,9 +169,7 @@ namespace Backend
                 c.Name = "Antiforgery";
                 c.HttpOnly = true;
                 c.SecurePolicy = CookieSecurePolicy.Always;
-                c.SameSite = environment.IsDevelopment()
-                    ? SameSiteMode.None
-                    : SameSiteMode.None;
+                c.SameSite = SameSiteMode.None;
                 c.Path = "/";
             });
 
