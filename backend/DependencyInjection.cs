@@ -67,8 +67,8 @@ namespace Backend
                     policy =>
                     {
                         policy.WithOrigins("https://wherearewefrontend-h0dsgcg9bhhgfwfj.norwayeast-01.azurewebsites.net")
-                        .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE")
-                        .WithHeaders("Content-Type", "Authorization", "X-XSRF-TOKEN", "GuestDailyGameLimit")
+                        .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                        .WithHeaders("Content-Type", "Authorization", "X-XSRF-TOKEN")
                         .AllowCredentials();
                     });
             });
