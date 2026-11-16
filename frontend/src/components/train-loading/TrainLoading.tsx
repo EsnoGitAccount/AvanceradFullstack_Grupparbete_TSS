@@ -3,9 +3,9 @@ import thomasCart from '@/assets/icons/thomascart.svg'
 import smokePuff from '@/assets/illustrations/SmokePuff.svg'
 import './TrainLoading.css'
 
-export default function TrainLoading() {
+export default function TrainLoading({ label = 'Laddar bilden' }: { label?: string }) {
   return (
-    <div className="train-loading" role="status" aria-label="Laddar bilden">
+    <div className="train-loading" role="status" aria-label={label}>
       <div className="train-loading__scene" aria-hidden="true">
         <div className="train-loading__train">
           {[1, 2].map((cart) => (

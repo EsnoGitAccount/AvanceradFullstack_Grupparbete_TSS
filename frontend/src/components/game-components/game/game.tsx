@@ -3,11 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { LoaderCircle } from "lucide-react";
 import { useAuth } from "@/context/auth/UseAuth";
-
+import { showAchievementToast } from "@/components/achievement-toast/showAchievementToast";
 // Components
 import QuestionDestination from "../question-destination/QuestionDestination";
 import WhereAreWe from "../where-are-we/whereAreWe";
-import StartGameTest from "@/test-components/start-game-test/StartGameTest";
+import StartGame from "@/components/game-components/start-game/StartGame";
 import Leaderboard from "../leaderboard/Leaderboard";
 import { ProgressStepper } from "@/components/ui/Progressbar";
 import StaticMessage from "../message/StaticMessage";
@@ -158,7 +158,15 @@ export default function Game() {
       };
 
       try {
-        await submitGameResult(result);
+        const savedGame = await submitGameResult(result);
+        
+        savedGame.newAchievements.forEach((achievement) => {
+          showAchievementToast({
+            title: achievement.name,
+            description: achievement.description,
+            icon: achievement.imageKey,
+          });
+        });
       } finally {
         setIsSavingResult(false);
       }
@@ -213,13 +221,12 @@ export default function Game() {
           case "notStarted":
             return (
               <>
-                <StartGameTest
+                <StartGame
                   handleStart={handleStart}
                   isAuthenticated={isAuthenticated}
                   guestUserName={guestUserName}
                   setGuestUserName={setGuestUserName}
                   authenticatedUserName={user?.username ?? ""}
-                  dailyChallenge={dailyChallenge}
                 />
               </>
             );

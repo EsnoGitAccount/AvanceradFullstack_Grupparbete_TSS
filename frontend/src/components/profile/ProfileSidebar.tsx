@@ -1,15 +1,19 @@
 import { Card, CardContent } from '@/components/ui/Card';
 import { type UserProfileDto } from '@/services/ProfileService';
-import { TrophyIcon } from "@/assets/icons/Icons"
+import { TrophyIcon } from "@/assets/icons/Icons";
+import { EditAccountModal } from './EditAccount';
+import { useState } from 'react';
+import { UserRoundCog } from 'lucide-react';
 
 interface ProfileSidebarProps {
     profile: UserProfileDto;
-    onLogout: () => void;
-    onOpenEditModal?: () => void;
+    onAccountDeleted: () => void;
+    onUsernameUpdated: (newUsername: string) => void;
 }
 
-export function ProfileSidebar({ profile, onOpenEditModal }: ProfileSidebarProps) {
+export function ProfileSidebar({ profile, onAccountDeleted, onUsernameUpdated }: ProfileSidebarProps) {
     const avatarLetter = profile.username ? profile.username.charAt(0).toUpperCase() : '?';
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
     const latestAchievement = profile.achievements && profile.achievements.length > 0
         ? profile.achievements[profile.achievements.length - 1].name
@@ -43,18 +47,25 @@ export function ProfileSidebar({ profile, onOpenEditModal }: ProfileSidebarProps
 
             {/* Popup */}
             <Card
-                className='bg-white border border-[#e2e8f0] rounded-[20px] p-6 cursor-pointer hover:shadow-sm transition-shadow'
-                onClick={onOpenEditModal}
+                className='group bg-[var(--card)] rounded-[20px] p-6 cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md'
+                onClick={() => setIsEditOpen(true)}
             >
                 <CardContent className='p-0'>
-                    <h3 className='text-[1.1rem] font-semibold text-[var(--foreground)] mb-2'>
-                        En popup på denna ruta för att kunna ändra uppgifter?
+                    <h3 className='relative flex items-center justify-center text-[1.1rem] font-semibold text-[var(--foreground)] m-0'>
+                        <UserRoundCog className='w-6 h-6 text-[var(--primary)] absolute left-0' />
+                        <span>Kontoinställningar</span>
                     </h3>
-                    <p className='text-xs text-[var(--chart-2)] leading-relaxed m-0'>
-                        Redigera UserName, ändra lösenord & ta bort konto
-                    </p>
                 </CardContent>
             </Card>
+
+            <EditAccountModal
+                key={isEditOpen ? 'open' : 'closed'}
+                isOpen={isEditOpen}
+                currentUsername={profile.username}
+                onClose={() => setIsEditOpen(false)}
+                onUsernameUpdated={onUsernameUpdated}
+                onAccountDeleted={onAccountDeleted}
+            />
         </div>
     );
 }

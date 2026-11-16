@@ -8,7 +8,7 @@ interface ProfileOverviewProps {
 export function ProfileOverview({ profile }: ProfileOverviewProps) {
     return (
         <div className='profile-right-col'>
-            <Card className='bg-white border border-[#e2e8f0] rounded-[20px] min-h-[480px] shadow-[0_2px_8px_rgba(0,0,0,0.02)] p-6'>
+            <Card className='bg-[var(--card)] rounded-[20px] min-h-[480px] shadow-[0_2px_8px_rgba(0,0,0,0.02)] p-6'>
                 <CardContent className='p-0 flex flex-col gap-6'>
                     <h2 className='text-2xl font-extrabold text-[var(--foreground)] m-0'>
                         Översikt & Statistik

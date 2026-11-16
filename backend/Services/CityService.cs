@@ -1,4 +1,5 @@
 ﻿using Backend.Dto;
+using Backend.Constants;
 using Backend.Exceptions;
 using Backend.Model;
 using Backend.Repositories.IRepositories;
@@ -247,14 +248,158 @@ namespace Backend.Services
             return (await _cityRepository.GetAllCitiesAsync()).Count();
         }
 
+        public async Task<CityQuestionsEditDto> CreateCityContentAsync(int cityId, CityContentCreateDto createDto)
+        {
+            ValidateCityContentDraft(createDto);
+
+            return await _cityRepository.WithCityContentTransactionAsync(cityId, async city =>
+            {
+                ValidateExistingCityContent(city);
+                ApplyQuestionDrafts(city, cityId, createDto.Questions);
+                ApplyClueDrafts(city, cityId, createDto.Clues);
+
+                var saved = await _cityRepository.SaveChangesAsync();
+
+                if (!saved)
+                {
+                    throw new InvalidOperationException("Failed to create city content");
+                }
+
+                return MapToCityQuestionsEditDto(city);
+            });
+        }
+
+        private static void ValidateCityContentDraft(CityContentCreateDto createDto)
+        {
+            if (createDto.Questions == null || createDto.Questions.Count != GameContentRules.QuestionsPerCity ||
+                createDto.Questions.Any(question => question == null ||
+                    string.IsNullOrWhiteSpace(question.QuestionText) ||
+                    question.Options == null || question.Options.Count != GameContentRules.OptionsPerQuestion ||
+                    question.Options.Any(option => option == null || string.IsNullOrWhiteSpace(option.OptionText)) ||
+                    question.Options.Count(option => option.IsCorrect) != 1))
+            {
+                throw new AppValidationException("Provide two questions with four nonempty answers each and exactly one correct answer per question.");
+            }
+
+            if (createDto.Clues == null || createDto.Clues.Count != GameContentRules.CluesPerCity ||
+                createDto.Clues.Any(string.IsNullOrWhiteSpace))
+            {
+                throw new AppValidationException("Provide five nonempty clues.");
+            }
+        }
+
+        private static void ValidateExistingCityContent(City city)
+        {
+            if (city.Questions.Count == GameContentRules.QuestionsPerCity &&
+                city.Clues.Count == GameContentRules.CluesPerCity &&
+                city.Questions.All(question => question.Options.Count == GameContentRules.OptionsPerQuestion))
+            {
+                throw new ConflictException("City content is already complete. Reload the city to edit it.");
+            }
+
+            if (city.Questions.Count > GameContentRules.QuestionsPerCity ||
+                city.Clues.Count > GameContentRules.CluesPerCity ||
+                city.Questions.Any(question => question.Options.Count > GameContentRules.OptionsPerQuestion))
+            {
+                throw new AppValidationException("City contains excess records that must be corrected before setup.");
+            }
+        }
+
+        private static void ApplyQuestionDrafts(City city, int cityId, List<QuestionCreateDto> drafts)
+        {
+            var existingQuestions = city.Questions.OrderBy(question => question.QuestionId).ToList();
+            for (var index = 0; index < GameContentRules.QuestionsPerCity; index++)
+            {
+                var draft = drafts[index];
+                var question = index < existingQuestions.Count
+                    ? existingQuestions[index]
+                    : new Question { CityId = cityId };
+
+                question.QuestionText = draft.QuestionText.Trim();
+                ApplyOptionDrafts(question, draft.Options);
+
+                if (index >= existingQuestions.Count)
+                {
+                    city.Questions.Add(question);
+                }
+            }
+        }
+
+        private static void ApplyOptionDrafts(Question question, List<OptionCreateDto> drafts)
+        {
+            var existingOptions = question.Options.OrderBy(option => option.OptionId).ToList();
+            for (var index = 0; index < GameContentRules.OptionsPerQuestion; index++)
+            {
+                var option = index < existingOptions.Count ? existingOptions[index] : new Option();
+                option.OptionText = drafts[index].OptionText.Trim();
+                option.IsCorrect = drafts[index].IsCorrect;
+
+                if (index >= existingOptions.Count)
+                {
+                    question.Options.Add(option);
+                }
+            }
+        }
+
+        private static void ApplyClueDrafts(City city, int cityId, List<string> drafts)
+        {
+            var existingClues = city.Clues
+                .OrderByDescending(clue => clue.Point)
+                .ThenBy(clue => clue.ClueId)
+                .ToList();
+
+            for (var index = 0; index < GameContentRules.CluesPerCity; index++)
+            {
+                var clue = index < existingClues.Count
+                    ? existingClues[index]
+                    : new Clue { CityId = cityId };
+
+                clue.ClueText = drafts[index].Trim();
+                clue.Point = GameContentRules.InitialCluePoints - index * GameContentRules.CluePointsStep;
+
+                if (index >= existingClues.Count)
+                {
+                    city.Clues.Add(clue);
+                }
+            }
+        }
+
         public async Task UpdateCityQuestionsAsync(int cityId, CityQuestionsUpdateDto updateDto)
         {
             var city = await _cityRepository.GetCityWithQuestionsAsync(cityId) ??
                 throw new NotFoundException("City not found");
 
             ValidateCityQuestions(city, updateDto);
+            if (updateDto.Clues == null)
+            {
+                throw new AppValidationException("Clues are required.");
+            }
+            if (updateDto.Clues != null)
+            {
+                var clueIds = updateDto.Clues.Select(clue => clue?.ClueId).ToList();
+                if (updateDto.Clues.Count != city.Clues.Count ||
+                    updateDto.Clues.Any(clue => clue == null || string.IsNullOrWhiteSpace(clue.ClueText)) ||
+                    clueIds.Distinct().Count() != clueIds.Count ||
+                    !city.Clues.All(clue => clueIds.Contains(clue.ClueId)))
+                {
+                    throw new AppValidationException("Include every existing clue exactly once with nonempty text.");
+                }
+            }
+
+            if (!HasCityContentChanges(city, updateDto))
+            {
+                return;
+            }
 
             ApplyQuestionUpdates(city, updateDto);
+            if (updateDto.Clues != null)
+            {
+                foreach (var draft in updateDto.Clues)
+                {
+                    var clue = city.Clues.Single(clue => clue.ClueId == draft.ClueId);
+                    clue.ClueText = draft.ClueText.Trim();
+                }
+            }
 
             var saved = await _cityRepository.SaveChangesAsync();
 
@@ -262,6 +407,36 @@ namespace Backend.Services
             {
                 throw new InvalidOperationException("Failed to update city questions");
             }
+        }
+
+        private static bool HasCityContentChanges(City city, CityQuestionsUpdateDto updateDto)
+        {
+            var questionsChanged = updateDto.Questions.Any(updatedQuestion =>
+            {
+                var question = city.Questions.Single(
+                    question => question.QuestionId == updatedQuestion.QuestionId);
+
+                return question.QuestionText != updatedQuestion.QuestionText.Trim() ||
+                    updatedQuestion.Options.Any(updatedOption =>
+                    {
+                        var option = question.Options.Single(
+                            option => option.OptionId == updatedOption.OptionId);
+
+                        return option.OptionText != updatedOption.OptionText.Trim() ||
+                            option.IsCorrect != updatedOption.IsCorrect;
+                    });
+            });
+
+            if (questionsChanged)
+            {
+                return true;
+            }
+
+            return updateDto.Clues.Any(updatedClue =>
+            {
+                var clue = city.Clues.Single(clue => clue.ClueId == updatedClue.ClueId);
+                return clue.ClueText != updatedClue.ClueText.Trim();
+            });
         }
 
         private static void ApplyQuestionUpdates(City city, CityQuestionsUpdateDto updateDto)
@@ -358,18 +533,24 @@ namespace Backend.Services
             }
         }
 
-        public async Task<CityQuestionsUpdateDto> GetCityQuestionsForEditAsync(int cityId)
+        public async Task<CityQuestionsEditDto> GetCityQuestionsForEditAsync(int cityId)
         {
             var city = await _cityRepository.GetCityWithQuestionsAsync(cityId) ??
                 throw new NotFoundException("City not found");
 
-            return MapToCityQuestionsUpdateDto(city);
+            return MapToCityQuestionsEditDto(city);
         }
 
-        private static CityQuestionsUpdateDto MapToCityQuestionsUpdateDto(City city)
+        private static CityQuestionsEditDto MapToCityQuestionsEditDto(City city)
         {
-            return new CityQuestionsUpdateDto
+            return new CityQuestionsEditDto
             {
+                Clues = city.Clues.OrderByDescending(clue => clue.Point).Select(clue => new ClueEditDto
+                {
+                    ClueId = clue.ClueId,
+                    ClueText = clue.ClueText,
+                    Point = clue.Point
+                }).ToList(),
                 Questions = city.Questions
                     .OrderBy(question => question.QuestionId)
                     .Select(question => new QuestionUpdateDto

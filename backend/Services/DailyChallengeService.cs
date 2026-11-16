@@ -1,4 +1,5 @@
 ﻿using Backend.Dto;
+using Backend.Constants;
 using Backend.Exceptions;
 using Backend.Model;
 using Backend.Repositories.IRepositories;
@@ -24,7 +25,11 @@ namespace Backend.Services
 
             if (challenge != null)
             {
-                if (challenge.City.IsArchived)
+                if (challenge.City.IsArchived ||
+                    challenge.City.Questions.Count != GameContentRules.QuestionsPerCity ||
+                    challenge.City.Clues.Count != GameContentRules.CluesPerCity ||
+                    challenge.City.Questions.Any(question => question.Options.Count != GameContentRules.OptionsPerQuestion ||
+                        question.Options.Count(option => option.IsCorrect) != 1))
                 {
                     throw new ConflictException("This challenge is currently unavailable.");
                 }
