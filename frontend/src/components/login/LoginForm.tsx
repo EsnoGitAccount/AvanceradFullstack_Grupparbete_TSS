@@ -30,7 +30,7 @@ export function LoginForm() {
             const loggedInUser = await login({ username: userName, password });
             const destination = loggedInUser.roles.includes('Admin')
                 ? '/admin'
-                : '/profile';
+                : '/homepage';
             navigate(destination, { replace: true });
         } catch (err) {
             if (err instanceof Error) {
