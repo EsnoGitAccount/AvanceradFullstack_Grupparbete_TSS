@@ -34,7 +34,8 @@ namespace Backend.Controllers
 		// Generate a CSRF token and make it available to the frontend
 		[HttpGet("csrf")]
 		[AllowAnonymous]
-		public IActionResult GetCsrfToken()
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        public IActionResult GetCsrfToken()
 		{
 			var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
 
