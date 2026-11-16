@@ -8,12 +8,14 @@ import GamePage from './pages/game-page/gamePage';
 import AldorPage from './pages/aldor-page/AldorPage';
 import JohanPage from './pages/johan-page/JohanPage';
 import ProfilePage from "./pages/profile-page/ProfilePage";
-import ProtectedRoute from './protected-route/ProtectedRoute';
-import RegisterPage from './pages/register-page/RegisterPage';
-import SiteHeader from './components/site-header/SiteHeader'
-import SiteFooter from './components/site-footer/SiteFooter'
-import TestTrainLoading from './pages/test-train-loading/TestTrainLoading'
-import './App.css'
+import ProtectedRoute from "./protected-route/ProtectedRoute";
+import RegisterPage from "./pages/register-page/RegisterPage";
+import SiteHeader from "./components/site-header/SiteHeader";
+import SiteFooter from "./components/site-footer/SiteFooter";
+import TestTrainLoading from "./pages/test-train-loading/TestTrainLoading";
+import AdminPage from "./pages/admin-page/AdminPage";
+import { Toaster } from "./components/ui/Sonner";
+import "./App.css";
 
 function SiteLayout() {
   return (
@@ -24,31 +26,49 @@ function SiteLayout() {
       </main>
       <SiteFooter />
     </div>
-  )
-}
-
-function App() {
-  return (
-    <Routes>
-      {/* With header/footer */}
-      <Route element={<SiteLayout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/homepage" element={<HomePage />} />
-        <Route path="/leaderboard" element={<LeaderboardPage />} />
-        <Route path="/game" element={<GamePage />} />
-        <Route path="/aldor" element={<AldorPage />} />
-        <Route path="/johan" element={<JohanPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-      </Route>
-
-      {/* Without header/footer */}
-      <Route path="/test-train-loading" element={<TestTrainLoading />} />
-      <Route path="/errortesting" element={<ErrorTestPage />} />
-      <Route path="/*" element={<NotFoundPage />} />
-    </Routes>
   );
 }
 
-export default App
+function App() {
+  return (    
+    <>
+      <Routes>
+        {/* With header/footer */}
+        <Route element={<SiteLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/homepage" element={<HomePage />} />
+          <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/game" element={<GamePage />} />          
+          <Route path="/johan" element={<JohanPage />} />
+          <Route path="/aldor" element={<AldorPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+
+        {/* Without header/footer */}
+        <Route path="/test-train-loading" element={<TestTrainLoading />} />
+        <Route path="/errortesting" element={<ErrorTestPage />} />
+        <Route path="/*" element={<NotFoundPage />} />
+      </Routes>
+      <Toaster position="top-center" />
+    </>
+  );
+}
+
+export default App;

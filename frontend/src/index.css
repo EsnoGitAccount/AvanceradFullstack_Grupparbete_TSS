@@ -202,16 +202,15 @@
     opacity: 0;
   }
 
-  4% {
+  15% {
     opacity: 1;
   }
 
   80% {
-    offset-distance: 100%;
+    offset-distance: 80%;
     opacity: 1;
   }
 
-  85%,
   100% {
     offset-distance: 100%;
     opacity: 0;
@@ -221,7 +220,6 @@
 .sweden-map__train-wrapper.train-1 {
   offset-path: path("m 47.893951,135.80887 c -0.874776,0.2187 9.622531,-31.7106 41.55183,-36.084479 31.929299,-4.373877 50.518279,16.402039 51.830439,15.964649");
   animation: train1Loop 9s linear infinite;
-  animation-delay: 0s;
   offset-rotate: auto;
   transform-box: fill-box;
   transform-origin: 50% 100%;
@@ -233,16 +231,15 @@
     opacity: 0;
   }
 
-  4% {
+  15% {
     opacity: 1;
   }
 
-  75% {
-    offset-distance: 100%;
+  80% {
+    offset-distance: 80%;
     opacity: 1;
   }
 
-  80%,
   100% {
     offset-distance: 100%;
     opacity: 0;
@@ -252,7 +249,6 @@
 .sweden-map__train-wrapper.train-2 {
   offset-path: path("m 109.53474,87.808844 c 0,0 1.0863,-13.578686 16.47548,-15.932327 15.38918,-2.353638 26.43318,13.39764 26.43318,13.39764");
   animation: train2Loop 6s linear infinite;
-  animation-delay: 2s;
   offset-rotate: auto;
   transform-box: fill-box;
   transform-origin: 50% 100%;
@@ -268,12 +264,11 @@
     opacity: 1;
   }
 
-  85% {
-    offset-distance: 100%;
+  80% {
+    offset-distance: 80%;
     opacity: 1;
   }
 
-  90%,
   100% {
     offset-distance: 100%;
     opacity: 0;
@@ -283,7 +278,6 @@
 .sweden-map__train-wrapper.train-3 {
   offset-path: path("m 117.22714,144.34204 c 0,0 -22.893388,-4.70857 -43.513674,2.2731 C 53.09318,153.59681 42.701855,178.11381 42.701855,178.11381");
   animation: train3Loop 9s linear infinite;
-  animation-delay: 4s;
   offset-rotate: auto;
   transform-box: fill-box;
   transform-origin: 50% 100%;

@@ -2702,28 +2702,28 @@ namespace Backend.Migrations
                         {
                             OptionId = 101,
                             IsCorrect = false,
-                            OptionText = "1786",
+                            OptionText = "Johan",
                             QuestionId = 26
                         },
                         new
                         {
                             OptionId = 102,
                             IsCorrect = true,
-                            OptionText = "1621",
+                            OptionText = "Aldor",
                             QuestionId = 26
                         },
                         new
                         {
                             OptionId = 103,
                             IsCorrect = false,
-                            OptionText = "1523",
+                            OptionText = "Pelle",
                             QuestionId = 26
                         },
                         new
                         {
                             OptionId = 104,
                             IsCorrect = false,
-                            OptionText = "1680",
+                            OptionText = "Hampus",
                             QuestionId = 26
                         },
                         new
@@ -4416,7 +4416,7 @@ namespace Backend.Migrations
                         {
                             QuestionId = 26,
                             CityId = 13,
-                            QuestionText = "Vilket år räknas som Sundsvalls grundande?"
+                            QuestionText = "I Sundsvall bor Sveriges bästa programmerare. Vad heter denne?"
                         },
                         new
                         {

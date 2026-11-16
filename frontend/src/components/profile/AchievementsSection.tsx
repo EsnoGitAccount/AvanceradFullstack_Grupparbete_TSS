@@ -9,7 +9,7 @@ interface AchievementsSectionProps {
 
 export function AchievementsSection({ achievements, unachievedAchievements }: AchievementsSectionProps) {
     return (
-        <Card className='mt-8 bg-white border border-[var(--card-border)] rounded-[20px] p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.02)]'>
+        <Card className='mt-8 bg-[var(--card)] border-[var(--card-border)] rounded-[20px] p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.02)]'>
             <CardContent className='p-0'>
                 <h2 className='text-[1.75rem] font-extrabold text-[var(--foreground)] mb-6'>
                     Dina utmärkelser
