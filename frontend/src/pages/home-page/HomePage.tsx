@@ -18,7 +18,7 @@ function HomePage() {
                 EN LITEN RESA. VARJE DAG.
               </p>
               <h1 className="home-page__title">
-                Tre stopp. Hela Sverige. Hur långt kan du?
+                Ett stopp. Två frågor. Vad kan du om Svenska städer?
               </h1>
               <p className="home-page__description">
                 Kliv ombord på dagens kluriga Sverigeresa. Läs ledtrådarna, skriv ditt svar och samla poäng - en ny resa väntar imorgon.
