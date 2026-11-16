@@ -8,14 +8,19 @@ namespace Backend.Data
         private const string UserRole = "User";
         private const string AdminRole = "Admin";
 
-        public static async Task SeedAsync(IServiceProvider services, IConfiguration configuration)
+        public static async Task SeedRolesAsync(IServiceProvider services)
         {
-            var userManager = services.GetRequiredService<UserManager<User>>();
-
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
 
             await EnsureRoleExistsAsync(roleManager, UserRole);
             await EnsureRoleExistsAsync(roleManager, AdminRole);
+        }
+
+        public static async Task SeedAsync(IServiceProvider services, IConfiguration configuration)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+
+            await SeedRolesAsync(services);
 
             await EnsureUserExistsAsync(
                 userManager,

@@ -18,18 +18,29 @@ namespace Backend
 
             var app = builder.Build();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                if (app.Environment.IsDevelopment())
+                {
+                    IdentitySeed.SeedAsync(scope.ServiceProvider, app.Configuration)
+                        .GetAwaiter()
+                        .GetResult();
+
+                    AchievementSeed.SeedAsync(scope.ServiceProvider)
+                        .GetAwaiter()
+                        .GetResult();
+                }
+                else
+                {
+                    IdentitySeed.SeedRolesAsync(scope.ServiceProvider)
+                        .GetAwaiter()
+                        .GetResult();
+                }
+
+            }
+
             if (app.Environment.IsDevelopment())
             {
-                using var scope = app.Services.CreateScope();
-
-                IdentitySeed.SeedAsync(scope.ServiceProvider, app.Configuration)
-                    .GetAwaiter()
-                    .GetResult();
-
-                AchievementSeed.SeedAsync(scope.ServiceProvider)
-                    .GetAwaiter()
-                    .GetResult();
-
                 app.MapOpenApi();
                 app.MapScalarApiReference();
                 app.MapGet("/", () => Results.Redirect("/scalar"));
