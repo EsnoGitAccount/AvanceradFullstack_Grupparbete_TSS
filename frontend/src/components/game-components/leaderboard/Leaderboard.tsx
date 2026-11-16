@@ -58,7 +58,7 @@ export default function Leaderboard() {
 
     const playerRank = isDaily ? player?.dailyRank : player?.allTimeRank;
 
-    const playerScore = isDaily ? player?.dailyScore : player?.allTimeScore;
+    const playerScore = isDaily ? player?.dailyScore : player?.totalScore;
 
     const ownResult = player
         ? {
@@ -228,7 +228,7 @@ export default function Leaderboard() {
                             <CardContent>
                                 <p className="leaderboard-page__stat-sub">Genom tiderna</p>
                                 <h2 className="leaderboard-page__stat-title">
-                                    {player?.allTimeScore ? `${player.allTimeScore} poäng` : 'Ingen poäng ännu'}
+                                    {player?.totalScore ? `${player.totalScore} poäng` : 'Ingen poäng ännu'}
                                 </h2>
                                 <p className="leaderboard-page__stat-desc">Dina samlade poäng från alla resor</p>
                             </CardContent>

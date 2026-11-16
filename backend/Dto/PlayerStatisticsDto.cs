@@ -8,7 +8,7 @@
         public decimal? DailyScore { get; set; }
         public int? DailyRank { get; set; }
 
-        public decimal AllTimeScore { get; set; }
+        public decimal TotalScore { get; set; }
         public int? AllTimeRank { get; set; }
     }
 }

@@ -20,24 +20,54 @@ function HomePage() {
               EN LITEN RESA. VARJE DAG.
             </p>
             <h1 className="page-title home-page__title">
-              Tre stopp. Hela Sverige. Hur långt kan du?
+              {user ? (
+                <>
+                  Välkommen tillbaka,{' '}
+                  <span className="text-[var(--illustration-light-teal)]">
+                    {user.username}!
+                  </span>
+
+                </>
+              ) : (
+                'Tre stopp. Hela Sverige. Hur långt kan du?'
+              )}
             </h1>
             <p className="home-page__description">
-              Kliv ombord på dagens kluriga Sverigeresa. Läs ledtrådarna, skriv ditt svar och samla poäng - en ny resa väntar imorgon.
+              {user ? `Hoppa rakt in i dagens omgång för att bygga vidare på din streak, eller kika in på din profil för att se dina poäng och utmärkelser.`
+                : 'Kliv ombord på dagens kluriga Sverigeresa. Läs ledtrådarna, skriv ditt svar och samla poäng - en ny resa väntar imorgon.'}
             </p>
+
             <div className="home-page__hero-actions">
-              <Button onClick={() => navigate('/game')} className="home-page__primary-button">
-                Kliv ombord
-                <ArrowRightIcon data-icon="inline-end" />
-              </Button>
-              {!loading && !user && (
-                <Button
-                  variant="outline"
-                  className="home-page__secondary-button"
-                  onClick={() => navigate('/login')}
-                >
-                  Logga in
-                </Button>
+              {user ? (
+                <>
+                  <Button onClick={() => navigate('/game')} className="home-page__primary-button">
+                    Kliv ombord
+                    <ArrowRightIcon data-icon="inline-end" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="home-page__secondary-button"
+                    onClick={() => navigate('/profile')}
+                  >
+                    Till min profil
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button onClick={() => navigate('/game')} className="home-page__primary-button">
+                    Kliv ombord
+                    <ArrowRightIcon data-icon="inline-end" />
+                  </Button>
+                  {!loading && (
+                    <Button
+                      variant="outline"
+                      className="home-page__secondary-button"
+                      onClick={() => navigate('/login')}
+                    >
+                      Logga in
+                    </Button>
+                  )}
+                </>
               )}
             </div>
             <p className="home-page__details">

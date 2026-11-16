@@ -41,7 +41,7 @@ export function ProfileOverview({ profile }: ProfileOverviewProps) {
                                 Totalt poäng
                             </span>
                             <p className='text-2xl font-black text-[var(--foreground)] mt-1 mb-0'>
-                                {profile.allTimeScore} p
+                                {profile.totalScore} p
                             </p>
                         </div>
                     </div>

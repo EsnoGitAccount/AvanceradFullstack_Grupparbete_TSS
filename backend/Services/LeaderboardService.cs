@@ -74,7 +74,7 @@ public class LeaderboardService(
                 .GroupBy(g => g.UserId!.Value)
                 .Select(group => CreateResult(
                     group.First(),
-                    group.Sum(g => (decimal)g.TotalScore),
+                    group.First().User?.TotalScore ?? 0,
                     currentUserId,
                     streaks)));
 
@@ -100,7 +100,7 @@ public class LeaderboardService(
                         currentUserId.Value),
                     DailyScore = daily?.FinalScore,
                     DailyRank = daily?.Rank,
-                    AllTimeScore = allTime?.FinalScore ?? 0,
+                    TotalScore = user.TotalScore,
                     AllTimeRank = allTime?.Rank
                 };
             }
@@ -155,16 +155,12 @@ public class LeaderboardService(
             .FirstOrDefault(g => g.UserId == userId && g.CompletedAt == today)
             ?.TotalScore;
 
-        var allTimeScore = dailyBest
-            .Where(g => g.UserId == userId)
-            .Sum(g => (decimal)g.TotalScore);
-
         return new PlayerStatisticsDto
         {
             UserName = user.UserName ?? "",
             Streak = streak,
             DailyScore = dailyScore,
-            AllTimeScore = allTimeScore
+            TotalScore = user.TotalScore
         };
     }
 
