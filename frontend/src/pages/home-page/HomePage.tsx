@@ -71,13 +71,13 @@ function HomePage() {
             <p className="home-page__details">
               Gratis att spela · Massa frågor · Poäng · En gång per dag
             </p>
-            <Card
-              className="home-page__journey-card relative overflow-hidden"
-              aria-label="Sverigekarta med bonuslägen"
-            >
-              <SwedenMap className="home-page__journey-card-map" bonusLinks />
-            </Card>
           </div>
+          <Card
+            className="home-page__journey-card relative overflow-hidden"
+            aria-label="Sverigekarta med bonuslägen"
+          >
+            <SwedenMap className="home-page__journey-card-map" bonusLinks />
+          </Card>
         </div>
       </section>
     </div>
