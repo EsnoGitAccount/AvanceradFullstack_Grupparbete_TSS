@@ -1,206 +1,219 @@
-import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/Button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
-import "./QuestionDestination.css";
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Button } from '@/components/ui/Button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
+import './QuestionDestination.css'
 
-import type { Question } from "@/models/City";
-import type { DailyChallenge } from "@/models/DailyChallenge";
-import { GAME_RULES } from "@/constants/gameConstants";
+import type { Question } from '@/models/City'
+import type { DailyChallenge } from '@/models/DailyChallenge'
+import { GAME_RULES } from '@/constants/gameConstants'
+
+const SECONDS_PER_QUESTION = 15;
 
 type QuestionDestinationProps = {
-  onComplete: (score: number) => void;
-  dailyChallange: DailyChallenge;
-  previousScore: number;
-  onStepChange?: (index: number) => void;
-};
+    onComplete: (score: number) => void
+    dailyChallange: DailyChallenge
+    previousScore: number
+    onStepChange?: (index: number) => void
+}
 
-export default function QuestionDestination({
-  onComplete,
-  dailyChallange,
-  previousScore,
-  onStepChange,
-}: QuestionDestinationProps) {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [score, setScore] = useState<number>(0);
-  const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+export default function QuestionDestination({ onComplete, dailyChallange, previousScore, onStepChange }: QuestionDestinationProps) {
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
+    const [selectedOption, setSelectedOption] = useState<string | null>(null)
+    const [score, setScore] = useState<number>(0)
+    const [remainingSeconds, setRemainingSeconds] = useState<number>(SECONDS_PER_QUESTION)
+    const [hasTimedOut, setHasTimedOut] = useState<boolean>(false)
+    const [challengeQuestions] = useState<Question[]>(
+        dailyChallange.cityDetails.questions
+    );
 
-  useEffect(
-    () => () => {
-      if (feedbackTimer.current !== null) clearTimeout(feedbackTimer.current);
-    },
-    [],
-  );
+    const answeredQuestion = useRef<number | null>(null)
 
-  const [challengeQuestions] = useState<Question[]>(
-    dailyChallange.cityDetails.questions,
-  );
+    const questionDeadline = useRef<{ questionIndex: number; endsAt: number } | null>(null)
 
-  // Get the active question based on the current index
-  console.log(challengeQuestions);
-  console.log(previousScore);
-  const currentQuestion = challengeQuestions[currentQuestionIndex];
+    const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const handleSelectOption = (optionText: string, isCorrect: boolean) => {
-    if (selectedOption !== null || feedbackTimer.current !== null) return;
+    const currentQuestion = challengeQuestions[currentQuestionIndex]
+    const hasAnswered = selectedOption !== null || hasTimedOut
 
-    setSelectedOption(optionText);
+    const handleSelectOption = useCallback((optionText: string | null, isCorrect: boolean) => {
+        if (answeredQuestion.current === currentQuestionIndex) {
+            return;
+        }
 
-    const newScore = isCorrect
-      ? score + GAME_RULES.destinationQuestionScore
-      : score;
+        answeredQuestion.current = currentQuestionIndex;
 
-    setScore(newScore);
+        const endsAt = questionDeadline.current?.endsAt ?? Date.now();
 
-    feedbackTimer.current = setTimeout(() => {
-      feedbackTimer.current = null;
-      if (currentQuestionIndex < challengeQuestions.length - 1) {
-        const nextIndex = currentQuestionIndex + 1;
+        const secondsLeft = Math.max(
+            0,
+            Math.ceil((endsAt - Date.now()) / 1000)
+        );
 
-        setCurrentQuestionIndex(nextIndex);
-        setSelectedOption(null);
-        onStepChange?.(nextIndex);
-      } else {
-        onComplete(newScore);
-      }
-    }, 1000);
-  };
+        const timedOut = optionText === null || secondsLeft <= 0;
 
-  {
-    currentQuestion.options.map((option, index) => {
-      const hasAnswered = selectedOption !== null;
-      const isSelected = selectedOption === option.optionText;
+        const newScore = score + (isCorrect && !timedOut ? GAME_RULES.destinationQuestionScore : 0);
 
-      const feedbackClass = hasAnswered
-        ? option.isCorrect
-          ? "correct"
-          : isSelected
-            ? "incorrect"
-            : ""
-        : "";
+        setRemainingSeconds(secondsLeft);
+        setHasTimedOut(timedOut);
+        setSelectedOption(timedOut ? null : optionText);
+        setScore(newScore);
 
-      return (
-        <Button
-          key={index}
-          variant="outline"
-          className={`question-card__option-button ${feedbackClass}`}
-          onClick={() =>
-            handleSelectOption(option.optionText, option.isCorrect)
-          }
-          disabled={selectedOption !== null}
-        >
-          {option.optionText}
-          {hasAnswered && option.isCorrect && "✔️"}
-          {hasAnswered && isSelected && !option.isCorrect && "❌"}
-        </Button>
-      );
-    });
-  }
+        feedbackTimer.current = setTimeout(() => {
+            feedbackTimer.current = null;
 
-  return (
+            if (currentQuestionIndex < challengeQuestions.length - 1) {
+                const nextIndex = currentQuestionIndex + 1;
+
+                setSelectedOption(null);
+                setHasTimedOut(false);
+                setRemainingSeconds(SECONDS_PER_QUESTION);
+                setCurrentQuestionIndex(nextIndex);
+
+                onStepChange?.(nextIndex);
+            }
+
+            else {
+                onComplete(newScore);
+            }
+        }, timedOut ? 3000 : 3000);
+    }, [currentQuestionIndex, challengeQuestions.length, score, onComplete, onStepChange]);
+
+    useEffect(() => () => {
+        if (feedbackTimer.current !== null) clearTimeout(feedbackTimer.current);
+    }, [])
+
+    // Get the active question based on the current index
+    useEffect(() => {
+        if (
+            questionDeadline.current?.questionIndex !==
+            currentQuestionIndex
+        ) {
+            questionDeadline.current = {
+                questionIndex: currentQuestionIndex,
+                endsAt: Date.now() + SECONDS_PER_QUESTION * 1000,
+            };
+        }
+
+        const timer = window.setInterval(() => {
+            if (answeredQuestion.current === currentQuestionIndex) {
+                return;
+            }
+
+            const endsAt =
+                questionDeadline.current?.endsAt ?? Date.now();
+
+            const secondsLeft = Math.max(
+                0,
+                Math.ceil((endsAt - Date.now()) / 1000)
+            );
+
+            setRemainingSeconds(secondsLeft);
+
+            if (secondsLeft === 0) {
+                handleSelectOption(null, false);
+            }
+        }, 100);
+
+        return () => window.clearInterval(timer);
+    }, [currentQuestionIndex, handleSelectOption]);
+
+return (
     <div className="question-page">
-      <div className="question-page__main">
-        <section className="question-page__hero">
-          <div className="question-page__grid">
-            <div className="question-page__left-column">
-              <Card className="question-card">
-                <CardHeader>
-                  <p className="question-card__eyebrow">
-                    STOPP 0{currentQuestionIndex + 1} ·{" "}
-                    {dailyChallange.cityDetails.cityName}
-                  </p>
-                  <CardTitle className="question-card__title">
-                    {currentQuestion.questionText}
-                  </CardTitle>
-                  <CardDescription>
-                    Tänk efter och välj ditt svar, du har ett försök på den här
-                    frågan.
-                  </CardDescription>
-                </CardHeader>
+        <div className="question-page__main">
+            <section className="question-page__hero">
+                <div className="question-page__grid">
 
-                <CardContent>
-                  <div className="question-card__options-grid">
-                    {currentQuestion.options.map((option, index) => {
-                      const hasAnswered = selectedOption !== null;
-                      const isSelected = selectedOption === option.optionText;
+                    <div className="question-page__left-column">
+                        <Card className="question-card">
+                            <CardHeader>
+                                <p className="question-card__eyebrow">
+                                    STOPP 0{currentQuestionIndex + 1} · {dailyChallange.cityDetails.cityName}
+                                </p>
+                                <CardTitle className="question-card__title">
+                                    {currentQuestion.questionText}
+                                </CardTitle>
+                                <CardDescription>
+                                    Tänk efter och välj ditt svar, du har ett försök på den här frågan.
+                                </CardDescription>
+                                <div role="timer" aria-label="Återstående tid">
+                                    <strong>{remainingSeconds} sekunder kvar</strong>
+                                </div>
 
-                      let answerClass = "";
+                                {hasTimedOut && (
+                                    <p role="status">
+                                        Tiden är ute! Frågan ger 0 poäng.
+                                    </p>
+                                )}
+                            </CardHeader>
 
-                      if (hasAnswered) {
-                        if (option.isCorrect) {
-                          answerClass = "answer-correct";
-                        } else if (isSelected) {
-                          answerClass = "answer-wrong";
-                        }
-                      }
+                            <CardContent>
+                                <div className="question-card__options-grid">
+                                    {currentQuestion.options.map((option, index) => {
+                                        const isSelected = selectedOption === option.optionText;
 
-                      return (
-                        <Button
-                          key={index}
-                          variant="outline"
-                          className={`question-card__option-button ${answerClass}`}
-                          onClick={() =>
-                            handleSelectOption(
-                              option.optionText,
-                              option.isCorrect,
-                            )
-                          }
-                          disabled={hasAnswered}
-                        >
-                          {option.optionText}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                                        let answerClass = "";
 
-            {/* Placeholder cards  */}
-            <div className="question-page__right-column">
-              <Card className="info-card info-card--blue">
-                <CardHeader className="info-card__header">
-                  <CardTitle className="info-card__stats-title">
-                    <span>DIN POÄNG</span>
-                    <span>KVAR ATT VINNA</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="info-card__stats-content">
-                  <div className="info-card__score">
-                    {score + previousScore} / {GAME_RULES.maxScore}
-                  </div>
-                  <div className="info-card__remaining">
-                    {20 - currentQuestionIndex * 10} p
-                  </div>
-                </CardContent>
-              </Card>
+                                        if (hasAnswered) {
+                                            if (option.isCorrect) {
+                                                answerClass = "answer-correct";
+                                            } else if (isSelected) {
+                                                answerClass = "answer-wrong";
+                                            }
+                                        }
 
-              <Card className="info-card info-card--yellow">
-                <CardHeader>
-                  <CardTitle className="info-card__title">
-                    Tänk efter.
-                  </CardTitle>
-                  <CardDescription className="info-card__description">
-                    Varje fråga här ger 10 poäng, så tänk efter noga innan du
-                    svarar.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="info-card__footer-text">
-                    2 frågor · 10 poäng per fråga · Ingen tidspress
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-      </div>
+                                        return (
+                                            <Button
+                                                key={index}
+                                                variant="outline"
+                                                className={`question-card__option-button ${answerClass}`}
+                                                onClick={() =>
+                                                    handleSelectOption(option.optionText, option.isCorrect)
+                                                }
+                                                disabled={hasAnswered}
+                                            >
+                                                {option.optionText}
+                                            </Button>
+                                        );
+                                    })}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    {/* Placeholder cards  */}
+                    <div className="question-page__right-column">
+                        <Card className="info-card info-card--blue">
+                            <CardHeader className="info-card__header">
+                                <CardTitle className="info-card__stats-title">
+                                    <span>DIN POÄNG</span>
+                                    <span>KVAR ATT VINNA</span>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="info-card__stats-content">
+                                <div className="info-card__score">{score + previousScore} / {GAME_RULES.maxScore}</div>
+                                <div className="info-card__remaining">{20 - (currentQuestionIndex * 10)} p</div>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="info-card info-card--yellow">
+                            <CardHeader>
+                                <CardTitle className="info-card__title">
+                                    Tänk efter.
+                                </CardTitle>
+                                <CardDescription className="info-card__description">
+                                    Varje fråga här ger 10 poäng, så tänk efter noga innan du svarar.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="info-card__footer-text">
+                                    2 frågor · 10 poäng per fråga · Ingen tidspress
+                                </p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
-  );
+)
 }
