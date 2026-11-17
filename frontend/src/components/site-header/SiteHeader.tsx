@@ -44,6 +44,21 @@ function SiteHeader() {
               <>
                 <Button
                   variant="ghost"
+                  className="site-header__account-button"
+                  onClick={() => navigate("/game")}
+                >
+                  Dagens Resa
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="site-header__account-button"
+                  onClick={() => navigate("/leaderboard")}
+                >
+                  Topplista
+                </Button>
+
+                <Button
+                  variant="ghost"
                   className="site-header__login-button"
                   onClick={() => navigate("/profile")}
                 >
