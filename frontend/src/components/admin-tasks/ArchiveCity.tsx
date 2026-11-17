@@ -83,7 +83,11 @@ export default function ArchiveCity({
           </select>
         </div>
 
-        <Button variant="destructive" type="submit" disabled={loading || !selectedCityId}>
+        <Button
+          variant="destructive"
+          type="submit"
+          disabled={loading || !selectedCityId}
+        >
           {loading ? "Arkiverar..." : "Arkivera stad"}
         </Button>
       </form>

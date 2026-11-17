@@ -10,7 +10,7 @@ namespace Backend.Services.IServices
         Task DeleteGameResultAsync(int gameId);
         Task<IEnumerable<ResultDto>> GetResultsForDateAsync(DateOnly? date, int? currentUserId);
         bool GuestUserHasPlayedToday(string? cookie);
-		Task<bool> HasUserPlayedDailyChallengeAsync(int userId, DateOnly date);
-		string CreatedGuestPlayedCookie();
+        Task<bool> HasUserPlayedDailyChallengeAsync(int userId, DateOnly date);
+        string CreatedGuestPlayedCookie();
     }
 }

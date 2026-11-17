@@ -1,11 +1,14 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and lint React frontend
+name: Lint React frontend
 
 on:
   push:
+    branches:
+      - '!master'
     paths: 
       - 'frontend/**'
+      - '.github/workflows/wherearewetestfrontend.yml'
   workflow_dispatch:
 
 jobs:

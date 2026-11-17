@@ -65,11 +65,11 @@ namespace Backend.Repositories
             return yesterdaysGame != null;
         }
 
-		public async Task<bool> HasUserPlayedDailyChallengeAsync(int userId, int dailyChallengeId)
-		{
-			var hasPlayed = await _context.Games
-				.AnyAsync(g => g.UserId == userId && g.DailyChallangeId == dailyChallengeId);
+        public async Task<bool> HasUserPlayedDailyChallengeAsync(int userId, int dailyChallengeId)
+        {
+            var hasPlayed = await _context.Games
+                .AnyAsync(g => g.UserId == userId && g.DailyChallangeId == dailyChallengeId);
             return hasPlayed;
-		}
-	}
+        }
+    }
 }

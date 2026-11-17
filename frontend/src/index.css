@@ -20,7 +20,7 @@
 
 @theme inline {
   --font-heading: var(--font-sans);
-  --font-sans: 'Geist Variable', sans-serif;
+  --font-sans: "Geist Variable", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -76,11 +76,11 @@
   --muted-foreground: #587875;
   --accent: #f5f5f5;
   --accent-foreground: oklch(0.205 0 0);
-  --destructive: #D16E19;
+  --destructive: #d16e19;
   --border: #cbdad2;
   --input: #cbdad2;
   --ring: #00676f;
-  --page: #F3F7F2;
+  --page: #f3f7f2;
   --page-border: #dbe6df;
   --card-border: #d5e1da;
   --footer: #00777d;
@@ -100,7 +100,7 @@
   --sidebar-accent-foreground: #171717;
   --sidebar-border: #e5e5e5;
   --sidebar-ring: #a1a1a1;
-  --blue-card: #DDF7FD;
+  --blue-card: #ddf7fd;
   --yellow-card: #fdfadf;
   --green-card: #e8f2ea;
   --illustration-sky-top: #75e1fd;
@@ -196,7 +196,6 @@
   --illustration-cart-1: #0a0c22;
   --illustration-train: #050612;
   --illustration-window: rgb(201, 168, 91);
-
 }
 
 .sweden-map {
@@ -231,7 +230,9 @@
 }
 
 .sweden-map__train-wrapper.train-1 {
-  offset-path: path("m 47.893951,135.80887 c -0.874776,0.2187 9.622531,-31.7106 41.55183,-36.084479 31.929299,-4.373877 50.518279,16.402039 51.830439,15.964649");
+  offset-path: path(
+    "m 47.893951,135.80887 c -0.874776,0.2187 9.622531,-31.7106 41.55183,-36.084479 31.929299,-4.373877 50.518279,16.402039 51.830439,15.964649"
+  );
   animation: train1Loop 9s linear infinite;
   offset-rotate: auto;
   transform-box: fill-box;
@@ -260,7 +261,9 @@
 }
 
 .sweden-map__train-wrapper.train-2 {
-  offset-path: path("m 109.53474,87.808844 c 0,0 1.0863,-13.578686 16.47548,-15.932327 15.38918,-2.353638 26.43318,13.39764 26.43318,13.39764");
+  offset-path: path(
+    "m 109.53474,87.808844 c 0,0 1.0863,-13.578686 16.47548,-15.932327 15.38918,-2.353638 26.43318,13.39764 26.43318,13.39764"
+  );
   animation: train2Loop 6s linear infinite;
   offset-rotate: auto;
   transform-box: fill-box;
@@ -289,7 +292,9 @@
 }
 
 .sweden-map__train-wrapper.train-3 {
-  offset-path: path("m 117.22714,144.34204 c 0,0 -22.893388,-4.70857 -43.513674,2.2731 C 53.09318,153.59681 42.701855,178.11381 42.701855,178.11381");
+  offset-path: path(
+    "m 117.22714,144.34204 c 0,0 -22.893388,-4.70857 -43.513674,2.2731 C 53.09318,153.59681 42.701855,178.11381 42.701855,178.11381"
+  );
   animation: train3Loop 9s linear infinite;
   offset-rotate: auto;
   transform-box: fill-box;

@@ -34,14 +34,14 @@ namespace Backend.Controllers
             var now = DateTime.UtcNow;
             var challengeDate = date ?? DateOnly.FromDateTime(now);
 
-            if(User.Identity?.IsAuthenticated == true && int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
+            if (User.Identity?.IsAuthenticated == true && int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
             {
                 var hasPlayed = await _gameService.HasUserPlayedDailyChallengeAsync(userId, challengeDate);
-				if (hasPlayed)
-				{
-					return Problem(statusCode: StatusCodes.Status409Conflict, detail: "You have already played today's challenge.");
-				}
-			} 
+                if (hasPlayed)
+                {
+                    return Problem(statusCode: StatusCodes.Status409Conflict, detail: "You have already played today's challenge.");
+                }
+            }
 
             var cacheKey = $"DailyChallenge_{challengeDate:yyyy-MM-dd}";
 

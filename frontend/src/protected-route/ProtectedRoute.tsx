@@ -7,7 +7,10 @@ type ProtectedRouteProps = {
   requiredRole?: string;
 };
 
-export default function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
+export default function ProtectedRoute({
+  children,
+  requiredRole,
+}: ProtectedRouteProps) {
   const { user, loading } = useAuth();
 
   if (loading) {

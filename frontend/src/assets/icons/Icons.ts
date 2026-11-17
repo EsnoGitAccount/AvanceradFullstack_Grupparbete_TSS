@@ -8,8 +8,7 @@ import {
   Sun as SunIcon,
   Trophy as TrophyIcon,
   Ticket as TicketIcon,
-
-} from 'lucide-react'
+} from "lucide-react";
 
 export {
   ArrowRightIcon,
@@ -18,5 +17,4 @@ export {
   SunIcon,
   TrophyIcon,
   TicketIcon,
-
-}
+};

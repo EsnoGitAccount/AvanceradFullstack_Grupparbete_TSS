@@ -1,0 +1,93 @@
+# This workflow will build and test the ASP.NET API project when changes are pushed to any branch in the backend or test directories, or when the workflow is manually triggered.
+
+name: Build and test ASP.NET API, then deploy backend
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'backend/**'
+      - 'Backend.Tests/**'
+      - '.github/workflows/wherearewedeploybackend_master.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - uses: actions/checkout@v4
+    
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Build with dotnet
+        run: dotnet build ./Backend.Tests/Backend.Tests.csproj --configuration Release
+
+      - name: Get npm cache path
+        id: npm-cache
+        shell: powershell
+        run: echo "dir=$(npm config get cache)" >> $env:GITHUB_OUTPUT
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-azurite-3.37.0
+      - name: Install Azurite
+        shell: bash
+        run: npx --yes --loglevel info azurite@3.37.0 --version
+
+      - name: Start Azurite
+        shell: bash
+        run: npx --yes azurite@3.37.0 --silent --inMemoryPersistence --skipApiVersionCheck &
+
+      - name: Test with dotnet
+        run: dotnet test ./Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --no-restore --verbosity normal
+
+      - name: Build with dotnet
+        working-directory: ./backend
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        working-directory: ./backend
+        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C18CF51E67A34EF590148634DEB932A3 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_578BC57CD2D043EDB7931A303036FBD8 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_26C13EE59AD943A18B27BCEFB0BFDC41 }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'whereareweBackend'
+          slot-name: 'Production'
+          package: .

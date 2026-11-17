@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button'
 import GameImage from '@/components/game-image/GameImage'
 import { getImageUrl } from '@/services/api'
 
-import './whereAreWe.css'
+import "./whereAreWe.css";
 
 function calculateScore(secondsLeft: number) {
   if (secondsLeft <= 0) return 0;
@@ -43,20 +43,20 @@ const SECONDS_PER_CLUE = 10;
 const TOTAL_SECONDS = GAME_RULES.cluesPerCity * SECONDS_PER_CLUE;
 
 type WhereAreWeProps = {
-  onComplete: (score: number) => void
-  clues: Clue[]
-  correctCity: string
-  imageUrl: string | undefined
-  imageSrc?: string
-  imageAlt?: string
-  title?: string
-  guessLabel?: string
-  suggestionLabel?: string
-  emptySuggestionText?: string
-  suggestions?: readonly string[]
-  showSuggestions?: boolean
-  requireCorrectAnswer?: boolean
-}
+  onComplete: (score: number) => void;
+  clues: Clue[];
+  correctCity: string;
+  imageUrl: string | undefined;
+  imageSrc?: string;
+  imageAlt?: string;
+  title?: string;
+  guessLabel?: string;
+  suggestionLabel?: string;
+  emptySuggestionText?: string;
+  suggestions?: readonly string[];
+  showSuggestions?: boolean;
+  requireCorrectAnswer?: boolean;
+};
 
 export default function WhereAreWe({
   onComplete,
@@ -75,7 +75,9 @@ export default function WhereAreWe({
 }: WhereAreWeProps) {
 
   const isMobile = useSyncExternalStore(
-    subscribeToMobile, getMobileSnapshot, getServerMobileSnapshot
+    subscribeToMobile,
+    getMobileSnapshot,
+    getServerMobileSnapshot,
   );
   const [cityGuess, setCityGuess] = useState("");
   const [isCitySuggestionsOpen, setIsCitySuggestionsOpen] = useState(false);
@@ -130,9 +132,9 @@ useEffect(() => {
   }, []);
 
   const filteredCities = suggestions.filter((city) =>
-    city.toLocaleLowerCase('sv-SE').includes(
-      cityGuess.trim().toLocaleLowerCase('sv-SE')
-    )
+    city
+      .toLocaleLowerCase("sv-SE")
+      .includes(cityGuess.trim().toLocaleLowerCase("sv-SE")),
   );
 
   const handleWhereAreWeSubmit = (event: React.SubmitEvent) => {
@@ -150,8 +152,8 @@ useEffect(() => {
     }
 
     const isCorrect =
-      cityGuess.trim().toLocaleLowerCase('sv-SE') ===
-      correctCity.toLocaleLowerCase('sv-SE');
+      cityGuess.trim().toLocaleLowerCase("sv-SE") ===
+      correctCity.toLocaleLowerCase("sv-SE");
 
     setIsCitySuggestionsOpen(false);
 
@@ -213,35 +215,37 @@ useEffect(() => {
           autoComplete="off"
         />
 
-        {showSuggestions && isCitySuggestionsOpen && cityGuess.trim().length > 0 && (
-          <div
-            className="where-are-we__city-suggestions"
-            role="listbox"
-            aria-label={suggestionLabel}
-          >
-            {filteredCities.length > 0 ? (
-              filteredCities.map((city) => (
-                <button
-                  className="where-are-we__city-suggestion"
-                  key={city}
-                  type="button"
-                  role="option"
-                  onMouseDown={(event) => event.preventDefault()}
-                  onClick={() => {
-                    setCityGuess(city);
-                    setIsCitySuggestionsOpen(false);
-                  }}
-                >
-                  {city}
-                </button>
-              ))
-            ) : (
-              <p className="where-are-we__city-empty">
-                {emptySuggestionText}
-              </p>
-            )}
-          </div>
-        )}
+        {showSuggestions &&
+          isCitySuggestionsOpen &&
+          cityGuess.trim().length > 0 && (
+            <div
+              className="where-are-we__city-suggestions"
+              role="listbox"
+              aria-label={suggestionLabel}
+            >
+              {filteredCities.length > 0 ? (
+                filteredCities.map((city) => (
+                  <button
+                    className="where-are-we__city-suggestion"
+                    key={city}
+                    type="button"
+                    role="option"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => {
+                      setCityGuess(city);
+                      setIsCitySuggestionsOpen(false);
+                    }}
+                  >
+                    {city}
+                  </button>
+                ))
+              ) : (
+                <p className="where-are-we__city-empty">
+                  {emptySuggestionText}
+                </p>
+              )}
+            </div>
+          )}
       </div>
       <Button className="where-are-we__submit-button
       "type="submit"
@@ -264,7 +268,6 @@ useEffect(() => {
           } alt={imageAlt} />
         </div>
         <div className="where-are-we__right-side">
-
           {isMobile && answerForm}
 
           <div className="where-are-we__clues">
@@ -275,8 +278,9 @@ useEffect(() => {
               return (
                 <div
                   key={clue.pointValue}
-                  className={`where-are-we__clue ${isVisible ? "" : "where-are-we__clue--hidden"
-                    }`}
+                  className={`where-are-we__clue ${
+                    isVisible ? "" : "where-are-we__clue--hidden"
+                  }`}
                 >
                   <p className="where-are-we__clue-label">{clue.pointValue}</p>
                   <p className="where-are-we__clue-text">{clue.clueText}</p>
@@ -291,5 +295,5 @@ useEffect(() => {
         </div>
       </section>
     </div>
-  )
+  );
 }
