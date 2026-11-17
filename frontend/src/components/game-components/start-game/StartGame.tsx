@@ -15,8 +15,14 @@ const gameInstructions = [
   { id: 1, text: "Försök hitta dagens stad. Du har 5 försök." },
   { id: 2, text: "Varje felaktig gissning visar en ny ledtråd." },
   { id: 3, text: "Du får poäng baserat på hur tidigt du hittar rätt stad." },
-  { id: 4, text: "Efter du har hittad staden får du svara på ett antal frågor om staden.", },
-  { id: 5, text: "När du spelat klart får du ett resultat och hur du rankade mot andra spelare." },
+  {
+    id: 4,
+    text: "Efter du har hittad staden får du svara på ett antal frågor om staden.",
+  },
+  {
+    id: 5,
+    text: "När du spelat klart får du ett resultat och hur du rankade mot andra spelare.",
+  },
 ];
 
 type StartGameProps = {
@@ -32,7 +38,6 @@ function StartGameTest({
   guestUserName,
   setGuestUserName,
   authenticatedUserName,
-
 }: StartGameProps) {
   const currentDate = new Date().toLocaleDateString("sv-SE", {
     day: "numeric",
@@ -44,9 +49,7 @@ function StartGameTest({
     <div className="start-game-page">
       <div className="start-game">
         <header className="start-game__header">
-          <span className="start-game__date">
-            DAGENS SPEL · {currentDate}
-          </span>
+          <span className="start-game__date">DAGENS SPEL · {currentDate}</span>
           <h1 className="page-title">Alla ombord!</h1>
 
           <p className="start-game__description">
@@ -107,7 +110,11 @@ function StartGameTest({
                     />
                   )}
 
-                  <Button type="submit" size="lg" className="h-10 w-full mt-3.5">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="h-10 w-full mt-3.5"
+                  >
                     Starta resan
                   </Button>
                   <p className="text-xs text-muted-foreground text-center mt-2">
@@ -121,7 +128,6 @@ function StartGameTest({
           <div className="start-game__sidebar">
             <div className="start-game__animation-container w-full overflow-visible">
               <TrainTrackAnimation />
-
             </div>
             <Card className="start-game__info-card">
               <CardHeader className="start-game__info-header">
@@ -135,8 +141,8 @@ function StartGameTest({
 
               <CardContent>
                 <p className="start-game__info-description">
-                  Du behöver bara din nyfikenhet. Stor bokstav spelar
-                  ingen roll, och vanliga stavningsvarianter godkänns.
+                  Du behöver bara din nyfikenhet. Stor bokstav spelar ingen
+                  roll, och vanliga stavningsvarianter godkänns.
                 </p>
               </CardContent>
             </Card>

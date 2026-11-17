@@ -17,7 +17,9 @@ export function useAdminData<T>(load: () => Promise<T[]>) {
         if (active) setData(result);
       } catch (error) {
         if (active) {
-          setError(error instanceof Error ? error.message : "Kunde inte ladda data.");
+          setError(
+            error instanceof Error ? error.message : "Kunde inte ladda data.",
+          );
         }
       } finally {
         if (active) setLoading(false);
@@ -25,8 +27,16 @@ export function useAdminData<T>(load: () => Promise<T[]>) {
     }
 
     void fetchData();
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [load, attempt]);
 
-  return { data, setData, loading, error, retry: () => setAttempt((value) => value + 1) };
+  return {
+    data,
+    setData,
+    loading,
+    error,
+    retry: () => setAttempt((value) => value + 1),
+  };
 }

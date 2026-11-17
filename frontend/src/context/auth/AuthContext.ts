@@ -1,5 +1,5 @@
-import type { RegisterDto } from '@/models/RegisterDto';
-import { createContext } from 'react';
+import type { RegisterDto } from "@/models/RegisterDto";
+import { createContext } from "react";
 
 // Define the types for user and login credentials, as well as the shape of the authentication context
 export type UserDto = {
@@ -18,9 +18,11 @@ export interface AuthContextType {
   loading: boolean;
   login: (credentials: LoginCredentials) => Promise<UserDto>;
   logout: () => Promise<void>;
-  register: (registerData: RegisterDto) => Promise<void>
+  register: (registerData: RegisterDto) => Promise<void>;
   clearSession: () => void;
   updateUsername: (newUsername: string) => void;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);

@@ -82,7 +82,11 @@ export default function DeleteGame({ games, onGameDeleted }: DeleteGameProps) {
           </select>
         </div>
 
-        <Button variant="destructive" type="submit" disabled={loading || !selectedGameId}>
+        <Button
+          variant="destructive"
+          type="submit"
+          disabled={loading || !selectedGameId}
+        >
           {loading ? "Raderar..." : "Radera spelresultat"}
         </Button>
       </form>
