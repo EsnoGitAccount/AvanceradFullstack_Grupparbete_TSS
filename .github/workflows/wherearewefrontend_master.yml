@@ -4,6 +4,8 @@ name: Build and lint React frontend
 
 on:
   push:
+    branches:
+      - 'master'
     paths: 
       - 'frontend/**'
       - '.github/workflows/wherearewefrontend_master.yml'
