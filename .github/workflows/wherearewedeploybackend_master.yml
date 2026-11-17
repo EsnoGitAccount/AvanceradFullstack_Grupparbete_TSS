@@ -1,6 +1,6 @@
 # This workflow will build and test the ASP.NET API project when changes are pushed to any branch in the backend or test directories, or when the workflow is manually triggered.
 
-name: Build and test ASP.NET API
+name: Build and test ASP.NET API, then deploy backend
 
 on:
   push:
