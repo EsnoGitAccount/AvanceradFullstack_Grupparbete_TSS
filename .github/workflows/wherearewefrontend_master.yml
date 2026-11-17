@@ -6,6 +6,7 @@ on:
   push:
     paths: 
       - 'frontend/**'
+      - '.github/workflows/wherearewefrontend_master.yml'
   workflow_dispatch:
 
 jobs:
