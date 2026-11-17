@@ -1,0 +1,49 @@
+# This workflow will build and test the ASP.NET API project when changes are pushed to any branch in the backend or test directories, or when the workflow is manually triggered.
+
+name: Build and test ASP.NET API
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - 'Backend.Tests/**'
+      - '.github/workflows/wherearewetestbackend.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - uses: actions/checkout@v4
+    
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Build with dotnet
+        run: dotnet build ./Backend.Tests/Backend.Tests.csproj --configuration Release
+
+      - name: Get npm cache path
+        id: npm-cache
+        shell: powershell
+        run: echo "dir=$(npm config get cache)" >> $env:GITHUB_OUTPUT
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-azurite-3.37.0
+      - name: Install Azurite
+        shell: bash
+        run: npx --yes --loglevel info azurite@3.37.0 --version
+
+      - name: Start Azurite
+        shell: bash
+        run: npx --yes azurite@3.37.0 --silent --inMemoryPersistence --skipApiVersionCheck &
+
+      - name: Test with dotnet
+        run: dotnet test ./Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --no-restore --verbosity normal
