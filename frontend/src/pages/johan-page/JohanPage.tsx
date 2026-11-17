@@ -1,5 +1,5 @@
-import TeacherBonusGame from '@/components/teacher-bonus-game/TeacherBonusGame'
-import { JOHAN_CHALLENGE, JOHAN_PORTRAIT } from '@/constants/johanChallenge'
+import TeacherBonusGame from "@/components/teacher-bonus-game/TeacherBonusGame";
+import { JOHAN_CHALLENGE, JOHAN_PORTRAIT } from "@/constants/johanChallenge";
 
 export default function JohanPage() {
   return (
@@ -10,5 +10,5 @@ export default function JohanPage() {
       challenge={JOHAN_CHALLENGE}
       portrait={JOHAN_PORTRAIT}
     />
-  )
+  );
 }

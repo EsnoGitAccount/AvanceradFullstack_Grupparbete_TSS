@@ -40,7 +40,7 @@ function RegisterPage() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState<RegisterError>({});
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,37 +57,37 @@ function RegisterPage() {
 
   /*Validate password*/
   const validatePassword = (password: string) => {
-    const errors: string[] = []
+    const errors: string[] = [];
 
     if (password.length < 12) {
-      errors.push("minst 12 tecken")
+      errors.push("minst 12 tecken");
     }
 
     /*Check uppercase*/
     if (!/[A-Z]/.test(password)) {
-      errors.push("en stor bokstav")
+      errors.push("en stor bokstav");
     }
     /*Check lowercase*/
     if (!/[a-z]/.test(password)) {
-      errors.push("en liten bokstav")
+      errors.push("en liten bokstav");
     }
     /*Check number*/
     if (!/\d/.test(password)) {
-      errors.push("en siffra")
+      errors.push("en siffra");
     }
 
     if (!/[^A-Za-z0-9\s]/.test(password)) {
-      errors.push("ett specialtecken")
+      errors.push("ett specialtecken");
     }
 
-    if (errors.length === 0) return ""
+    if (errors.length === 0) return "";
 
     if (errors.length === 1) {
-      return `Lösenordet måste innehålla ${errors[0]}.`
+      return `Lösenordet måste innehålla ${errors[0]}.`;
     }
 
-    const lastError = errors.pop()
-    return `Lösenordet måste innehålla ${errors.join(", ")} samt ${lastError}.`
+    const lastError = errors.pop();
+    return `Lösenordet måste innehålla ${errors.join(", ")} samt ${lastError}.`;
   };
 
   /*Validate form field*/
@@ -188,9 +188,7 @@ function RegisterPage() {
             <span className="register-page__eyebrow">
               ETT SPEL FÖR HELA SVERIGE
             </span>
-            <h1 className="page-title">
-              Ska vi upptäcka Sverige?
-            </h1>
+            <h1 className="page-title">Ska vi upptäcka Sverige?</h1>
             <p className="register-page__subtitle">
               Spara dina poäng, håll koll på din nivå och hitta din plats på
               topplistan.
@@ -278,7 +276,9 @@ function RegisterPage() {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--primary)] hover:text-[var(--foreground)] transition-colors"
                         tabIndex={-1}
-                        aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
+                        aria-label={
+                          showPassword ? "Dölj lösenord" : "Visa lösenord"
+                        }
                       >
                         {showPassword ? (
                           <EyeOff className="w-5 h-5" />
@@ -312,10 +312,16 @@ function RegisterPage() {
                       />
                       <button
                         type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--primary)] hover:text-[var(--foreground)] transition-colors"
                         tabIndex={-1}
-                        aria-label={showConfirmPassword ? "Dölj lösenord" : "Visa lösenord"}
+                        aria-label={
+                          showConfirmPassword
+                            ? "Dölj lösenord"
+                            : "Visa lösenord"
+                        }
                       >
                         {showConfirmPassword ? (
                           <EyeOff className="w-5 h-5" />

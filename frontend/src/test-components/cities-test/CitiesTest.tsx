@@ -1,42 +1,42 @@
-import axios from 'axios'
-import { useState } from 'react'
-import { getAllCities } from '../../services/CityService'
+import axios from "axios";
+import { useState } from "react";
+import { getAllCities } from "../../services/CityService";
 import type { City } from "../../models/City";
 
-import { Badge } from '@/components/ui/Badge'
-import { Button } from '@/components/ui/Button'
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 import {
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card'
+} from "@/components/ui/Card";
 
-import './CitiesTest.css'
+import "./CitiesTest.css";
 
 function CitiesTest() {
-  const [cities, setCities] = useState<City[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [cities, setCities] = useState<City[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const getCities = async () => {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
-      const response = await getAllCities()
-      setCities(response)
+      const response = await getAllCities();
+      setCities(response);
     } catch (requestError) {
       if (axios.isAxiosError(requestError)) {
-        setError(requestError.message)
+        setError(requestError.message);
       } else {
-        setError('Ett oväntat fel inträffade.')
+        setError("Ett oväntat fel inträffade.");
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Card className="cities-test">
@@ -46,14 +46,14 @@ function CitiesTest() {
         </CardTitle>
         <CardAction>
           <Badge variant="secondary">
-            {cities.length} {cities.length === 1 ? 'stad' : 'städer'}
+            {cities.length} {cities.length === 1 ? "stad" : "städer"}
           </Badge>
         </CardAction>
       </CardHeader>
 
       <CardContent className="cities-test__content">
         <Button type="button" onClick={getCities} disabled={isLoading}>
-          {isLoading ? 'Laddar...' : 'Hämta alla städer'}
+          {isLoading ? "Laddar..." : "Hämta alla städer"}
         </Button>
 
         {error && (
@@ -71,7 +71,7 @@ function CitiesTest() {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
 
-export default CitiesTest
+export default CitiesTest;
