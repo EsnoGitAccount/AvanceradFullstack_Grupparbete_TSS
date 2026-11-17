@@ -11,7 +11,11 @@ type UploadImageProps = {
   onImageUploaded: (blobName: string) => void;
 };
 
-export default function UploadImage({ onImageUploaded, busy, onLoadingChange }: UploadImageProps) {
+export default function UploadImage({
+  onImageUploaded,
+  busy,
+  onLoadingChange,
+}: UploadImageProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [file, setFile] = useState<File | null>(null);

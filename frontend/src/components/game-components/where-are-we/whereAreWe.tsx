@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import type { Clue } from '../../../models/City.ts'
-import placeholderImg from '../../../assets/images/photo-example.jpg'
-import { SWEDISH_CITIES } from '../../../constants/swedishCities'
+import type { Clue } from "../../../models/City.ts";
+import placeholderImg from "../../../assets/images/photo-example.jpg";
+import { SWEDISH_CITIES } from "../../../constants/swedishCities";
 
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import GameImage from '@/components/game-image/GameImage'
 import { getImageUrl } from '@/services/api'
 
-import './whereAreWe.css'
+import "./whereAreWe.css";
 
 const mobileQuery = "(max-width: 64rem)";
 const subscribeToMobile = (onChange: () => void) => {
@@ -20,20 +20,20 @@ const getMobileSnapshot = () => window.matchMedia(mobileQuery).matches;
 const getServerMobileSnapshot = () => false;
 
 type WhereAreWeProps = {
-  onComplete: (score: number) => void
-  clues: Clue[]
-  correctCity: string
-  imageUrl: string | undefined
-  imageSrc?: string
-  imageAlt?: string
-  title?: string
-  guessLabel?: string
-  suggestionLabel?: string
-  emptySuggestionText?: string
-  suggestions?: readonly string[]
-  showSuggestions?: boolean
-  requireCorrectAnswer?: boolean
-}
+  onComplete: (score: number) => void;
+  clues: Clue[];
+  correctCity: string;
+  imageUrl: string | undefined;
+  imageSrc?: string;
+  imageAlt?: string;
+  title?: string;
+  guessLabel?: string;
+  suggestionLabel?: string;
+  emptySuggestionText?: string;
+  suggestions?: readonly string[];
+  showSuggestions?: boolean;
+  requireCorrectAnswer?: boolean;
+};
 
 export default function WhereAreWe({
   onComplete,
@@ -49,25 +49,29 @@ export default function WhereAreWe({
   suggestions = SWEDISH_CITIES,
   showSuggestions = true,
   requireCorrectAnswer = false,
-}: WhereAreWeProps){
-
+}: WhereAreWeProps) {
   const isMobile = useSyncExternalStore(
-    subscribeToMobile, getMobileSnapshot, getServerMobileSnapshot
+    subscribeToMobile,
+    getMobileSnapshot,
+    getServerMobileSnapshot,
   );
-  const [currentScore, setCurrentScore] = useState(10)
+  const [currentScore, setCurrentScore] = useState(10);
   const [cityGuess, setCityGuess] = useState("");
   const [isCitySuggestionsOpen, setIsCitySuggestionsOpen] = useState(false);
   const [isWrongGuess, setIsWrongGuess] = useState(false);
   const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => () => {
-    if (feedbackTimer.current !== null) clearTimeout(feedbackTimer.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (feedbackTimer.current !== null) clearTimeout(feedbackTimer.current);
+    },
+    [],
+  );
 
   const filteredCities = suggestions.filter((city) =>
-    city.toLocaleLowerCase('sv-SE').includes(
-      cityGuess.trim().toLocaleLowerCase('sv-SE')
-    )
+    city
+      .toLocaleLowerCase("sv-SE")
+      .includes(cityGuess.trim().toLocaleLowerCase("sv-SE")),
   );
 
   const handleWhereAreWeSubmit = (event: React.SubmitEvent) => {
@@ -78,8 +82,8 @@ export default function WhereAreWe({
     }
 
     const isCorrect =
-      cityGuess.trim().toLocaleLowerCase('sv-SE') ===
-      correctCity.toLocaleLowerCase('sv-SE');
+      cityGuess.trim().toLocaleLowerCase("sv-SE") ===
+      correctCity.toLocaleLowerCase("sv-SE");
 
     setIsCitySuggestionsOpen(false);
 
@@ -104,10 +108,10 @@ export default function WhereAreWe({
   };
 
   const handleNextClue = () => {
-    const nextScore = Math.max(currentScore - 2, 0)
+    const nextScore = Math.max(currentScore - 2, 0);
     setCurrentScore(nextScore);
     return nextScore;
-  }
+  };
 
   const displayedClues = isMobile
     ? clues.filter((clue) => clue.pointValue >= currentScore).reverse()
@@ -147,42 +151,46 @@ export default function WhereAreWe({
           autoComplete="off"
         />
 
-        {showSuggestions && isCitySuggestionsOpen && cityGuess.trim().length > 0 && (
-          <div
-            className="where-are-we__city-suggestions"
-            role="listbox"
-            aria-label={suggestionLabel}
-          >
-            {filteredCities.length > 0 ? (
-              filteredCities.map((city) => (
-                <button
-                  className="where-are-we__city-suggestion"
-                  key={city}
-                  type="button"
-                  role="option"
-                  onMouseDown={(event) => event.preventDefault()}
-                  onClick={() => {
-                    setCityGuess(city);
-                    setIsCitySuggestionsOpen(false);
-                  }}
-                >
-                  {city}
-                </button>
-              ))
-            ) : (
-              <p className="where-are-we__city-empty">
-                {emptySuggestionText}
-              </p>
-            )}
-          </div>
-        )}
+        {showSuggestions &&
+          isCitySuggestionsOpen &&
+          cityGuess.trim().length > 0 && (
+            <div
+              className="where-are-we__city-suggestions"
+              role="listbox"
+              aria-label={suggestionLabel}
+            >
+              {filteredCities.length > 0 ? (
+                filteredCities.map((city) => (
+                  <button
+                    className="where-are-we__city-suggestion"
+                    key={city}
+                    type="button"
+                    role="option"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => {
+                      setCityGuess(city);
+                      setIsCitySuggestionsOpen(false);
+                    }}
+                  >
+                    {city}
+                  </button>
+                ))
+              ) : (
+                <p className="where-are-we__city-empty">
+                  {emptySuggestionText}
+                </p>
+              )}
+            </div>
+          )}
       </div>
-      <Button className="where-are-we__submit-button
-      "type="submit"
-      disabled={isWrongGuess || !cityGuess.trim()}
+      <Button
+        className="where-are-we__submit-button
+      "
+        type="submit"
+        disabled={isWrongGuess || !cityGuess.trim()}
       >
         Svara
-        </Button>
+      </Button>
     </form>
   );
 
@@ -198,7 +206,6 @@ export default function WhereAreWe({
                 } alt={imageAlt} />
         </div>
         <div className="where-are-we__right-side">
-
           {isMobile && answerForm}
 
           <div className="where-are-we__clues">
@@ -209,8 +216,9 @@ export default function WhereAreWe({
               return (
                 <div
                   key={clue.pointValue}
-                  className={`where-are-we__clue ${isVisible ? "" : "where-are-we__clue--hidden"
-                    }`}
+                  className={`where-are-we__clue ${
+                    isVisible ? "" : "where-are-we__clue--hidden"
+                  }`}
                 >
                   <p className="where-are-we__clue-label">{clue.pointValue}</p>
                   <p className="where-are-we__clue-text">{clue.clueText}</p>
@@ -225,5 +233,5 @@ export default function WhereAreWe({
         </div>
       </section>
     </div>
-  )
+  );
 }

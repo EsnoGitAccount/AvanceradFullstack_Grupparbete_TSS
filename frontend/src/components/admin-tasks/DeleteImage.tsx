@@ -78,7 +78,11 @@ export default function DeleteImage({
           />
         </div>
 
-        <Button variant="destructive" type="submit" disabled={busy || loading || !blobName.trim()}>
+        <Button
+          variant="destructive"
+          type="submit"
+          disabled={busy || loading || !blobName.trim()}
+        >
           {loading ? "Raderar..." : "Radera bild"}
         </Button>
       </form>

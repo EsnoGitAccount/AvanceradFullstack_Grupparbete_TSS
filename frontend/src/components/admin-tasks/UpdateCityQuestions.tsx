@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
-import { useState, type SubmitEvent } from 'react';
-import type { CityQuestionsUpdate } from '@/models/AdminModels';
-import {
-  updateCityQuestions,
-} from '@/services/AdminService';
+import { useState, type SubmitEvent } from "react";
+import type { CityQuestionsUpdate } from "@/models/AdminModels";
+import { updateCityQuestions } from "@/services/AdminService";
 
 type UpdateCityQuestionsProps = {
   cityId: number | null;
@@ -14,13 +12,8 @@ type UpdateCityQuestionsProps = {
   dirty: boolean;
   onLoadingChange: (loading: boolean) => void;
   questions: CityQuestionsUpdate | null;
-  onQuestionsChange: (
-    questions: CityQuestionsUpdate,
-  ) => void;
-  onQuestionsSaved: (
-    cityId: number,
-    questions: CityQuestionsUpdate,
-  ) => void;
+  onQuestionsChange: (questions: CityQuestionsUpdate) => void;
+  onQuestionsSaved: (cityId: number, questions: CityQuestionsUpdate) => void;
 };
 
 export default function UpdateCityQuestions({
@@ -72,13 +65,13 @@ export default function UpdateCityQuestions({
       questions: questions.questions.map((question) =>
         question.questionId === questionId
           ? {
-            ...question,
-            options: question.options.map((option) =>
-              option.optionId === optionId
-                ? { ...option, optionText }
-                : option,
-            ),
-          }
+              ...question,
+              options: question.options.map((option) =>
+                option.optionId === optionId
+                  ? { ...option, optionText }
+                  : option,
+              ),
+            }
           : question,
       ),
     });
@@ -100,13 +93,12 @@ export default function UpdateCityQuestions({
       questions: questions.questions.map((question) =>
         question.questionId === questionId
           ? {
-            ...question,
-            options: question.options.map((option) => ({
-              ...option,
-              isCorrect:
-                option.optionId === correctOptionId,
-            })),
-          }
+              ...question,
+              options: question.options.map((option) => ({
+                ...option,
+                isCorrect: option.optionId === correctOptionId,
+              })),
+            }
           : question,
       ),
     });
@@ -115,9 +107,7 @@ export default function UpdateCityQuestions({
     setError(null);
   };
 
-  const handleSubmit = async (
-    event: SubmitEvent<HTMLFormElement>,
-  ) => {
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (busy || loading || !dirty) return;
 
@@ -125,45 +115,42 @@ export default function UpdateCityQuestions({
     setSaved(false);
 
     if (cityId === null || !questions) {
-      setError('Hämta en stads frågor först.');
+      setError("Hämta en stads frågor först.");
       return;
     }
 
     const hasBlankText = questions.questions.some(
       (question) =>
         !question.questionText.trim() ||
-        question.options.some(
-          (option) => !option.optionText.trim(),
-        ),
+        question.options.some((option) => !option.optionText.trim()),
     );
 
     if (hasBlankText) {
-      setError('Frågor och svarsalternativ får inte vara tomma.');
+      setError("Frågor och svarsalternativ får inte vara tomma.");
       return;
     }
 
     const hasInvalidCorrectAnswer = questions.questions.some(
       (question) =>
-        question.options.filter(
-          (option) => option.isCorrect,
-        ).length !== 1,
+        question.options.filter((option) => option.isCorrect).length !== 1,
     );
 
     if (hasInvalidCorrectAnswer) {
-      setError(
-        'Varje fråga måste ha exakt ett rätt svar.',
-      );
+      setError("Varje fråga måste ha exakt ett rätt svar.");
       return;
     }
 
     if (questions.clues.some((clue) => !clue.clueText.trim())) {
-      setError('Ledtrådar får inte vara tomma.');
+      setError("Ledtrådar får inte vara tomma.");
       return;
     }
 
     const payload: CityQuestionsUpdate = {
       ...questions,
-      clues: questions.clues.map((clue) => ({ ...clue, clueText: clue.clueText.trim() })),
+      clues: questions.clues.map((clue) => ({
+        ...clue,
+        clueText: clue.clueText.trim(),
+      })),
       questions: questions.questions.map((question) => ({
         ...question,
         questionText: question.questionText.trim(),
@@ -185,7 +172,7 @@ export default function UpdateCityQuestions({
       const message =
         error instanceof Error
           ? error.message
-          : 'Kunde inte uppdatera frågorna.';
+          : "Kunde inte uppdatera frågorna.";
 
       setError(message);
     } finally {
@@ -209,18 +196,19 @@ export default function UpdateCityQuestions({
 
       <p>{cityName ?? `Stad ${cityId}`}</p>
       {questions.questions.length === 0 && <p>Staden har inga frågor.</p>}
-      {dirty && <p>Osparade ändringar. Hämtar du frågor igen ersätts dina osparade ändringar.</p>}
+      {dirty && (
+        <p>
+          Osparade ändringar. Hämtar du frågor igen ersätts dina osparade
+          ändringar.
+        </p>
+      )}
       <form onSubmit={handleSubmit}>
         {questions.questions.map((question) => (
           <fieldset key={question.questionId} disabled={busy || loading}>
-            <legend>
-              Fråga {question.questionId}
-            </legend>
+            <legend>Fråga {question.questionId}</legend>
 
             <div>
-              <Label
-                htmlFor={`question-${question.questionId}`}
-              >
+              <Label htmlFor={`question-${question.questionId}`}>
                 Frågetext
               </Label>
 
@@ -253,9 +241,7 @@ export default function UpdateCityQuestions({
                   aria-label={`Markera svar ${option.optionId} som rätt`}
                 />
 
-                <Label
-                  htmlFor={`option-${option.optionId}`}
-                >
+                <Label htmlFor={`option-${option.optionId}`}>
                   Svar {option.optionId}
                 </Label>
 
@@ -281,29 +267,45 @@ export default function UpdateCityQuestions({
           <h4>Ledtrådar</h4>
           {questions.clues.map((clue) => (
             <div key={clue.clueId}>
-              <Label htmlFor={`edit-clue-${clue.clueId}`}>Ledtråd för {clue.point} poäng</Label>
-              <Input id={`edit-clue-${clue.clueId}`} value={clue.clueText} required disabled={busy || loading}
+              <Label htmlFor={`edit-clue-${clue.clueId}`}>
+                Ledtråd för {clue.point} poäng
+              </Label>
+              <Input
+                id={`edit-clue-${clue.clueId}`}
+                value={clue.clueText}
+                required
+                disabled={busy || loading}
                 onChange={(event) => {
-                  onQuestionsChange({ ...questions, clues: questions.clues.map((item) =>
-                    item.clueId === clue.clueId ? { ...item, clueText: event.target.value } : item) });
+                  onQuestionsChange({
+                    ...questions,
+                    clues: questions.clues.map((item) =>
+                      item.clueId === clue.clueId
+                        ? { ...item, clueText: event.target.value }
+                        : item,
+                    ),
+                  });
                   setSaved(false);
                   setError(null);
-                }} />
+                }}
+              />
             </div>
           ))}
           {questions.clues.length === 0 && <p>Staden har inga ledtrådar.</p>}
         </div>
 
-        <Button type="submit" disabled={busy || loading || !dirty || questions.questions.length === 0}>
-          {loading ? 'Sparar...' : 'Spara frågor & ledtrådar'}
+        <Button
+          type="submit"
+          disabled={
+            busy || loading || !dirty || questions.questions.length === 0
+          }
+        >
+          {loading ? "Sparar..." : "Spara frågor & ledtrådar"}
         </Button>
       </form>
 
       {error && <p role="alert">{error}</p>}
 
-      {saved && (
-        <p role="status">Frågor och ledtrådar har sparats.</p>
-      )}
+      {saved && <p role="status">Frågor och ledtrådar har sparats.</p>}
     </div>
   );
 }

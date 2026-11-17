@@ -14,7 +14,7 @@ namespace Backend.Controllers
         private readonly ILeaderboardService _leaderboardService;
 
         private readonly IAchievementService _achievementService;
-        public ProfileController(IAuthService authService, ILeaderboardService leaderboardService, IAchievementService achievementService   )
+        public ProfileController(IAuthService authService, ILeaderboardService leaderboardService, IAchievementService achievementService)
         {
             _authService = authService;
             _leaderboardService = leaderboardService;

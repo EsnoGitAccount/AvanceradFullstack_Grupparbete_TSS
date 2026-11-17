@@ -1,9 +1,13 @@
-﻿import thomas from '@/assets/icons/thomas.svg'
-import thomasCart from '@/assets/icons/thomascart.svg'
-import smokePuff from '@/assets/illustrations/SmokePuff.svg'
-import './TrainLoading.css'
+﻿import thomas from "@/assets/icons/thomas.svg";
+import thomasCart from "@/assets/icons/thomascart.svg";
+import smokePuff from "@/assets/illustrations/SmokePuff.svg";
+import "./TrainLoading.css";
 
-export default function TrainLoading({ label = 'Laddar bilden' }: { label?: string }) {
+export default function TrainLoading({
+  label = "Laddar bilden",
+}: {
+  label?: string;
+}) {
   return (
     <div className="train-loading" role="status" aria-label={label}>
       <div className="train-loading__scene" aria-hidden="true">
@@ -29,13 +33,16 @@ export default function TrainLoading({ label = 'Laddar bilden' }: { label?: stri
                 height="18"
               />
             ))}
-            <img className="train-loading__engine" src={thomas} alt="" width="80" />
+            <img
+              className="train-loading__engine"
+              src={thomas}
+              alt=""
+              width="80"
+            />
           </div>
         </div>
         <div className="train-loading__track" />
       </div>
     </div>
-  )
+  );
 }
-
-

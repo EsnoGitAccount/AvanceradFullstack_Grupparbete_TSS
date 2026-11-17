@@ -1,56 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import { AuthContext, type LoginCredentials, type UserDto } from './AuthContext';
+import React, { useState, useEffect } from "react";
+import {
+  AuthContext,
+  type LoginCredentials,
+  type UserDto,
+} from "./AuthContext";
 import { authService } from "../../services/AuthService";
-import type { RegisterDto } from '@/models/RegisterDto';
+import type { RegisterDto } from "@/models/RegisterDto";
 // AuthProvider component that provides authentication context to its children
 // It manages user state, loading state, and provides login and logout methods.
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<UserDto | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [user, setUser] = useState<UserDto | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-    const updateUsername = (newUsername: string) => {
-        setUser((prev) => (prev ? { ...prev, username: newUsername } : null));
-    };
+  const updateUsername = (newUsername: string) => {
+    setUser((prev) => (prev ? { ...prev, username: newUsername } : null));
+  };
 
-    useEffect(() => {
-        const initAuth = async () => {
-            try {
-                await authService.fetchCsrfToken();
-                const currentUser = await authService.getCurrentUser();
-                setUser(currentUser);
-            } catch {
-                setUser(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        initAuth();
-    }, []);
-
-    const login = async (credentials: LoginCredentials): Promise<UserDto> => {
-        const loggedInUser = await authService.login(credentials);
-        setUser(loggedInUser);
-        return loggedInUser;
-    };
-
-    const logout = async () => {
-        await authService.logout();
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        await authService.fetchCsrfToken();
+        const currentUser = await authService.getCurrentUser();
+        setUser(currentUser);
+      } catch {
         setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const clearSession = () => {
-        setUser(null);
-    };
+    initAuth();
+  }, []);
 
-    const register = async (registerData: RegisterDto) => {
-        const registeredUser = await authService.register(registerData);
-        setUser(registeredUser);
-    }
+  const login = async (credentials: LoginCredentials): Promise<UserDto> => {
+    const loggedInUser = await authService.login(credentials);
+    setUser(loggedInUser);
+    return loggedInUser;
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, loading, login, logout, register, clearSession, updateUsername }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const logout = async () => {
+    await authService.logout();
+    setUser(null);
+  };
+
+  const clearSession = () => {
+    setUser(null);
+  };
+
+  const register = async (registerData: RegisterDto) => {
+    const registeredUser = await authService.register(registerData);
+    setUser(registeredUser);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+        register,
+        clearSession,
+        updateUsername,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };

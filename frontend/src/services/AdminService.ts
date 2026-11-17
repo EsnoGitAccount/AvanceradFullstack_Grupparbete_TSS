@@ -61,8 +61,13 @@ export const getCityQuestions = async (
     `/api/cities/${cityId}/questions`,
   );
 
-  if (!Array.isArray(response.data.questions) || !Array.isArray(response.data.clues)) {
-    throw new Error("Kunde inte ladda stadens frågor och ledtrådar. Försök igen.");
+  if (
+    !Array.isArray(response.data.questions) ||
+    !Array.isArray(response.data.clues)
+  ) {
+    throw new Error(
+      "Kunde inte ladda stadens frågor och ledtrådar. Försök igen.",
+    );
   }
   return response.data;
 };
@@ -73,7 +78,10 @@ export const updateCityQuestions = async (
 ): Promise<void> => {
   await api.put(`/api/cities/${cityId}/questions`, {
     questions: questions.questions,
-    clues: questions.clues.map(({ clueId, clueText }) => ({ clueId, clueText })),
+    clues: questions.clues.map(({ clueId, clueText }) => ({
+      clueId,
+      clueText,
+    })),
   });
 };
 
@@ -121,6 +129,9 @@ export const createCityContent = async (
   cityId: number,
   content: CityContentCreate,
 ): Promise<CityQuestionsUpdate> => {
-  const response = await api.post<CityQuestionsUpdate>(`/api/cities/${cityId}/content`, content);
+  const response = await api.post<CityQuestionsUpdate>(
+    `/api/cities/${cityId}/content`,
+    content,
+  );
   return response.data;
 };

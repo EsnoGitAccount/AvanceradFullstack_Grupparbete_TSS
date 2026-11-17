@@ -1,13 +1,13 @@
-import Leaderboard from '@/components/game-components/leaderboard/Leaderboard'
+import Leaderboard from "@/components/game-components/leaderboard/Leaderboard";
 
-import './LeaderboardPage.css'
+import "./LeaderboardPage.css";
 
 function LeaderboardPage() {
-    return (
-        <div className="leaderboard-page leaderboard-page__main">
-            <Leaderboard />
-        </div>
-    )
+  return (
+    <div className="leaderboard-page leaderboard-page__main">
+      <Leaderboard />
+    </div>
+  );
 }
 
-export default LeaderboardPage
+export default LeaderboardPage;
