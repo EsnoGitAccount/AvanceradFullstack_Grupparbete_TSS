@@ -1,6 +1,6 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and lint React frontend
+name: Build and lint React, then deploys frontend
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - 'master'
     paths: 
       - 'frontend/**'
-      - '.github/workflows/wherearewedeployfrontend_master.yml'
+      - '.github/workflows/wherearewefrontend_master.yml'
   workflow_dispatch:
 
 jobs:

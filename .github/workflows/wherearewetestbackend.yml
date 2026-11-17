@@ -4,6 +4,8 @@ name: Build and test ASP.NET API
 
 on:
   push:
+    branches:
+      - '!master'
     paths:
       - 'backend/**'
       - 'Backend.Tests/**'
