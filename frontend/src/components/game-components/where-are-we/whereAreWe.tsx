@@ -3,9 +3,10 @@ import type { Clue } from "../../../models/City.ts";
 import placeholderImg from "../../../assets/images/photo-example.jpg";
 import { SWEDISH_CITIES } from "../../../constants/swedishCities";
 
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
-import GameImage from "@/components/game-image/GameImage";
+import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
+import GameImage from '@/components/game-image/GameImage'
+import { getImageUrl } from '@/services/api'
 
 import "./whereAreWe.css";
 
@@ -198,13 +199,11 @@ export default function WhereAreWe({
       <section className="where-are-we__main">
         <div className="where-are-we__left-side">
           <h1 className="page-title where-are-we__title">{title}</h1>
-          <GameImage
-            className="where-are-we__image"
-            src={
-              imageSrc ?? (imageUrl ? `/api/Image/${imageUrl}` : placeholderImg)
-            }
-            alt={imageAlt}
-          />
+          <GameImage className="where-are-we__image" src={
+                  imageSrc ?? (imageUrl
+                    ? getImageUrl(imageUrl)
+                    : placeholderImg)
+                } alt={imageAlt} />
         </div>
         <div className="where-are-we__right-side">
           {isMobile && answerForm}

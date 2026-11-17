@@ -1,12 +1,17 @@
 import axios from "axios";
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "");
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true,
-  withXSRFToken: true,
-  xsrfCookieName: "XSRF-TOKEN",
-  xsrfHeaderName: "X-XSRF-TOKEN",
+    baseURL: apiBaseUrl,
+    withCredentials: true,
+    withXSRFToken: true,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
 });
+
+export const getImageUrl = (blobName: string): string =>
+    `${apiBaseUrl ?? ""}/api/image/${encodeURIComponent(blobName)}`;
 
 api.interceptors.response.use(
   (response) => response,
