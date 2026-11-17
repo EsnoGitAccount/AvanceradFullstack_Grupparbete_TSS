@@ -104,6 +104,7 @@ function StartGameTest({
                       value={guestUserName}
                       onChange={(e) => setGuestUserName(e.target.value)}
                       required
+                      className="start-game__name-input"
                     />
                   )}
 

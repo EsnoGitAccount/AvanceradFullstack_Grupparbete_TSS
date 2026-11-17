@@ -6,6 +6,10 @@
 
 }
 
+.start-game__name-input{
+    padding: 1.25rem;
+}
+
 .start-game-page {
     background-color: var(--page);
 }
