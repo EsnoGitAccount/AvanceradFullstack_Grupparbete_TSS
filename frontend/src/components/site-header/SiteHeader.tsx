@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../context/auth/UseAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 import logo from "@/assets/logos/logo-transparent.svg";
 import { Button } from "@/components/ui/Button";
@@ -12,8 +13,25 @@ function SiteHeader() {
   const { user, loading, logout } = useAuth();
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
 
   const handleLogout = async () => {
+    setMenuOpen(false);
     setLoggingOut(true);
     setLogoutError("");
 
@@ -92,7 +110,95 @@ function SiteHeader() {
               </>
             ))}
         </div>
+
+        {!loading && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="site-header__menu-toggle"
+            onClick={() => setMenuOpen((isOpen) => !isOpen)}
+            aria-label={menuOpen ? "Stäng meny" : "Öppna meny"}
+            aria-expanded={menuOpen}
+            aria-controls="site-header-mobile-menu"
+          >
+            {menuOpen ? <X /> : <Menu />}
+          </Button>
+        )}
       </div>
+
+      {!loading && menuOpen && (
+        <nav
+          id="site-header-mobile-menu"
+          className="site-header__mobile-menu"
+          aria-label="Mobil navigering"
+        >
+          {user ? (
+            <>
+              <Button
+                variant="ghost"
+                className="site-header__mobile-menu-button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate("/game");
+                }}
+              >
+                Dagens Resa
+              </Button>
+              <Button
+                variant="ghost"
+                className="site-header__mobile-menu-button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate("/leaderboard");
+                }}
+              >
+                Topplista
+              </Button>
+              <Button
+                variant="ghost"
+                className="site-header__mobile-menu-button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate("/profile");
+                }}
+              >
+                Min profil
+              </Button>
+              <Button
+                variant="ghost"
+                className="site-header__mobile-menu-button"
+                onClick={handleLogout}
+                disabled={loggingOut}
+              >
+                {loggingOut ? "Loggar ut..." : "Logga ut"}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant="ghost"
+                className="site-header__mobile-menu-button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate("/login");
+                }}
+              >
+                Logga in
+              </Button>
+              <Button
+                className="site-header__mobile-menu-button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate("/register");
+                }}
+              >
+                Skapa konto
+              </Button>
+            </>
+          )}
+        </nav>
+      )}
+
       {logoutError && <p role="alert">{logoutError}</p>}
     </header>
   );
