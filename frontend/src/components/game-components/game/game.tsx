@@ -10,7 +10,8 @@ import WhereAreWe from "../where-are-we/whereAreWe";
 import StartGame from "@/components/game-components/start-game/StartGame";
 import Leaderboard from "../leaderboard/Leaderboard";
 import { ProgressStepper } from "@/components/ui/Progressbar";
-import StaticMessage from "../message/StaticMessage";
+import { Card } from "@/components/ui/Card";
+import alreadyPlayed from "@/assets/illustrations/AlreadyPlayed.svg";
 
 // Constants
 import { GAME_RULES } from "@/constants/gameConstants";
@@ -201,12 +202,20 @@ export default function Game() {
 
   if (hasPlayedToday) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
-        <StaticMessage
-          type="info"
-          message="Du har redan spelat dagens utmaning. Vänligen kom tillbaka imorgon!"
-        />
-      </div>
+      <section
+        className="already-played-page status-page"
+        aria-label="Dagens utmaning är redan spelad"
+      >
+        <Card className="status-page__card">
+          <h1 className="page-title">Du har redan spelat idag</h1>
+          <p className="status-page__subtitle">Kom tillbaka imorgon!</p>
+          <img
+            className="status-page__image"
+            src={alreadyPlayed}
+            alt="En avgångstavla som visar att nästa tåg går imorgon"
+          />
+        </Card>
+      </section>
     );
   }
 

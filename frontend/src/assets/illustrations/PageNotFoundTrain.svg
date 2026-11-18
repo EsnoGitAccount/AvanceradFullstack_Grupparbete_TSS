@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="770" height="415" viewBox="20 75 770 415" role="img" aria-labelledby="title desc">
+<title id="title">Wrong Turn — 404</title><desc id="desc">A little steam locomotive waits at a confusing railway junction with a crooked signpost.</desc>
+<g stroke="#123f40" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="none">
+<!-- Railway junction -->
+<path d="M35 433 H765 M35 470 H765"/>
+<path d="M445 433 Q550 415 625 350 L766 257 M460 470 Q590 444 657 386 L778 302"/>
+<path d="M44 428 V475 M94 428 V475 M144 428 V475 M194 428 V475 M244 428 V475 M294 428 V475 M344 428 V475 M394 428 V475 M444 428 V475 M510 425 L520 467 M565 404 L590 445 M620 361 L650 402 M677 326 L704 365 M732 291 L758 328" stroke-width="6"/>
+<!-- locomotive -->
+<path d="M116 361 H355 L382 408 H90 L116 361Z"/>
+<path d="M114 360 V276 H227 V360 M125 277 V258 H218 V277"/>
+<path d="M136 294 H200 V337 H136Z"/>
+<path d="M238 360 V321 H320 V360 M259 320 V277 H294 V320"/>
+<path d="M251 278 H302 L296 260 H257Z"/>
+<path d="M318 340 H344 L362 364 H318Z"/>
+<path d="M96 398 H385 M105 411 H374"/>
+<circle cx="143" cy="417" r="25" fill="white"/><circle cx="143" cy="417" r="8"/>
+<circle cx="222" cy="417" r="25" fill="white"/><circle cx="222" cy="417" r="8"/>
+<circle cx="303" cy="417" r="25" fill="white"/><circle cx="303" cy="417" r="8"/>
+<path d="M171 417 H195 M248 417 H276" stroke-width="6"/>
+<!-- signpost -->
+<path d="M545 395 V159" stroke-width="13"/>
+<path d="M478 169 L638 156 L663 183 L637 209 L478 219Z" fill="white"/>
+<path d="M485 231 L625 246 L649 273 L621 294 L482 281Z" fill="white"/>
+<path d="M522 304 L593 303" stroke-width="5"/>
+</g>
+<g font-family="Arial, sans-serif" font-weight="900" fill="#123f40" text-anchor="middle"><text x="568" y="195" font-size="25" transform="rotate(-4 568 195)">404?</text><text x="563" y="271" font-size="23" transform="rotate(6 563 271)">404</text></g>
+</svg>
