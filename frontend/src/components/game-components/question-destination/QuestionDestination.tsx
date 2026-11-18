@@ -206,7 +206,7 @@ return (
                             </CardHeader>
                             <CardContent>
                                 <p className="info-card__footer-text">
-                                    2 frågor · 10 poäng per fråga · Ingen tidspress
+                                    2 frågor · 10 poäng per fråga
                                 </p>
                             </CardContent>
                         </Card>
