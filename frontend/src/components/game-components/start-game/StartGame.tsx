@@ -119,7 +119,7 @@ function StartGameTest({
                     Starta resan
                   </Button>
                   <p className="text-xs text-muted-foreground text-center mt-2">
-                    Ingen tidspress. Din första gissning räknas.
+                    Din första gissning räknas.
                   </p>
                 </form>
               </CardFooter>
@@ -143,7 +143,7 @@ function StartGameTest({
               <CardContent>
                 <p className="start-game__info-description">
                   Du behöver bara din nyfikenhet. Stor bokstav spelar ingen
-                  roll, och vanliga stavningsvarianter godkänns.
+                  roll, och förslag ges när du börjat skriva.
                 </p>
               </CardContent>
             </Card>
