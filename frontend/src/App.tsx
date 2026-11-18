@@ -59,12 +59,12 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
 
         {/* Without header/footer */}
         <Route path="/test-train-loading" element={<TestTrainLoading />} />
         <Route path="/errortesting" element={<ErrorTestPage />} />
-        <Route path="/*" element={<NotFoundPage />} />
       </Routes>
       <Toaster position="top-center" />
     </>

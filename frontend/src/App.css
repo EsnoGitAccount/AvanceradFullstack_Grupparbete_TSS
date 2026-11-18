@@ -10,3 +10,41 @@
   flex: 1;
   min-width: 0;
 }
+
+.status-page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.status-page__card {
+  width: 100%;
+  max-width: 40rem;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 3rem);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.status-page__card > .page-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+.status-page__subtitle {
+  margin: 0.4rem 0 0;
+  color: var(--muted-foreground);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 600;
+}
+
+.status-page__image {
+  display: block;
+  width: 60%;
+  height: auto;
+  margin: clamp(1rem, 2.5vw, 1.75rem) auto 0;
+}

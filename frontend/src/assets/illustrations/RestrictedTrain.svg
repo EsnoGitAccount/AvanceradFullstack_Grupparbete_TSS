@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="420" viewBox="0 70 780 420" role="img" aria-labelledby="title desc">
+<title id="title">The Closed Barrier — Restricted</title><desc id="desc">A steam locomotive is stopped behind a lowered railway crossing barrier and a no-entry sign.</desc>
+<g stroke="#123f40" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<!-- rails -->
+<path d="M34 427 H765 M34 469 H765"/>
+<path d="M58 424 V473 M116 424 V473 M174 424 V473 M232 424 V473 M290 424 V473 M348 424 V473 M406 424 V473 M464 424 V473 M522 424 V473 M580 424 V473 M638 424 V473 M696 424 V473 M754 424 V473" stroke-width="6"/>
+<!-- train -->
+<g transform="translate(-55 0)">
+<path d="M88 366 H395 L419 409 H68 L88 366Z"/>
+<path d="M90 366 V264 H216 V366 M103 264 V248 H207 V264"/>
+<path d="M110 281 H193 V337 H110Z"/>
+<path d="M233 366 V323 H349 V366 M264 323 V276 H306 V323"/>
+<path d="M255 276 H315 L309 258 H261Z"/>
+<path d="M352 348 H381 L399 367 H352Z"/>
+<circle cx="126" cy="417" r="24" fill="white"/><circle cx="126" cy="417" r="8" fill="white"/>
+<circle cx="216" cy="417" r="24" fill="white"/><circle cx="216" cy="417" r="8" fill="white"/>
+<circle cx="323" cy="417" r="24" fill="white"/><circle cx="323" cy="417" r="8" fill="white"/>
+<path d="M150 417 H192 M240 417 H299" stroke-width="6"/>
+<path d="M284 241 C267 226 279 211 291 214 C290 195 312 188 322 204 C344 194 354 220 336 231"/>
+<path d="M341 175 C327 163 341 146 355 153 C369 135 393 150 382 168"/>
+</g>
+<!-- crossing signal -->
+<path d="M666 427 V155" stroke-width="13"/>
+<path d="M625 169 L707 251 M707 169 L625 251" stroke-width="16"/>
+<circle cx="666" cy="124" r="39" fill="white"/>
+<path d="M645 124 H687" stroke-width="11"/>
+<!-- barrier hinge and striped arm -->
+<path d="M631 391 V304" stroke-width="15"/>
+<circle cx="631" cy="310" r="15" fill="white"/>
+<path d="M619 305 H376 V332 H619Z"/>
+<path d="M404 305 L431 332 M461 305 L488 332 M518 305 L545 332 M575 305 L602 332" stroke-width="10"/>
+<!-- barrier support -->
+<path d="M396 332 V405 M379 405 H414"/>
+<!-- small stop puffs -->
+<path d="M438 347 L454 340 M441 367 L462 367 M438 388 L454 397" stroke-width="6"/>
+</g>
+</svg>

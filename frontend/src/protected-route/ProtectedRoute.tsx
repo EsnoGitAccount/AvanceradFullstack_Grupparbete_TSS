@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router";
 import { useAuth } from "../context/auth/UseAuth";
+import AccessDeniedPage from "../pages/access-denied-page/AccessDeniedPage";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -22,11 +23,7 @@ export default function ProtectedRoute({
   }
 
   if (requiredRole && !user.roles.includes(requiredRole)) {
-    return (
-      <div role="alert">
-        <h1>Åtkomst nekad</h1>
-      </div>
-    );
+    return <AccessDeniedPage />;
   }
 
   return <>{children}</>;

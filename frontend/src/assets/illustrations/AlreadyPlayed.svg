@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="750" height="455" viewBox="25 20 750 455" role="img" aria-labelledby="title desc">
+<title id="title">Next Departure: Tomorrow</title><desc id="desc">A railway station departure board shows today's train has departed and the next train leaves tomorrow.</desc>
+<g stroke="#123f40" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<!-- station canopy -->
+<path d="M70 138 L145 91 H667 L738 138Z"/>
+<path d="M93 141 H715" stroke-width="12"/>
+<path d="M123 141 V427 M683 141 V427" stroke-width="13"/>
+<path d="M105 427 H141 M665 427 H701" stroke-width="10"/>
+<!-- hanging departure board -->
+<path d="M245 140 V180 M554 140 V180"/>
+<rect x="180" y="177" width="440" height="225" rx="11"/>
+<path d="M180 235 H620 M180 317 H620"/>
+<path d="M402 236 V402" stroke-width="5"/>
+<!-- departure icons -->
+<circle cx="225" cy="273" r="17"/><path d="M214 273 H236" stroke-width="5"/>
+<circle cx="225" cy="358" r="17" fill="white"/><path d="M225 345 V358 L235 365" stroke-width="5"/>
+<!-- clock -->
+<circle cx="674" cy="79" r="45" fill="white"/>
+<path d="M674 52 V79 L695 91" stroke-width="6"/>
+<path d="M674 39 V43 M674 115 V119 M634 79 H638 M710 79 H714" stroke-width="4"/>
+<!-- platform -->
+<path d="M42 432 H758 M42 460 H758"/>
+<path d="M60 432 V460 M112 432 V460 M164 432 V460 M216 432 V460 M268 432 V460 M320 432 V460 M372 432 V460 M424 432 V460 M476 432 V460 M528 432 V460 M580 432 V460 M632 432 V460 M684 432 V460 M736 432 V460" stroke-width="5"/>
+</g>
+<g fill="#123f40" font-family="Arial, Helvetica, sans-serif" font-weight="900" text-anchor="middle">
+<text x="400" y="217" font-size="26" letter-spacing="2">AVGÅNGAR</text>
+<text x="315" y="284" font-size="27">IDAG</text>
+<text x="510" y="284" font-size="26">AVGÅTT</text>
+<text x="325" y="369" font-size="25">IMORGON</text>
+<text x="510" y="369" font-size="24">NÄSTA TÅG</text>
+</g>
+</svg>
