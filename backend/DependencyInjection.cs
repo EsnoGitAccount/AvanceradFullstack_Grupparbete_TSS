@@ -31,7 +31,7 @@ namespace Backend
 
             // Blob storage
             services.AddOptions<BlobStorageOptions>()
-                .BindConfiguration("AzureBlobStorage");
+                .BindConfiguration("BlobAzureStorage");
 
             // Identity
             services.AddIdentity<User, IdentityRole<int>>()

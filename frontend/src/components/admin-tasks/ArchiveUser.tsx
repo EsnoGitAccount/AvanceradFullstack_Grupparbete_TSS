@@ -85,7 +85,11 @@ export default function ArchiveUser({
           </select>
         </div>
 
-        <Button variant="destructive" type="submit" disabled={loading || !selectedUserId}>
+        <Button
+          variant="destructive"
+          type="submit"
+          disabled={loading || !selectedUserId}
+        >
           {loading ? "Arkiverar..." : "Arkivera användare"}
         </Button>
       </form>

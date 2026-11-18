@@ -141,7 +141,11 @@ export default function Game() {
   }
 
   useEffect(() => {
-    if (loading || gameState.phase.type !== "leaderboard" || hasSubmittedResult.current) {
+    if (
+      loading ||
+      gameState.phase.type !== "leaderboard" ||
+      hasSubmittedResult.current
+    ) {
       return;
     }
 
@@ -150,7 +154,6 @@ export default function Game() {
     async function saveResult() {
       // Save the result after the phase changes, rather than during render.
       const result: GameResult = {
-
         UserName: isAuthenticated ? (user?.username ?? "") : guestUserName,
         FinalScore: gameState.score,
         IsGuest: !isAuthenticated,
@@ -159,7 +162,7 @@ export default function Game() {
 
       try {
         const savedGame = await submitGameResult(result);
-        
+
         savedGame.newAchievements.forEach((achievement) => {
           showAchievementToast({
             title: achievement.name,
@@ -199,7 +202,10 @@ export default function Game() {
   if (hasPlayedToday) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
-        <StaticMessage type="info" message="Du har redan spelat dagens utmaning. Vänligen kom tillbaka imorgon!" />
+        <StaticMessage
+          type="info"
+          message="Du har redan spelat dagens utmaning. Vänligen kom tillbaka imorgon!"
+        />
       </div>
     );
   }

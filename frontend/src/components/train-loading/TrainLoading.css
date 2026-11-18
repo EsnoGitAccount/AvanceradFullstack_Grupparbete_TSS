@@ -71,10 +71,20 @@
 }
 
 @keyframes train-loading-smoke {
-  0% { opacity: 0; transform: translate(0, 0) scale(0.35); }
-  15% { opacity: 0.85; }
-  75% { opacity: 0.85; }
-  100% { opacity: 0; transform: translate(-28px, -30px) scale(1.2); }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.35);
+  }
+  15% {
+    opacity: 0.85;
+  }
+  75% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-28px, -30px) scale(1.2);
+  }
 }
 
 .train-loading__wagon:nth-child(1) .train-loading__cart {
@@ -101,13 +111,22 @@
 }
 
 @keyframes train-loading-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
 }
 
 @keyframes train-loading-track {
-  from { background-position-x: 0; }
-  to { background-position-x: -16px; }
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -16px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

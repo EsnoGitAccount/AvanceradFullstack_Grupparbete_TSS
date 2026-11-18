@@ -899,7 +899,7 @@ namespace Backend.Data
             );
 
             modelBuilder.Entity<Achievement>().HasData(
-                new Achievement { AchievementId = 1, Name = "Nyfiken resenär", Description = "Uppnå en streak av minst 3 dagar.", ImageKey = "3Day"},
+                new Achievement { AchievementId = 1, Name = "Nyfiken resenär", Description = "Uppnå en streak av minst 3 dagar.", ImageKey = "3Day" },
                 new Achievement { AchievementId = 2, Name = "Veckopendlare", Description = "Uppnå en streak av minst 7 dagar.", ImageKey = "7Day" },
                 new Achievement { AchievementId = 3, Name = "Stadsälskare", Description = "Uppnå en streak av minst 14 dagar.", ImageKey = "14Day" },
                 new Achievement { AchievementId = 4, Name = "Månadskort", Description = "Uppnå en streak av minst 31 dagar.", ImageKey = "31Day" },

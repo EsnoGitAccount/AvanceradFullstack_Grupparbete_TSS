@@ -1,5 +1,5 @@
-import TeacherBonusGame from '@/components/teacher-bonus-game/TeacherBonusGame'
-import { ALDOR_CHALLENGE, ALDOR_PORTRAIT } from '@/constants/aldorChallenge'
+import TeacherBonusGame from "@/components/teacher-bonus-game/TeacherBonusGame";
+import { ALDOR_CHALLENGE, ALDOR_PORTRAIT } from "@/constants/aldorChallenge";
 
 export default function AldorPage() {
   return (
@@ -10,5 +10,5 @@ export default function AldorPage() {
       challenge={ALDOR_CHALLENGE}
       portrait={ALDOR_PORTRAIT}
     />
-  )
+  );
 }

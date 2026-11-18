@@ -1,133 +1,135 @@
-import React, { useState } from 'react';
-import { AlertCircle, ArrowRight } from 'lucide-react';
+import React, { useState } from "react";
+import { AlertCircle, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/Input";
-import { Button } from '@/components/ui/Button';
+import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/auth/UseAuth";
-import { useNavigate } from 'react-router';
-import { Eye, EyeOff } from "lucide-react"
+import { useNavigate } from "react-router";
+import { Eye, EyeOff } from "lucide-react";
 
 export function LoginForm() {
-    const { login } = useAuth();
-    const navigate = useNavigate();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-    const [userName, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false)
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const [userName, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = async (event: React.SubmitEvent) => {
-        event.preventDefault();
-        setErrorMessage(null);
+  const handleSubmit = async (event: React.SubmitEvent) => {
+    event.preventDefault();
+    setErrorMessage(null);
 
-        if (!userName.trim() || !password.trim()) {
-            setErrorMessage('Användarnamn/e-post och lösenord krävs.');
-            return;
-        }
-        setIsSubmitting(true);
+    if (!userName.trim() || !password.trim()) {
+      setErrorMessage("Användarnamn/e-post och lösenord krävs.");
+      return;
+    }
+    setIsSubmitting(true);
 
-        try {
-            const loggedInUser = await login({ username: userName, password });
-            const destination = loggedInUser.roles.includes('Admin')
-                ? '/admin'
-                : '/homepage';
-            navigate(destination, { replace: true });
-        } catch (err) {
-            if (err instanceof Error) {
-                setErrorMessage(err.message);
-            } else {
-                setErrorMessage('Fel användarnamn/e-post eller lösenord.');
-            }
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+    try {
+      const loggedInUser = await login({ username: userName, password });
+      const destination = loggedInUser.roles.includes("Admin")
+        ? "/admin"
+        : "/homepage";
+      navigate(destination, { replace: true });
+    } catch (err) {
+      if (err instanceof Error) {
+        setErrorMessage(err.message);
+      } else {
+        setErrorMessage("Fel användarnamn/e-post eller lösenord.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    return (
-        <form onSubmit={handleSubmit} className="login-card__form">
+  return (
+    <form onSubmit={handleSubmit} className="login-card__form">
+      {/* Email & username */}
+      <div className="form-group">
+        <label htmlFor="username" className="text-left w-[85%]">
+          E-post eller användarnamn
+        </label>
+        <Input
+          id="username"
+          value={userName}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Exempel@epost.se"
+          className="h-12 w-[85%]"
+        />
+      </div>
 
-            {/* Email & username */}
-            <div className="form-group">
-                <label htmlFor="username" className="text-left w-[85%]">
-                    E-post eller användarnamn
-                </label>
-                <Input
-                    id="username"
-                    value={userName}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Exempel@epost.se"
-                    className="h-12 w-[85%]"
-                />
-            </div>
+      {/* Password */}
+      <div className="form-group flex flex-col items-center">
+        <label htmlFor="password" className="text-left w-[85%]">
+          Lösenord
+        </label>
 
-            {/* Password */}
-            <div className="form-group flex flex-col items-center">
-                <label htmlFor="password" className="text-left w-[85%]">
-                    Lösenord
-                </label>
-
-                <div className="relative w-[85%]">
-                    <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="h-12 focus:placeholder-transparent"
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--primary)] hover:text-[var(--foreground)] transition-colors"
-                        tabIndex={-1}
-                        aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
-                    >
-                        {showPassword ? (
-                            <EyeOff className="w-5 h-5" />
-                        ) : (
-                            <Eye className="w-5 h-5" />
-                        )}
-                    </button>
-                </div>
-            </div>
-
-
-
-            {/* Error alert */}
-            {errorMessage && (
-                <div className="login-card__alert">
-                    <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-                    <div>
-                        <p className="font-semibold text-sm">Det gick inte att logga in</p>
-                        <p className="text-xs text-muted-foreground">{errorMessage}</p>
-                    </div>
-                </div>
+        <div className="relative w-[85%]">
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            className="h-12 focus:placeholder-transparent"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--primary)] hover:text-[var(--foreground)] transition-colors"
+            tabIndex={-1}
+            aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
+          >
+            {showPassword ? (
+              <EyeOff className="w-5 h-5" />
+            ) : (
+              <Eye className="w-5 h-5" />
             )}
+          </button>
+        </div>
+      </div>
 
-            {/* Forgot password */}
-            <a
-                href="/forgot-password"
-                className="login-card__forgot-link"
-                style={{ textAlign: "center" }}
-            >
-                Glömt lösenordet?
-            </a>
+      {/* Error alert */}
+      {errorMessage && (
+        <div className="login-card__alert">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
+          <div>
+            <p className="font-semibold text-sm">Det gick inte att logga in</p>
+            <p className="text-xs text-muted-foreground">{errorMessage}</p>
+          </div>
+        </div>
+      )}
 
-            {/* Log in button */}
-            <Button type="submit" className="login-card__submit-btn">
-                {isSubmitting ? 'Loggar in...' : 'Logga in'}  <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+      {/* Forgot password */}
+      <a
+        href="/forgot-password"
+        className="login-card__forgot-link"
+        style={{ textAlign: "center" }}
+      >
+        Glömt lösenordet?
+      </a>
 
-            {/* Create account */}
-            <p className="login-card__signup-text">
-                Ny här? Skapa ett konto och kliv ombord.
-            </p>
-            <div className="login-card__signup">
-                <Button type="button" variant="outline" className="login-card__signup-btn" onClick={() => navigate('/register')}>
-                    Skapa konto
-                </Button>
-            </div>
+      {/* Log in button */}
+      <Button type="submit" className="login-card__submit-btn">
+        {isSubmitting ? "Loggar in..." : "Logga in"}{" "}
+        <ArrowRight className="w-4 h-4 ml-2" />
+      </Button>
 
-        </form>
-    )
+      {/* Create account */}
+      <p className="login-card__signup-text">
+        Ny här? Skapa ett konto och kliv ombord.
+      </p>
+      <div className="login-card__signup">
+        <Button
+          type="button"
+          variant="outline"
+          className="login-card__signup-btn"
+          onClick={() => navigate("/register")}
+        >
+          Skapa konto
+        </Button>
+      </div>
+    </form>
+  );
 }

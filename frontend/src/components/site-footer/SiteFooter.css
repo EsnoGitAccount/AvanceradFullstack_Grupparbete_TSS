@@ -18,7 +18,7 @@
 
 .site-footer__inner {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   gap: clamp(0.25rem, 2vw, 2rem);
   width: 100%;
@@ -47,3 +47,23 @@
   stroke-width: 1.4;
 }
 
+@media (max-width: 47.999rem) {
+  .site-footer__inner {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    min-height: unset;
+    padding: 1.25rem;
+  }
+
+  .site-footer__item {
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    white-space: normal;
+  }
+
+  .site-footer__icon {
+    width: 1rem;
+    height: 1rem;
+  }
+}

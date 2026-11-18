@@ -1,18 +1,16 @@
 import {
-  PenLineIcon,
   RouteIcon,
   SunIcon,
   TrophyIcon,
-} from '@/assets/icons/Icons'
+} from "@/assets/icons/Icons";
 
-import './SiteFooter.css'
+import "./SiteFooter.css";
 
 const footerItems = [
-  { label: 'Bara svenska städer', Icon: RouteIcon },
-  { label: 'Gissa snabbast för högst poäng', Icon: PenLineIcon },
-  { label: 'Lär dig nya saker', Icon: TrophyIcon },
-  { label: 'En ny resa varje dag', Icon: SunIcon },
-]
+  { label: "Bara svenska städer", Icon: RouteIcon },
+  { label: "Lär dig nya saker", Icon: TrophyIcon },
+  { label: "En ny resa varje dag", Icon: SunIcon },
+];
 
 function SiteFooter() {
   return (
@@ -27,7 +25,7 @@ function SiteFooter() {
         ))}
       </div>
     </footer>
-  )
+  );
 }
 
-export default SiteFooter
+export default SiteFooter;

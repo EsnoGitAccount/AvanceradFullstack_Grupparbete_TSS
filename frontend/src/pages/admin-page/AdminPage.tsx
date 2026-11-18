@@ -1,14 +1,21 @@
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import TrainLoading from "@/components/train-loading/TrainLoading";
 import { useAdminData } from "@/hooks/useAdminData";
-import { getAdminCities, getAdminUsers, getAdminGames } from "@/services/AdminService";
+import {
+  getAdminCities,
+  getAdminUsers,
+  getAdminGames,
+} from "@/services/AdminService";
 import { useAuth } from "../../context/auth/UseAuth";
-import type {
-  AdminCity,
-  CityQuestionsUpdate,
-} from "@/models/AdminModels";
+import type { AdminCity, CityQuestionsUpdate } from "@/models/AdminModels";
 import CreateCityContent from "../../components/admin-tasks/CreateCityContent";
 import CreateCity from "../../components/admin-tasks/CreateCity";
 import UpdateCity from "../../components/admin-tasks/UpdateCity";
@@ -33,7 +40,12 @@ const adminTabs = [
 
 type AdminTab = (typeof adminTabs)[number]["id"];
 
-function AdminDataState({ loading, error, retry, children }: {
+function AdminDataState({
+  loading,
+  error,
+  retry,
+  children,
+}: {
   loading: boolean;
   error: string | null;
   retry: () => void;
@@ -50,7 +62,9 @@ function AdminDataState({ loading, error, retry, children }: {
     return (
       <div className="admin-page__load-error">
         <p role="alert">{error}</p>
-        <Button type="button" onClick={retry}>Försök igen</Button>
+        <Button type="button" onClick={retry}>
+          Försök igen
+        </Button>
       </div>
     );
   }
@@ -127,9 +141,13 @@ export default function AdminPage() {
     setQuestionDraft(structuredClone(questions));
   };
 
-  const questionsDirty = JSON.stringify(questionDraft) !== JSON.stringify(cityQuestions);
+  const questionsDirty =
+    JSON.stringify(questionDraft) !== JSON.stringify(cityQuestions);
 
-  const handleQuestionsSaved = (cityId: number, questions: CityQuestionsUpdate) => {
+  const handleQuestionsSaved = (
+    cityId: number,
+    questions: CityQuestionsUpdate,
+  ) => {
     setQuestionCityId(cityId);
     setCityQuestions(questions);
     setQuestionDraft(structuredClone(questions));
@@ -168,23 +186,39 @@ export default function AdminPage() {
         <Select
           items={adminTabs.map((tab) => ({ value: tab.id, label: tab.label }))}
           value={activeTab}
-          onValueChange={(value) => { if (value !== null) setActiveTab(value); }}
+          onValueChange={(value) => {
+            if (value !== null) setActiveTab(value);
+          }}
         >
-          <SelectTrigger aria-label="Adminområde" className="min-h-11 gap-4 px-3">
+          <SelectTrigger
+            aria-label="Adminområde"
+            className="min-h-11 gap-4 px-3"
+          >
             <span className="inline-grid">
-              <span aria-hidden="true" className="invisible col-start-1 row-start-1">Frågor &amp; ledtrådar</span>
+              <span
+                aria-hidden="true"
+                className="invisible col-start-1 row-start-1"
+              >
+                Frågor &amp; ledtrådar
+              </span>
               <SelectValue className="col-start-1 row-start-1" />
             </span>
           </SelectTrigger>
           <SelectContent align="start" alignItemWithTrigger={false}>
             {adminTabs.map((tab) => (
-              <SelectItem key={tab.id} value={tab.id}>{tab.label}</SelectItem>
+              <SelectItem key={tab.id} value={tab.id}>
+                {tab.label}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
 
-      <div className="admin-page__tabs" role="tablist" aria-label="Adminområden">
+      <div
+        className="admin-page__tabs"
+        role="tablist"
+        aria-label="Adminområden"
+      >
         {adminTabs.map((tab) => (
           <button
             key={tab.id}
@@ -221,11 +255,17 @@ export default function AdminPage() {
             </div>
 
             <div className="admin-page__card admin-page__card--destructive">
-              <ArchiveCity cities={cities} onCityArchived={handleCityArchived} />
+              <ArchiveCity
+                cities={cities}
+                onCityArchived={handleCityArchived}
+              />
             </div>
 
             <div className="admin-page__card admin-page__card--success">
-              <RestoreCity cities={cities} onCityRestored={handleCityRestored} />
+              <RestoreCity
+                cities={cities}
+                onCityRestored={handleCityRestored}
+              />
             </div>
           </div>
         </AdminDataState>
@@ -252,12 +292,20 @@ export default function AdminPage() {
             </div>
 
             <div className="admin-page__card admin-page__card--wide admin-page__card--editor">
-              {questionCityId !== null && cityQuestions && (cityQuestions.questions.length !== 2 || cityQuestions.clues.length !== 5 || cityQuestions.questions.some((question) => question.options.length !== 4)) ? (
+              {questionCityId !== null &&
+              cityQuestions &&
+              (cityQuestions.questions.length !== 2 ||
+                cityQuestions.clues.length !== 5 ||
+                cityQuestions.questions.some(
+                  (question) => question.options.length !== 4,
+                )) ? (
                 <CreateCityContent
                   key={questionRevision}
                   cityId={questionCityId}
                   initialContent={cityQuestions}
-                  cityName={cities.find((city) => city.cityId === questionCityId)?.name}
+                  cityName={
+                    cities.find((city) => city.cityId === questionCityId)?.name
+                  }
                   busy={questionsBusy}
                   onLoadingChange={setQuestionsBusy}
                   onContentCreated={handleQuestionsLoaded}
@@ -266,7 +314,9 @@ export default function AdminPage() {
                 <UpdateCityQuestions
                   key={questionRevision}
                   cityId={questionCityId}
-                  cityName={cities.find((city) => city.cityId === questionCityId)?.name}
+                  cityName={
+                    cities.find((city) => city.cityId === questionCityId)?.name
+                  }
                   busy={questionsBusy}
                   dirty={questionsDirty}
                   onLoadingChange={setQuestionsBusy}
@@ -331,7 +381,11 @@ export default function AdminPage() {
 
         <div className="admin-page__grid">
           <div className="admin-page__card">
-            <UploadImage onImageUploaded={setImageBlobName} busy={imageBusy} onLoadingChange={setImageBusy} />
+            <UploadImage
+              onImageUploaded={setImageBlobName}
+              busy={imageBusy}
+              onLoadingChange={setImageBusy}
+            />
           </div>
 
           <div className="admin-page__card admin-page__card--destructive">

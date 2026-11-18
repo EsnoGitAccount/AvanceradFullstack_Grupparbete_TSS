@@ -2,10 +2,16 @@
   flex: 1;
 }
 
-.sweden-map__bonus-link { cursor: pointer; outline: none; }
+.sweden-map__bonus-link {
+  cursor: pointer;
+  outline: none;
+}
 
 /* Hidden until keyboard focus; the hit areas use the map's own coordinates. */
-.sweden-map__bonus-link circle { fill: transparent; stroke: transparent; }
+.sweden-map__bonus-link circle {
+  fill: transparent;
+  stroke: transparent;
+}
 
 .sweden-map__bonus-link:focus-visible circle {
   fill: color-mix(in srgb, var(--primary) 12%, transparent);
@@ -83,7 +89,6 @@
   background: var(--page);
   border: none;
   box-shadow: none;
-
 }
 
 .sweden-map {
@@ -150,5 +155,4 @@
   .home-page__hero-actions {
     flex-direction: column;
   }
-
 }
