@@ -17,7 +17,7 @@ const gameInstructions = [
   { id: 3, text: "Du får poäng baserat på hur tidigt du hittar rätt stad." },
   {
     id: 4,
-    text: "Efter du har hittad staden får du svara på ett antal frågor om staden.",
+    text: "Efter du har hittat staden får du svara på ett antal frågor om staden.",
   },
   {
     id: 5,

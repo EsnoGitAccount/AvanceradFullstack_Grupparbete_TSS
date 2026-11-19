@@ -65,7 +65,7 @@ function SiteHeader() {
                   className="site-header__account-button"
                   onClick={() => navigate("/game")}
                 >
-                  Dagens Resa
+                  Dagens resa
                 </Button>
                 <Button
                   variant="ghost"
@@ -142,7 +142,7 @@ function SiteHeader() {
                   navigate("/game");
                 }}
               >
-                Dagens Resa
+                Dagens resa
               </Button>
               <Button
                 variant="ghost"
