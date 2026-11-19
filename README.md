@@ -85,3 +85,45 @@ After secrets are configured you can create the database and run the backend app
 
 To create the database you can run the command "dotnet ef database update" in the backend folder ("./backend").
 To then run the application run the command "dotnet run" in the backend folder ("./backend").
+
+### Azurite Setup (Integration Tests)
+
+Some integration tests may require Azurite, a local emulator for Azure Blob Storage. Azurite allows developers to test Blob Storage functionality without connecting to a real Azure Storage account.
+
+**Install Azurite**
+
+Azurite can be installed globally using npm:
+
+```bash
+npm install -g azurite
+```
+
+**Start Azurite**
+
+Run the following command in a separate terminal:
+
+```bash
+azurite
+```
+
+By default, the Blob service runs on `http://127.0.0.1:10000`.
+
+**Configure the connection string**
+
+If the integration tests use the default Azurite connection, configure the following value in the test environment:
+
+```text
+BlobAzureStorage:ConnectionString = UseDevelopmentStorage=true
+```
+
+The container name should match the container expected by the tests.
+
+**Run the tests**
+
+From the backend folder, run:
+
+```bash
+dotnet test
+```
+
+Keep Azurite running while executing integration tests that depend on Blob Storage.
