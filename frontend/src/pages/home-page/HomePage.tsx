@@ -47,7 +47,7 @@ function HomePage() {
                   </span>
                 </>
               ) : (
-                "Ett stopp. Två frågor. Vad kan du om Svenska städer?"
+                "Ett stopp. Två frågor. Vad kan du om svenska städer?"
               )}
             </h1>
             <p className="home-page__description">

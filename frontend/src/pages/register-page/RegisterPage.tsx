@@ -200,7 +200,7 @@ function RegisterPage() {
             </div>
 
             <div className="register-page__badge">
-              Quiza. Upptäck. Ta dig vidare
+              Quizza. Upptäck. Ta dig vidare
             </div>
           </div>
           {/*Right*/}

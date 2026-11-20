@@ -83,7 +83,7 @@ export default function Leaderboard() {
           <p className="leaderboard-page__eyebrow">Resenärer i hela Sverige</p>
           <h1 className="page-title">Lite vänskaplig tävling.</h1>
           <p className="leaderboard-page__description">
-            Samma 3 ledtrådar. Vem har bäst koll på Sverige i dag?
+            Samma ledtrådar. Vem har bäst koll på Sverige i dag?
           </p>
         </div>
         {data && (
@@ -132,8 +132,8 @@ export default function Leaderboard() {
               <CardHeader className="leaderboard-page__card-header">
                 <CardTitle style={{ fontWeight: 800 }}>
                   {isDaily
-                    ? "Dagens top 10 topplista"
-                    : "Topplista top 10 genom tiderna"}{" "}
+                    ? "Dagens topplista"
+                    : "Topplista genom tiderna"}{" "}
                 </CardTitle>
                 <TrophyIcon color="var(--destructive)" />
               </CardHeader>
